@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SideBar from "../../sidebar"
+import TopBar from "../../topbar"
+import AdminMain from "./adminMain"
 
 const AdminDashboard = () => {
   const [adminData, setAdminData] = useState(null);
@@ -48,17 +51,16 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div>
-      <h1>Admin Dashboard</h1>
-      {adminData ? (
-        <div>
-          <p>Welcome, {adminData.name}</p>
-          <p>Email: {adminData.email}</p>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+    <div className="flex">
+      <SideBar />
+      <div className="w-4/5 ml-auto">
+        <TopBar 
+          name={adminData?.email}
+          role={adminData?.role}
+          onLogout={handleLogout}
+        />
+        <AdminMain />
+      </div>
     </div>
   );
 };
