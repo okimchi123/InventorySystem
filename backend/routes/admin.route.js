@@ -9,7 +9,7 @@ router.get("/admin", authenticateToken, async (req, res) => {
     const admin = await Admin.findById(req.user.id); 
     if (!admin) return res.status(404).json({ message: "Admin not found" });
 
-    res.json({ name: admin.name, email: admin.email });
+    res.json({ role: admin.role, email: admin.email });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
