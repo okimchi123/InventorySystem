@@ -10,9 +10,9 @@ export default function SideBar() {
             <ul class="font-monserat">
                 <li class="mb-4">
                         <NavLink
-                            to="/admin/dashboard"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg ${
-                                location.pathname === "/admin/dashboard"
+                            to="/admin/Dashboard"
+                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
+                                location.pathname === "/admin/Dashboard"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"
                               }` }
@@ -25,7 +25,7 @@ export default function SideBar() {
                 <li class="mb-4">
                         <NavLink
                             to="/admin/Audit-Trail"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg ${
+                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
                                 location.pathname === "/admin/Audit-Trail"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"
@@ -38,7 +38,7 @@ export default function SideBar() {
                 <li class="mb-4">
                         <NavLink
                             to="/admin/dashboard"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg ${
+                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
                                 location.pathname === "/admin/Inventory-Management"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"
@@ -51,7 +51,7 @@ export default function SideBar() {
                 <li class="mb-4">
                         <NavLink
                             to="/admin/dashboard"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg ${
+                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
                                 location.pathname === "/admin/Asset-Management"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"
@@ -64,7 +64,7 @@ export default function SideBar() {
                 <li class="mb-4">
                         <NavLink
                             to="/admin/dashboard"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg ${
+                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
                                 location.pathname === "/admin/Broken-Item-List"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"
@@ -77,7 +77,7 @@ export default function SideBar() {
                 <li class="mb-4">
                         <NavLink
                             to="/admin/dashboard"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg ${
+                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
                                 location.pathname === "/admin/Scrap-Item-List"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"
@@ -90,7 +90,7 @@ export default function SideBar() {
                 <li class="mb-4">
                         <NavLink
                             to="/admin/dashboard"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg ${
+                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
                                 location.pathname === "/admin/User-Management"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"
@@ -103,7 +103,7 @@ export default function SideBar() {
                 <li class="mb-4">
                         <NavLink
                             to="/admin/dashboard"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg ${
+                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
                                 location.pathname === "/admin/Employee"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"

@@ -23,7 +23,7 @@ export default function Login() {
 
       // store token and redirect based on role
       localStorage.setItem("token", data.token);
-      if (data.role === "admin") navigate("/admin/dashboard");
+      if (data.role === "admin") navigate("/admin/Dashboard");
       else if (data.role === "moderator") navigate("/moderator-dashboard");
       else navigate("/distributor-dashboard");
     } catch (err) {
