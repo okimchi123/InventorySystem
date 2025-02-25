@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SideBar from "../../sidebar"
-import TopBar from "../../topbar"
-import AdminMain from "./adminMain"
+import SideBar from "../../components/Admin/sidebar"
+import TopBar from "../../components/topbar"
+import AdminMain from "../../components/Admin/dashboard/adminMain"
 
 const AdminDashboard = () => {
   const [adminData, setAdminData] = useState(null);
