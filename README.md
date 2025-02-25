@@ -10,3 +10,7 @@ Currently, two official plugins are available:
 cd backend
 npm install express mongoose dotenv cors jsonwebtoken bcryptjs
 npm install -g nodemon
+
+tailwind set up
+npm install -D tailwindcss@3 postcss autoprefixer
+npx tailwindcss init -p
