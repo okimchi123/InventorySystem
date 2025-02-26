@@ -28,7 +28,7 @@ const getSingleAccount = async (req, res) => {
 
 const addAccount = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
+    const { email, password, role, firstname, lastname, phone } = req.body;
 
     const existingAccount = await Account.findOne({ email });
     if (existingAccount) {
@@ -41,6 +41,9 @@ const addAccount = async (req, res) => {
       email,
       password: hashedPassword,
       role,
+      firstname,
+      lastname,
+      phone
     });
 
     res.status(201).json({ message: "Account created successfully!", account });

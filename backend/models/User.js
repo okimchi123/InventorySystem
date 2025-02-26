@@ -10,14 +10,17 @@ const accountSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    role:{
-     type: String, 
-     enum: ["admin", "moderator", "user"], 
-    },
-    username: {
+    role: {
       type: String,
-      },
-    age:{
+      enum: ["admin", "moderator", "user"],
+    },
+    firstname: {
+      type: String,
+    },
+    lastname: {
+      type: String,
+    },
+    phone: {
       type: Number,
       default: 0,
     },
@@ -31,6 +34,6 @@ const accountSchema = mongoose.Schema(
   }
 );
 
-const Account  = mongoose.model("Account", accountSchema);
+const Account = mongoose.model("Account", accountSchema);
 
 module.exports = Account;
