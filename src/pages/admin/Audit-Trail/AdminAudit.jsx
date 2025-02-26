@@ -2,7 +2,7 @@ import AuditTable from "../../../components/Admin/audit/AuditTable"
 
 export default function AuditTrail(){
     return(
-        <div class="pt-22 py-6 laptop:px-12 phone:px-4">
+        <div class="pt-22 py-6 laptop:px-12 px-10 phone:px-4">
           {/* <!-- contents --> */}
           <div class="flex flex-col gap-1 items-end justify-center w-full mx-auto">
             <div class="flex flex-col gap-3 mx-auto py-4 w-full">

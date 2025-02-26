@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLocation } from "react-router-dom";
+import { dropdownVariants } from "../utils/animation/animation";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function TopBar(props) {
   const location = useLocation();
@@ -40,13 +42,30 @@ export default function TopBar(props) {
           </div>
           <FontAwesomeIcon icon="angle-down" size="sm" className="pl-3" />
         </button>
-        {isOpen && (
-          <div className="dropdown-menu absolute right-0 mt-2 w-48 bg-white shadow-lg py-2 z-20">
-            <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-200 transition-all">Profile</a>
-            <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-200 transition-all">Settings</a>
-            <a onClick={props.onLogout} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 cursor-pointer transition-all">Logout</a>
-          </div>
-        )}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={dropdownVariants}
+              className="dropdown-menu absolute right-0 mt-2 w-48 bg-white shadow-lg py-2 z-20 rounded-lg"
+            >
+              <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-200 transition-all">
+                Profile
+              </a>
+              <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-200 transition-all">
+                Settings
+              </a>
+              <a
+                onClick={props.onLogout}
+                className="block px-4 py-2 text-gray-800 hover:bg-gray-200 cursor-pointer transition-all"
+              >
+                Logout
+              </a>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   )

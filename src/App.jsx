@@ -4,11 +4,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import './assets/styles/output.css'
 import Login from './pages/login/login'
 import AdminMain from "./components/Admin/dashboard/adminMain"
-import AuditTrail from "./pages/admin/Audit Trail/AdminAudit";
+import AuditTrail from "./pages/admin/Audit-Trail/AdminAudit";
+import AddUser from "./pages/admin/User-Management/AddUser"
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown } from "@fortawesome/free-solid-svg-icons"
+import { faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck } from "@fortawesome/free-solid-svg-icons"
 
-library.add(faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown)
+library.add(faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck)
 
 function App() {
   return (
@@ -22,7 +23,8 @@ function App() {
           {/* Admin Layout: Sidebar & TopBar remain the same */}
           <Route element={<AdminDashboard />}>
             <Route path="/admin/Dashboard" element={<AdminMain />} />
-            <Route path="/admin/Audit-Trail" element={<AuditTrail />} /> 
+            <Route path="/admin/Audit-Trail" element={<AuditTrail />} />
+            <Route path="/admin/User-Management" element={<AddUser />} /> 
           </Route>
         </Route>
       </Routes>

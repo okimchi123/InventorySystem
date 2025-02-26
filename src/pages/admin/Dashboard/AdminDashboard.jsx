@@ -1,9 +1,7 @@
-import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import SideBar from "../../../components/Admin/sidebar"
 import TopBar from "../../../components/topbar"
-import AdminMain from "../../../components/Admin/dashboard/adminMain"
-import AuditTrail from "../Audit Trail/AdminAudit";
 
 const AdminDashboard = () => {
   const [adminData, setAdminData] = useState(null);
