@@ -28,18 +28,14 @@ const getSingleAccount = async (req, res) => {
 
 const addAccount = async (req, res) => {
   try {
-    const { email, password, role, firstname, lastname, phone } = req.body;
+    const { email, role, firstname, lastname, phone } = req.body;
 
     const existingAccount = await Account.findOne({ email });
     if (existingAccount) {
       return res.status(400).json({ message: "Email already in use" });
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     const account = await Account.create({
       email,
-      password: hashedPassword,
       role,
       firstname,
       lastname,

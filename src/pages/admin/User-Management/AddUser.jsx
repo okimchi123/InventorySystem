@@ -4,7 +4,7 @@ import { modalVariants } from "../../../utils/animation/animation";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import SuccessModal from "../../../components/Admin/modal/success";
+import {SuccessModal} from "../../../components/Admin/modal/success";
 
 export default function AddUser() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,7 +37,6 @@ export default function AddUser() {
     lastname: "",
     email: "",
     phone: "",
-    password: "",
     role: "user",
   });
   const handleChange = (e) => {
@@ -68,10 +67,6 @@ export default function AddUser() {
     <div class="pt-22 py-6 px-10 laptop:px-12 phone:px-4">
       
       <SuccessModal message={message} isVisible={showSuccessModal} />
-      <div className="fixed left-[30%] top-[10%] z-40 w-[300px] h-[70px] px-6 py-3 rounded-lg shadow-lg text-white bg-[#11B823]">
-          <FontAwesomeIcon icon="circle-check" />
-          <span className="text-[26px]">Success</span>
-           </div>
       {/* <!-- contents --> */}
       <div class="flex flex-col gap-1 items-end justify-center w-full mx-auto">
         <div class="flex flex-col gap-3 mx-auto py-4 w-full">
