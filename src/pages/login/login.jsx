@@ -80,13 +80,6 @@ export default function Login() {
               Password
             </label>
             <i class="fa-solid fa-lock absolute py-4 px-3 w-10 text-gray-500"></i>
-            <button
-              id="togglePassword"
-              type="button"
-              class="absolute py-3 right-2 text-gray-500 cursor-pointer"
-            >
-              <i class="fa-solid fa-eye-slash"></i>
-            </button>
             <input
               type="password"
               id="password"
