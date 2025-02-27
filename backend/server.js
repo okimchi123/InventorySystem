@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/account.route"); 
 const adminRoutes = require("./routes/admin.route")
+const auditLogRoutes = require("./routes/auditlog.route")
 
 dotenv.config();
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoutes);
 app.use("/api", adminRoutes);
+app.use("/api/audit-logs", auditLogRoutes);
 
 // MongoDB Connection
 mongoose
