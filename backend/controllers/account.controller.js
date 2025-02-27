@@ -2,7 +2,8 @@ const Account = require("../models/User.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-const AuditLog = require("../models/accountAudit.js")
+const AuditLog = require("../models/accountAudit.js");
+const { io } = require("../server.js")
 
 dotenv.config();
 
@@ -47,14 +48,15 @@ const addAccount = async (req, res) => {
     const account = await Account.create({ email, role, firstname, lastname, phone, status: "inactive" });
 
     await AuditLog.create({
-      action: "CREATE_USER",
+      action: "CREATE",
       performedBy: adminId,
       targetUser: account._id,
       userEmail: email,
       userRole: role,
       adminEmail: admin.email,
-      details: `${admin.email} created ${role} ${firstname} ${lastname}`,
     });
+
+    io.emitAuditLogs();
 
     res.status(201).json({ message: "Account created successfully!", account });
   } catch (error) {
@@ -107,6 +109,8 @@ const updateAccount = async (req, res) => {
       details: `Admin updated user ${account.firstname} ${account.lastname} (${account.email})`,
     });
 
+    io.emitAuditLogs();
+
     res.status(200).json(account);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -123,12 +127,15 @@ const deleteAccount = async (req, res) => {
       return res.status(404).json({ message: "Account not found" });
     }
 
+
     await AuditLog.create({
       action: "DELETE_USER",
       performedBy: adminId,
       targetUser: account._id,
       details: `Admin deleted user ${account.firstname} ${account.lastname} (${account.email})`,
     });
+
+    io.emitAuditLogs();
 
     res.status(200).json({ message: `${account.email} account is deleted` });
   } catch (error) {
@@ -175,19 +182,6 @@ const logout = async (req, res) => {
   }
 };
 
-const getAuditLogs = async (req, res) => {
-  try {
-    const logs = await AuditLog.find()
-      .populate("performedBy", "email") 
-      .populate("targetUser", "email") 
-      .sort({ timestamp: -1 });
-
-    res.status(200).json(logs);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
 module.exports = {
   getAccount,
   getSingleAccount,
@@ -196,6 +190,5 @@ module.exports = {
   deleteAccount,
   login,
   logout,
-  getAuditLogs,
   addAdminAccount,
 };

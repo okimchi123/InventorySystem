@@ -5,16 +5,16 @@ const auditLogSchema = new mongoose.Schema(
     action: {
       type: String,
       required: true,
-      enum: ["CREATE_USER", "UPDATE_USER", "DELETE_USER", "LOGIN"], // Add more as needed
+      enum: ["CREATE", "UPDATE", "DELETE", "LOGIN"],
     },
     performedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Account", // Admin who performed the action
+      ref: "Account",
       required: true,
     },
     targetUser: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Account", // User affected by the action
+      ref: "Account", 
       required: false,
     },
     userEmail:{
@@ -29,15 +29,6 @@ const auditLogSchema = new mongoose.Schema(
     adminEmail:{
       type: String,
       required: true,
-    }
-    ,
-    details: {
-      type: String,
-      required: true, // Example: "Admin John created user Jane"
-    },
-    timestamp: {
-      type: Date,
-      default: Date.now,
     },
   },
   { timestamps: true }
