@@ -5,23 +5,27 @@ const {
   getSingleAccount,
   addAccount,
   updateAccount,
+  addAdminAccount,
   deleteAccount,
   login,
 } = require("../controllers/account.controller");
+const authenticateToken = require("../middleware/authMiddleware");
+
 const router = express.Router();
 
 //read users
-router.get("/", getAccount);
-router.get("/:id", getSingleAccount);
+router.get("/", authenticateToken, getAccount);
+router.get("/:id", authenticateToken, getSingleAccount);
 
 //create user
-router.post("/", addAccount);
+router.post("/", authenticateToken, addAccount);
+router.post("/admin", addAdminAccount);
 
 //update user
-router.put("/:id", updateAccount);
+router.put("/:id", authenticateToken, updateAccount);
 
 //delete user
-router.delete("/:id", deleteAccount);
+router.delete("/:id", authenticateToken, deleteAccount);
 
 //login user
 router.post("/login", login);

@@ -11,17 +11,21 @@ const accountSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["admin", "moderator", "user"],
+      enum: ["superadmin", "admin", "moderator", "user"],
+      required: true,
     },
     firstname: {
       type: String,
+      required: true,
     },
     lastname: {
       type: String,
+      required: true,
     },
     phone: {
       type: Number,
       default: 0,
+      required: true,
     },
     image: {
       type: String,
