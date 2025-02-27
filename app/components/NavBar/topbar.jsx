@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLocation } from "react-router-dom";
-import { dropdownVariants } from "../utils/animation/animation";
+import { dropdownVariants } from "../../utils/animation/animation"
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function TopBar(props) {
