@@ -85,8 +85,8 @@ export default function AddUserModal({
                 onChange={handleChange}
                 value={formData.role}
               >
-                <option value="user">User</option>
-                <option value="moderator">Moderator</option>
+                <option value="User">User</option>
+                <option value="Moderator">Moderator</option>
               </select>
             </div>
           </div>

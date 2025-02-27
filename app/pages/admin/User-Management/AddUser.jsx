@@ -17,7 +17,7 @@ export default function AddUser() {
     lastname: "",
     email: "",
     phone: "",
-    role: "user",
+    role: "User",
   });
 
   const handleChange = (e) => {
@@ -55,7 +55,7 @@ export default function AddUser() {
         lastname: "",
         email: "",
         phone: "",
-        role: "user",
+        role: "User",
       });
   
       closeModal(); // Close modal first
