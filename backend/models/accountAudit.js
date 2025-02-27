@@ -21,6 +21,16 @@ const auditLogSchema = new mongoose.Schema(
         type: String,
         required: true,
     },
+    userRole:{
+      type: String,
+      required: true,
+    }
+    ,
+    adminEmail:{
+      type: String,
+      required: true,
+    }
+    ,
     details: {
       type: String,
       required: true, // Example: "Admin John created user Jane"

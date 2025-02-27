@@ -6,8 +6,6 @@ const AuditLog = require("../models/accountAudit.js")
 
 dotenv.config();
 
-//functions
-
 const getAccount = async (req, res) => {
   try {
     const accounts = await Account.find();
@@ -29,13 +27,11 @@ const getSingleAccount = async (req, res) => {
 
 const addAccount = async (req, res) => {
   try {
-    console.log("Received Request User:", req.user); // ✅ Debug req.user
-
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: "Unauthorized: Admin ID missing" });
     }
 
-    const adminId = req.user.id; // Admin performing the action
+    const adminId = req.user.id;
     const { email, role, firstname, lastname, phone } = req.body;
 
     const admin = await Account.findById(adminId);
@@ -48,20 +44,20 @@ const addAccount = async (req, res) => {
       return res.status(400).json({ message: "Email already in use" });
     }
 
-    const account = await Account.create({ email, role, firstname, lastname, phone });
+    const account = await Account.create({ email, role, firstname, lastname, phone, status: "inactive" });
 
-    // ✅ Create an audit log for this action
     await AuditLog.create({
       action: "CREATE_USER",
       performedBy: adminId,
       targetUser: account._id,
       userEmail: email,
+      userRole: role,
+      adminEmail: admin.email,
       details: `${admin.email} created ${role} ${firstname} ${lastname}`,
     });
 
     res.status(201).json({ message: "Account created successfully!", account });
   } catch (error) {
-    console.error("Error in addAccount:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -96,7 +92,7 @@ const addAdminAccount = async (req, res) => {
 const updateAccount = async (req, res) => {
   try {
     const { id } = req.params;
-    const adminId = req.user.id; // Admin performing the action
+    const adminId = req.user.id;
 
     const account = await Account.findByIdAndUpdate(id, req.body, { new: true });
 
@@ -104,7 +100,6 @@ const updateAccount = async (req, res) => {
       return res.status(404).json({ message: "Account not found" });
     }
 
-    // Log user update
     await AuditLog.create({
       action: "UPDATE_USER",
       performedBy: adminId,
@@ -121,14 +116,13 @@ const updateAccount = async (req, res) => {
 const deleteAccount = async (req, res) => {
   try {
     const { id } = req.params;
-    const adminId = req.user.id; // Admin performing the action
+    const adminId = req.user.id; 
     const account = await Account.findByIdAndDelete(id);
 
     if (!account) {
       return res.status(404).json({ message: "Account not found" });
     }
 
-    // Log user deletion
     await AuditLog.create({
       action: "DELETE_USER",
       performedBy: adminId,
@@ -146,23 +140,36 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check if the user exists
     const user = await Account.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
-    // Compare the provided password with the hashed password
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
-    // Generate JWT Token
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    if (user.status === "inactive") {
+      user.status = "active";
+      await user.save();
+    }
+
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
     res.status(200).json({ token, role: user.role });
+  } catch (error) {
+    res.status(500).json({ message: "Server error. Please try again." });
+  }
+};
+
+const logout = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const user = await Account.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.status = "inactive";
+    await user.save();
+
+    res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error. Please try again." });
   }
@@ -171,8 +178,8 @@ const login = async (req, res) => {
 const getAuditLogs = async (req, res) => {
   try {
     const logs = await AuditLog.find()
-      .populate("performedBy", "email") // Show admin email
-      .populate("targetUser", "email") // Show affected user email
+      .populate("performedBy", "email") 
+      .populate("targetUser", "email") 
       .sort({ timestamp: -1 });
 
     res.status(200).json(logs);
@@ -188,6 +195,7 @@ module.exports = {
   updateAccount,
   deleteAccount,
   login,
+  logout,
   getAuditLogs,
   addAdminAccount,
 };

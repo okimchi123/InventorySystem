@@ -11,7 +11,7 @@ const accountSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["superadmin", "admin", "moderator", "user"],
+      enum: ["admin", "moderator", "user"],
       required: true,
     },
     firstname: {
@@ -30,6 +30,11 @@ const accountSchema = mongoose.Schema(
     image: {
       type: String,
       required: false,
+    },
+    status: {
+      type: String,
+      enum: ["inactive", "active", "deactivated"],
+      default: "inactive",
     },
   },
   {

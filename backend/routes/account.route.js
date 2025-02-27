@@ -8,6 +8,7 @@ const {
   addAdminAccount,
   deleteAccount,
   login,
+  logout,
 } = require("../controllers/account.controller");
 const authenticateToken = require("../middleware/authMiddleware");
 
@@ -27,7 +28,8 @@ router.put("/:id", authenticateToken, updateAccount);
 //delete user
 router.delete("/:id", authenticateToken, deleteAccount);
 
-//login user
+//login logout user
 router.post("/login", login);
+router.post("/logout", authenticateToken, logout);
 
 module.exports = router;
