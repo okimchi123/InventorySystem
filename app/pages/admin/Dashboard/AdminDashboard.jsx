@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import SideBar from "../../../components/Admin/sidebar"
-import TopBar from "../../../components/topbar"
+import SideBar from "../../../components/NavBar/sidebar"
+import TopBar from "../../../components/NavBar/topbar"
 
 const AdminDashboard = () => {
   const [adminData, setAdminData] = useState(null);
@@ -9,51 +9,65 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const fetchAdminData = async () => {
-  try {
-    const token = localStorage.getItem("token");
+      try {
+        const token = localStorage.getItem("token");
 
-    if (!token) {
-      console.error("No token found, redirecting to login...");
-      navigate("/login");
-      return;
-    }
+        if (!token) {
+          console.error("No token found, redirecting to login...");
+          navigate("/login");
+          return;
+        }
 
-    const response = await fetch("http://localhost:5000/api/admin", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+        const response = await fetch("http://localhost:5000/api/admin", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-    if (response.status === 401 || response.status === 403) {
-      console.error("Unauthorized access, logging out...");
-      localStorage.removeItem("token");
-      navigate("/login");
-      return;
-    }
+        if (response.status === 401 || response.status === 403) {
+          console.error("Unauthorized access, logging out...");
+          localStorage.removeItem("token");
+          navigate("/login");
+          return;
+        }
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch admin data");
-    }
+        if (!response.ok) {
+          throw new Error("Failed to fetch admin data");
+        }
 
-    const data = await response.json();
-    setAdminData(data);
-  } catch (error) {
-    console.error("Error fetching admin data:", error);
-    navigate("/login");
-  }
-};
+        const data = await response.json();
+        setAdminData(data);
+      } catch (error) {
+        console.error("Error fetching admin data:", error);
+        navigate("/login");
+      }
+    };
 
     fetchAdminData();
   }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove token
-    navigate("/login"); // Redirect to login page
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      await fetch("http://localhost:5000/api/auth/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      localStorage.removeItem("token");
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
     <div className="flex">
       <SideBar />
       <div className="w-4/5 ml-auto">
-        <TopBar 
+        <TopBar
           name={adminData?.email}
           role={adminData?.role}
           onLogout={handleLogout}

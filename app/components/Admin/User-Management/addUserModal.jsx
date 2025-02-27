@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { modalVariants } from "../../../utils/animation/animation";
 
@@ -10,14 +9,12 @@ export default function AddUserModal({
   handleSubmit,
   formData,
 }) {
-  const modalRef = useRef(null);
 
   if (!isModalOpen) return null;
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50 bg-gray-900/75">
       <motion.div
-        ref={modalRef}
         initial="hidden"
         animate="visible"
         exit="exit"
