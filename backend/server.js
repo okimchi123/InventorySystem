@@ -2,23 +2,32 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const http = require("http"); 
-const { Server } = require("socket.io"); 
-const authRoutes = require("./routes/account.route"); 
+const http = require("http");
+const { Server } = require("socket.io");
+const authRoutes = require("./routes/account.route");
 const adminRoutes = require("./routes/admin.route");
 const auditLogRoutes = require("./routes/auditlog.route");
-const AuditLog = require("./models/accountAudit"); 
+const AuditLog = require("./models/accountAudit");
+const {setIO} = require("./utils/socketUtils")
 
 dotenv.config();
 const app = express();
-const server = http.createServer(app); 
-
+const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", 
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
   },
+});
+setIO(io);
+
+io.on("connection", (socket) => {
+  console.log("A client connected");
+
+  socket.on("disconnect", () => {
+    console.log("A client disconnected");
+  });
 });
 
 app.use(express.json());
@@ -29,29 +38,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api", adminRoutes);
 app.use("/api/audit-logs", auditLogRoutes);
 
-
-io.emitAuditLogs = async () => {
-  try {
-    const logs = await AuditLog.find()
-      .populate("performedBy", "email role")
-      .populate("targetUser", "status")
-      .sort({ createdAt: -1 });
-
-    io.emit("updateAuditLogs", logs); // Broadcast updates
-  } catch (error) {
-    console.error("Error fetching audit logs:", error);
-  }
-};
-
-io.on("connection", (socket) => {
-  console.log("A client connected");
-
-  socket.on("disconnect", () => {
-    console.log("A client disconnected");
-  });
-});
-
-// Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
@@ -64,5 +50,6 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 
-module.exports = { io };
+module.exports = {io};
+
 

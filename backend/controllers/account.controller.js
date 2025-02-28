@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const AuditLog = require("../models/accountAudit.js");
-const { io } = require("../server.js")
+const {emitAuditLogs} = require("../utils/socketUtils.js")
 
 dotenv.config();
 
@@ -56,7 +56,7 @@ const addAccount = async (req, res) => {
       adminEmail: admin.email,
     });
 
-    io.emitAuditLogs();
+    await emitAuditLogs(AuditLog);
 
     res.status(201).json({ message: "Account created successfully!", account });
   } catch (error) {
@@ -109,8 +109,6 @@ const updateAccount = async (req, res) => {
       details: `Admin updated user ${account.firstname} ${account.lastname} (${account.email})`,
     });
 
-    io.emitAuditLogs();
-
     res.status(200).json(account);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -134,8 +132,6 @@ const deleteAccount = async (req, res) => {
       targetUser: account._id,
       details: `Admin deleted user ${account.firstname} ${account.lastname} (${account.email})`,
     });
-
-    io.emitAuditLogs();
 
     res.status(200).json({ message: `${account.email} account is deleted` });
   } catch (error) {
