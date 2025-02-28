@@ -3,7 +3,10 @@ import axios from "axios";
 import moment from "moment";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+const socket = io("http://localhost:5000", {
+  transports: ["websocket"], 
+  reconnectionAttempts: 5,
+});
 
 export default function UserAudit() {
   const [auditLogs, setAuditLogs] = useState([]);
@@ -23,12 +26,20 @@ export default function UserAudit() {
   useEffect(() => {
     fetchLogs(); 
 
+    socket.on("connect", () => {
+      console.log("Connected to WebSocket server");
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Disconnected from WebSocket server");
+    });
+
     socket.on("updateAuditLogs", (logs) => {
       setAuditLogs(logs);
     });
 
     return () => {
-      socket.removeAllListeners("updateAuditLogs"); 
+      socket.off("updateAuditLogs"); 
     };
   }, [fetchLogs]);
 
