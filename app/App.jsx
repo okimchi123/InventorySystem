@@ -5,7 +5,7 @@ import './assets/styles/output.css'
 import Login from './pages/login/login'
 import AdminMain from "./components/Admin/dashboard/adminMain"
 import AuditTrail from "./pages/admin/Audit-Trail/AdminAudit";
-import AddUser from "./pages/admin/User-Management/AddUser"
+import UserManagement from "./pages/admin/User-Management/UserManagement"
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 
@@ -24,7 +24,7 @@ function App() {
           <Route element={<AdminDashboard />}>
             <Route path="/admin/Dashboard" element={<AdminMain />} />
             <Route path="/admin/Audit-Trail" element={<AuditTrail />} />
-            <Route path="/admin/User-Management" element={<AddUser />} /> 
+            <Route path="/admin/User-Management" element={<UserManagement />} /> 
           </Route>
         </Route>
       </Routes>

@@ -5,7 +5,7 @@ import UserAudit from "../../../components/Admin/User-Management/User-Audit"
 import AddUserModal from "../../../components/Admin/User-Management/addUserModal"
 import { SuccessModal } from "../../../components/Admin/modal/success"
 
-export default function AddUser() {
+export default function UserManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
