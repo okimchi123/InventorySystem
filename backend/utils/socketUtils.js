@@ -20,5 +20,18 @@ async function emitAuditLogs(AuditLog) {
     console.error("Error emitting audit logs:", error);
   }
 }
+async function emitUserLogs(Account) {
+  try {
+    const logs = await Account.find();
+    io.emit("updateUserLogs", logs);
+    if (io) {
+      io.emit("updateUserLogs", logs);
+    } else {
+      console.error("Socket.io not initialized");
+    }
+  } catch (error) {
+    console.error("Error emitting audit logs:", error);
+  }
+}
 
-module.exports = { setIO, emitAuditLogs };
+module.exports = { setIO, emitAuditLogs, emitUserLogs };

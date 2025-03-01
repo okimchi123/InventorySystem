@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const AuditLog = require("../models/accountAudit.js");
-const {emitAuditLogs} = require("../utils/socketUtils.js")
+const {emitAuditLogs, emitUserLogs} = require("../utils/socketUtils.js")
 
 dotenv.config();
 
@@ -57,6 +57,7 @@ const addAccount = async (req, res) => {
     });
 
     await emitAuditLogs(AuditLog);
+    await emitUserLogs(Account);
 
     res.status(201).json({ message: "Account created successfully!", account });
   } catch (error) {
@@ -96,18 +97,33 @@ const updateAccount = async (req, res) => {
     const { id } = req.params;
     const adminId = req.user.id;
 
-    const account = await Account.findByIdAndUpdate(id, req.body, { new: true });
+    
+    const existingAccount = await Account.findById(id);
 
-    if (!account) {
+    if (!existingAccount) {
       return res.status(404).json({ message: "Account not found" });
     }
 
+    const account = await Account.findByIdAndUpdate(id, req.body, { new: true });
+
+   
+    const admin = await Account.findById(adminId);
+
+    if (!admin) {
+        return res.status(404).json({message: "Admin user not found."})
+    }
+
     await AuditLog.create({
-      action: "UPDATE_USER",
+      action: "UPDATE",
       performedBy: adminId,
       targetUser: account._id,
-      details: `Admin updated user ${account.firstname} ${account.lastname} (${account.email})`,
+      userEmail: existingAccount.email, 
+      userRole: existingAccount.role,   
+      adminEmail: admin.email,
     });
+
+    await emitAuditLogs(AuditLog);
+    await emitUserLogs(Account);
 
     res.status(200).json(account);
   } catch (error) {
