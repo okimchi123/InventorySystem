@@ -1,8 +1,9 @@
-import { useState } from "react";
-import axios from "axios";
-import UserAudit from "../../../components/Admin/User-Management/User-Audit";
-import AddUserModal from "../../../components/Admin/User-Management/addUserModal";
-import { SuccessModal } from "../../../components/Admin/modal/success";
+import { useState } from "react"
+import axios from "axios"
+import UserTable from "../../../components/Admin/User-Management/userTable"
+import UserAudit from "../../../components/Admin/User-Management/User-Audit"
+import AddUserModal from "../../../components/Admin/User-Management/addUserModal"
+import { SuccessModal } from "../../../components/Admin/modal/success"
 
 export default function AddUser() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,22 +72,9 @@ export default function AddUser() {
   return (
     <div className="pt-22 py-6 px-10 laptop:px-12 phone:px-4">
       <div className="flex flex-col gap-1 items-end justify-center w-full mx-auto">
-        <div className="flex flex-col gap-3 mx-auto py-4 w-full">
-          {/* Filter Section */}
-          <div className="flex laptop:flex-row phone:flex-col gap-1 w-full">
-            <div className="flex justify-start">
-              <form className="flex flex-row items-center">
-                <select className="px-4 py-2 h-10 w-48 text-sm border border-gray-700 rounded-l-lg outline-none"></select>
-                <input type="text" placeholder="Search" className="w-full h-10 p-2 border border-gray-700 shadow-sm sm:text-sm outline-none rounded-r-lg" />
-              </form>
-            </div>
-            <div className="flex ml-auto">
-              <button onClick={openModal} className="cursor-pointer border bg-blue-800 hover:bg-blue-900 transition-all text-white px-4 py-2 rounded-lg">
-                Add New User
-              </button>
-            </div>
-          </div>
-
+        <div className="flex flex-col gap-[32px] mx-auto py-4 w-full">
+          
+          <UserTable openModal = {openModal} />
           <UserAudit />
         </div>
       </div>

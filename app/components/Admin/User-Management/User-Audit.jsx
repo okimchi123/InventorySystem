@@ -44,22 +44,23 @@ export default function UserAudit() {
   }, [fetchLogs]);
 
   return (
-    <div className="rounded-lg shadow-md">
-      <div className="w-full overflow-x-auto h-full rounded-lg">
+    <div className="rounded-lg">
+      <h1 className="text-[22px] font-semibold mb-[6px]">History</h1>
+      <div className="w-full overflow-x-auto h-full rounded-lg shadow-md">
         <table className="w-full bg-white">
           <thead className="bg-gray-200">
-            <tr className="bg-gray-200 border-b border-gray-400 text-sm text-left px-4">
-              <th className="py-3 px-4 border-b whitespace-nowrap">User</th>
-              <th className="py-3 px-4 border-b whitespace-nowrap">Performed By</th>
-              <th className="py-3 px-4 border-b whitespace-nowrap">Role</th>
-              <th className="py-3 px-4 border-b whitespace-nowrap">Status</th>
-              <th className="py-3 px-4 border-b whitespace-nowrap">Action</th>
-              <th className="py-3 px-4 border-b whitespace-nowrap">Date</th>
+            <tr className="bg-gray-200 border-gray-400 text-sm text-left px-4">
+              <th className="py-3 px-4 whitespace-nowrap">User</th>
+              <th className="py-3 px-4 whitespace-nowrap">Performed By</th>
+              <th className="py-3 px-4 whitespace-nowrap">Role</th>
+              <th className="py-3 px-4 whitespace-nowrap">Status</th>
+              <th className="py-3 px-4 whitespace-nowrap">Action</th>
+              <th className="py-3 px-4 whitespace-nowrap">Date</th>
             </tr>
           </thead>
           <tbody>
             {auditLogs.map((log) => (
-              <tr key={log._id} className="border-b text-left">
+              <tr key={log._id} className="text-left border-gray-300 border-b-[1px]">
                 <td className="py-6 px-4 whitespace-nowrap">{log.userEmail}</td>
                 <td className="py-6 px-4 whitespace-nowrap">
                   {log.performedBy ? log.performedBy.email : "Unknown"}
