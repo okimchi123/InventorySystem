@@ -22,7 +22,7 @@ export default function AddUserModal({
         className="bg-white border border-gray-600 rounded-lg px-15 py-6 shadow-lg relative h-[70%] w-[60%]"
       >
         <div className="flex items-center gap-[4px]">
-          <FontAwesomeIcon icon="circle-user" size="2xl" />
+          <FontAwesomeIcon icon="circle-user" size="2xl" color="green" />
           <h1 className="text-[32px]">Add New User</h1>
         </div>
 

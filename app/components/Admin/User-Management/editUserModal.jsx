@@ -45,15 +45,15 @@ export default function EditUserModal({ isOpen, onClose, user, onUpdateUser }) {
           animate="visible"
           exit="exit"
           variants={modalVariants}
-          className="bg-white p-6 rounded-lg shadow-lg w-[400px]"
+          className="bg-white py-6 px-8 rounded-lg shadow-lg w-[30%]"
         >
-          <div className="flex items-center gap-[4px]">
-          <FontAwesomeIcon icon="circle-user" size="2xl" />
-          <h1 className="text-[32px]">Edit User</h1>
-        </div>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex items-center gap-[4px] mb-[12px]">
+            <FontAwesomeIcon icon="circle-user" size="2xl" color="#decc28" />
+            <h1 className="text-[32px]">Edit User</h1>
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-3">
             <div>
-              <label className="block text-[20px] font-medium">First Name</label>
+              <label className="block text-[18px] font-medium">First Name</label>
               <input
                 type="text"
                 name="firstname"
@@ -63,7 +63,7 @@ export default function EditUserModal({ isOpen, onClose, user, onUpdateUser }) {
               />
             </div>
             <div>
-              <label className="block text-[20px] font-medium">Last Name</label>
+              <label className="block text-[18px] font-medium">Last Name</label>
               <input
                 type="text"
                 name="lastname"
@@ -73,7 +73,7 @@ export default function EditUserModal({ isOpen, onClose, user, onUpdateUser }) {
               />
             </div>
             <div>
-              <label className="block text-[20px] font-medium">Role</label>
+              <label className="block text-[18px] font-medium">Role</label>
               <select
                 name="role"
                 value={formData.role}
@@ -95,7 +95,7 @@ export default function EditUserModal({ isOpen, onClose, user, onUpdateUser }) {
 
             </div>
             <div>
-              <label className="block text-[20px] font-medium">Contact Number</label>
+              <label className="block text-[18px] font-medium">Contact Number</label>
               <input
                 type="text"
                 name="phone"

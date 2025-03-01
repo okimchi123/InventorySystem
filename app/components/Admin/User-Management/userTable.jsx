@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SuccessModal } from "../modal/success"
+import { SuccessModal, ConfirmModal } from "../modal/success";
 import EditUserModal from "./editUserModal";
 import { io } from "socket.io-client";
 
@@ -16,10 +16,16 @@ export default function UserTable({ openModal }) {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [message, setMessage] = useState("");
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [userToDelete, setUserToDelete] = useState(null);
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
     const openEditModal = (user) => {
         setSelectedUser(user);
         setIsEditModalOpen(true);
+    };
+    const openDeleteModal = (user) => {
+        setUserToDelete(user); 
+        setIsConfirmModalOpen(true);
     };
 
     const fetchUsers = async () => {
@@ -71,6 +77,28 @@ export default function UserTable({ openModal }) {
         }
     };
 
+    const handleDeleteUser = async () => {
+        if (!userToDelete) return;
+
+        try {
+            const token = localStorage.getItem("token");
+            await axios.delete(`http://localhost:5000/api/auth/${userToDelete._id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setMessage("User deleted successfully!");
+            setShowSuccessModal(true);
+            setTimeout(() => setShowSuccessModal(false), 2000);
+            setIsConfirmModalOpen(false);
+            fetchUsers();
+        } catch (error) {
+            console.error("Error deleting user:", error);
+            setMessage("Can't Delete User");
+            setShowSuccessModal(true);
+            setTimeout(() => setShowSuccessModal(false), 2000);
+        }
+    };
+
+
     return (
         <div className="rounded-lg">
             <EditUserModal
@@ -79,7 +107,13 @@ export default function UserTable({ openModal }) {
                 user={selectedUser}
                 onUpdateUser={handleUpdateUser}
             />
-
+             <ConfirmModal
+                isOpen={isConfirmModalOpen}
+                onClose={() => setIsConfirmModalOpen(false)}
+                onConfirm={handleDeleteUser}
+                message="Are you sure you want to delete this user?"
+                user={userToDelete}
+            />
             <SuccessModal message={message} isVisible={showSuccessModal} />
 
             <div className="flex laptop:flex-row phone:flex-col gap-1 w-full mb-[8px]">
@@ -138,7 +172,7 @@ export default function UserTable({ openModal }) {
                                             <button onClick={() => openEditModal(user)} className="flex flex-row gap-2 cursor-pointer items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full transition-all">
                                                 <FontAwesomeIcon icon="pen" />Edit
                                             </button>
-                                            <button className="flex flex-row gap-2 cursor-pointer items-center border border-white shadow-md bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-full transition-all">
+                                            <button onClick={() => openDeleteModal(user)} className="flex flex-row gap-2 cursor-pointer items-center border border-white shadow-md bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-full transition-all">
                                                 <FontAwesomeIcon icon="trash" />Delete
                                             </button>
                                         </div>
