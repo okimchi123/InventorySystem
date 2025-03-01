@@ -1,30 +1,87 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { SuccessModal } from "../modal/success"
+import EditUserModal from "./editUserModal";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:5000", {
+    transports: ["websocket"],
+    reconnectionAttempts: 5,
+  });
 
 export default function UserTable({ openModal }) {
     const [users, setUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [message, setMessage] = useState("");
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-    // Fetch users from backend
+    const openEditModal = (user) => {
+        setSelectedUser(user);
+        setIsEditModalOpen(true);
+    };
+
+    const fetchUsers = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const res = await axios.get("http://localhost:5000/api/auth", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setUsers(res.data);
+        } catch (error) {
+            console.error("Failed to fetch users:", error);
+            setMessage("Failed to fetch users.");
+            setShowSuccessModal(true);
+            setTimeout(() => setShowSuccessModal(false), 2000);
+        }
+    };
+
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const token = localStorage.getItem("token");
-                const res = await axios.get("http://localhost:5000/api/auth", {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-                setUsers(res.data);
-            } catch (error) {
-                console.error("Failed to fetch users:", error);
-            }
-        };
-
         fetchUsers();
+        socket.on("updateUserLogs", (logs) => {
+            setUsers(logs);
+          });
     }, []);
+
+    const handleUpdateUser = async (updatedUser) => {
+        if (!updatedUser.email || !updatedUser.firstname || !updatedUser.lastname || !updatedUser.phone || !updatedUser.role) {
+            setMessage("Please input all the fields");
+            setShowSuccessModal(true);
+            setTimeout(() => setShowSuccessModal(false), 2000);
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem("token");
+            await axios.put(`http://localhost:5000/api/auth/${updatedUser._id}`, updatedUser, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setMessage("User updated successfully!");
+            setShowSuccessModal(true);
+            setTimeout(() => setShowSuccessModal(false), 2000);
+
+            setIsEditModalOpen(false);
+            fetchUsers();
+        } catch (error) {
+            console.error("Error updating user:", error);
+            setMessage("Can't Update User");
+            setShowSuccessModal(true);
+            setTimeout(() => setShowSuccessModal(false), 2000);
+        }
+    };
 
     return (
         <div className="rounded-lg">
-            {/* Filter Section */}
+            <EditUserModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                user={selectedUser}
+                onUpdateUser={handleUpdateUser}
+            />
+
+            <SuccessModal message={message} isVisible={showSuccessModal} />
+
             <div className="flex laptop:flex-row phone:flex-col gap-1 w-full mb-[8px]">
                 <h1 className="text-[22px] font-semibold mr-[8px]">Users</h1>
                 <div className="flex justify-start">
@@ -45,7 +102,6 @@ export default function UserTable({ openModal }) {
                 </div>
             </div>
 
-            {/* Table Section */}
             <div className="w-full overflow-x-auto h-full rounded-lg shadow-md">
                 <table className="w-full bg-white">
                     <thead className="bg-gray-200">
@@ -60,7 +116,7 @@ export default function UserTable({ openModal }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user, index) => (
+                        {users.map((user) => (
                             <tr key={user._id} className="text-left border-gray-300 border-b-[1px]">
                                 <td className="py-6 px-4 whitespace-nowrap">{user._id.slice(0, 6)}</td>
                                 <td className="py-6 px-4 whitespace-nowrap">{`${user.firstname} ${user.lastname}`}</td>
@@ -72,19 +128,21 @@ export default function UserTable({ openModal }) {
                                         <span className="text-green-900 bg-green-100 rounded-lg p-2 font-medium">Active</span>
                                     ) : user.status === "inactive" ? (
                                         <span className="text-red-900 bg-red-100 rounded-lg p-2 font-medium">Inactive</span>
-                                      ) : (
+                                    ) : (
                                         <span className="text-gray-900 bg-gray-200 rounded-lg p-2 font-medium">Deactivated</span>
-                                      )}
+                                    )}
                                 </td>
-                                <td class="text-center space-x-2">
-                                    <div class="flex flex-row py-2 gap-1">
-                                        <button class="flex flex-row gap-2 cursor-pointer items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full transition-all">
-                                            <FontAwesomeIcon icon="pen" />Edit
-                                        </button>
-                                        <button class="flex flex-row gap-2 cursor-pointer items-center border border-white shadow-md bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-full transition-all">
-                                            <FontAwesomeIcon icon="trash" />Delete
-                                        </button>
-                                    </div>
+                                <td className="text-center space-x-2">
+                                    {user.role !== "Admin" && (
+                                        <div className="flex flex-row py-2 gap-1">
+                                            <button onClick={() => openEditModal(user)} className="flex flex-row gap-2 cursor-pointer items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full transition-all">
+                                                <FontAwesomeIcon icon="pen" />Edit
+                                            </button>
+                                            <button className="flex flex-row gap-2 cursor-pointer items-center border border-white shadow-md bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-full transition-all">
+                                                <FontAwesomeIcon icon="trash" />Delete
+                                            </button>
+                                        </div>
+                                    )}
                                 </td>
                             </tr>
                         ))}

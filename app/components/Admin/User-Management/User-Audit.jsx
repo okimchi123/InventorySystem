@@ -4,7 +4,7 @@ import moment from "moment";
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5000", {
-  transports: ["websocket"], 
+  transports: ["websocket"],
   reconnectionAttempts: 5,
 });
 
@@ -24,7 +24,7 @@ export default function UserAudit() {
   }, []);
 
   useEffect(() => {
-    fetchLogs(); 
+    fetchLogs();
 
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
@@ -39,7 +39,7 @@ export default function UserAudit() {
     });
 
     return () => {
-      socket.off("updateAuditLogs"); 
+      socket.off("updateAuditLogs");
     };
   }, [fetchLogs]);
 
@@ -50,10 +50,9 @@ export default function UserAudit() {
         <table className="w-full bg-white">
           <thead className="bg-gray-200">
             <tr className="bg-gray-200 border-gray-400 text-sm text-left px-4">
-              <th className="py-3 px-4 whitespace-nowrap">User</th>
+              <th className="py-3 px-4 whitespace-nowrap">Target User</th>
               <th className="py-3 px-4 whitespace-nowrap">Performed By</th>
               <th className="py-3 px-4 whitespace-nowrap">Role</th>
-              <th className="py-3 px-4 whitespace-nowrap">Status</th>
               <th className="py-3 px-4 whitespace-nowrap">Action</th>
               <th className="py-3 px-4 whitespace-nowrap">Date</th>
             </tr>
@@ -67,15 +66,13 @@ export default function UserAudit() {
                 </td>
                 <td className="py-6 px-4 whitespace-nowrap">{log.userRole}</td>
                 <td className="py-6 px-4 whitespace-nowrap">
-                  {log.targetUser?.status === "active" ? (
-                    <span className="text-green-900 bg-green-100 rounded-lg p-2 font-medium">Active</span>
-                  ) : log.targetUser?.status === "inactive" ? (
-                    <span className="text-red-900 bg-red-100 rounded-lg p-2 font-medium">Inactive</span>
-                  ) : (
-                    <span className="text-gray-900 bg-gray-200 rounded-lg p-2 font-medium">Deactivated</span>
-                  )}
+                  <span className={`font-medium rounded-lg p-2 
+                     ${log.action === "CREATE" ? "text-green-900 bg-green-100" :
+                      log.action === "UPDATE" ? "text-yellow-900 bg-yellow-100" :
+                      log.action === "DELETE" ? "text-red-900 bg-red-100" : "text-gray-900 bg-gray-200"}`}>
+                    {log.action}
+                  </span>
                 </td>
-                <td className="py-6 px-4 whitespace-nowrap">{log.action}</td>
                 <td className="py-6 px-4 whitespace-nowrap">{moment(log.createdAt).format("MMMM D, YYYY h:mm A")}</td>
               </tr>
             ))}
