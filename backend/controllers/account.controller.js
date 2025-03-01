@@ -135,19 +135,28 @@ const deleteAccount = async (req, res) => {
   try {
     const { id } = req.params;
     const adminId = req.user.id; 
+
+    const existingAccount = await Account.findById(id);
+
     const account = await Account.findByIdAndDelete(id);
+
+    const admin = await Account.findById(adminId);
 
     if (!account) {
       return res.status(404).json({ message: "Account not found" });
     }
 
-
     await AuditLog.create({
-      action: "DELETE_USER",
+      action: "DELETE",
       performedBy: adminId,
       targetUser: account._id,
-      details: `Admin deleted user ${account.firstname} ${account.lastname} (${account.email})`,
+      userEmail: existingAccount.email, 
+      userRole: existingAccount.role,   
+      adminEmail: admin.email,
     });
+
+    await emitAuditLogs(AuditLog);
+    await emitUserLogs(Account);
 
     res.status(200).json({ message: `${account.email} account is deleted` });
   } catch (error) {
