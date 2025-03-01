@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { modalVariants } from "../../../utils/animation/animation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function EditUserModal({ isOpen, onClose, user, onUpdateUser }) {
   const [formData, setFormData] = useState({
@@ -46,35 +47,38 @@ export default function EditUserModal({ isOpen, onClose, user, onUpdateUser }) {
           variants={modalVariants}
           className="bg-white p-6 rounded-lg shadow-lg w-[400px]"
         >
-          <h2 className="text-xl font-semibold mb-4">Edit User</h2>
+          <div className="flex items-center gap-[4px]">
+          <FontAwesomeIcon icon="circle-user" size="2xl" />
+          <h1 className="text-[32px]">Edit User</h1>
+        </div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium">First Name</label>
+              <label className="block text-[20px] font-medium">First Name</label>
               <input
                 type="text"
                 name="firstname"
                 value={formData.firstname}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg"
+                className="w-full px-3 py-3 border rounded-lg"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">Last Name</label>
+              <label className="block text-[20px] font-medium">Last Name</label>
               <input
                 type="text"
                 name="lastname"
                 value={formData.lastname}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg"
+                className="w-full px-3 py-3 border rounded-lg"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">Role</label>
+              <label className="block text-[20px] font-medium">Role</label>
               <select
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg"
+                className="w-full px-3 py-3 border rounded-lg"
               >
                 {formData.role === "Moderator" ? (
                   <>
@@ -91,13 +95,13 @@ export default function EditUserModal({ isOpen, onClose, user, onUpdateUser }) {
 
             </div>
             <div>
-              <label className="block text-sm font-medium">Contact Number</label>
+              <label className="block text-[20px] font-medium">Contact Number</label>
               <input
                 type="text"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg"
+                className="w-full px-3 py-3 border rounded-lg"
               />
             </div>
             <div className="flex justify-end gap-2">
