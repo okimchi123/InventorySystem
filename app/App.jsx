@@ -3,6 +3,7 @@ import ProtectedRoute from "./routes/protectedRoute";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import './assets/styles/output.css'
 import Login from './pages/login/login'
+import SetPassword from "./pages/SetPassword/SetPassword";
 import AdminMain from "./components/Admin/dashboard/adminMain"
 import AuditTrail from "./pages/admin/Audit-Trail/AdminAudit";
 import UserManagement from "./pages/admin/User-Management/UserManagement"
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/set-password" element={<SetPassword />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
