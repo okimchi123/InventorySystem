@@ -1,11 +1,45 @@
 const Account = require("../models/User.js");
+const TokenBlacklist = require("../models/TokenBlacklist.js")
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const nodemailer = require("nodemailer");
 const AuditLog = require("../models/accountAudit.js");
 const {emitAuditLogs, emitUserLogs} = require("../utils/socketUtils.js")
 
 dotenv.config();
+
+const sendPasswordSetupEmail = async (email, token) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user: process.env.EMAIL, pass: process.env.EMAIL_PASSWORD }
+  });
+
+  const link = `http://localhost:5173/set-password?token=${token}`
+
+  await transporter.sendMail({
+    from: process.env.EMAIL,
+    to: email,
+    subject: "Set Your Password",
+    html: `<p>Click <a href="${link}">here</a> to set your password. This link expires in 1 hour.</p>`
+  });
+};
+const verifyToken = async (req, res) => {
+  const { token } = req.body;
+
+  try {
+    const blacklistedToken = await TokenBlacklist.findOne({ token });
+    if (blacklistedToken) {
+      return res.status(400).json({ message: "Password setup is not available anymore." });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET);
+    return res.json({ message: "Token is valid." });
+
+  } catch (error) {
+    return res.status(400).json({ message: "Password setup is not available anymore." });
+  }
+};
 
 const getAccount = async (req, res) => {
   try {
@@ -47,6 +81,10 @@ const addAccount = async (req, res) => {
 
     const account = await Account.create({ email, role, firstname, lastname, phone, status: "inactive" });
 
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    await sendPasswordSetupEmail(email, token);
+
     await AuditLog.create({
       action: "CREATE",
       performedBy: adminId,
@@ -62,6 +100,34 @@ const addAccount = async (req, res) => {
     res.status(201).json({ message: "Account created successfully!", account });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+const setPassword = async (req, res) => {
+  const { token, password } = req.body;
+
+  try {
+    const blacklistedToken = await TokenBlacklist.findOne({ token });
+    if (blacklistedToken) {
+      return res.status(400).json({ message: "This link has already been used." });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await Account.findOne({ email: decoded.email });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found." });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+    await user.save();
+
+    await TokenBlacklist.create({ token });
+
+    return res.json({ message: "Password has been set successfully!" });
+
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid or expired token." });
   }
 };
 
@@ -178,7 +244,7 @@ const login = async (req, res) => {
       user.status = "active";
       await user.save();
     }
-
+    await emitUserLogs(Account);
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
     res.status(200).json({ token, role: user.role });
@@ -212,4 +278,6 @@ module.exports = {
   login,
   logout,
   addAdminAccount,
+  setPassword,
+  verifyToken,
 };

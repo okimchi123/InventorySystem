@@ -4,11 +4,13 @@ const {
   getAccount,
   getSingleAccount,
   addAccount,
+  setPassword,
   updateAccount,
   addAdminAccount,
   deleteAccount,
   login,
   logout,
+  verifyToken,
 } = require("../controllers/account.controller");
 const authenticateToken = require("../middleware/authMiddleware");
 
@@ -20,7 +22,10 @@ router.get("/:id", authenticateToken, getSingleAccount);
 
 //create user
 router.post("/", authenticateToken, addAccount);
+router.post("/set-password", setPassword);
 router.post("/admin", addAdminAccount);
+
+router.post("/verify-token", verifyToken);
 
 //update user
 router.put("/:id", authenticateToken, updateAccount);
