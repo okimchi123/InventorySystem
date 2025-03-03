@@ -6,183 +6,274 @@ import EditUserModal from "./editUserModal";
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5000", {
-    transports: ["websocket"],
-    reconnectionAttempts: 5,
-  });
+  transports: ["websocket"],
+  reconnectionAttempts: 5,
+});
 
 export default function UserTable({ openModal }) {
-    const [users, setUsers] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [message, setMessage] = useState("");
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [userToDelete, setUserToDelete] = useState(null);
-    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedRole, setSelectedRole] = useState("All");
 
-    const openEditModal = (user) => {
-        setSelectedUser(user);
-        setIsEditModalOpen(true);
-    };
-    const openDeleteModal = (user) => {
-        setUserToDelete(user); 
-        setIsConfirmModalOpen(true);
-    };
+  const openEditModal = (user) => {
+    setSelectedUser(user);
+    setIsEditModalOpen(true);
+  };
+  const openDeleteModal = (user) => {
+    setUserToDelete(user);
+    setIsConfirmModalOpen(true);
+  };
 
-    const fetchUsers = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            const res = await axios.get("http://localhost:5000/api/auth", {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            setUsers(res.data);
-        } catch (error) {
-            console.error("Failed to fetch users:", error);
-            setMessage("Failed to fetch users.");
-            setShowSuccessModal(true);
-            setTimeout(() => setShowSuccessModal(false), 2000);
-        }
-    };
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get("http://localhost:5000/api/auth", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUsers(res.data);
+      setFilteredUsers(res.data);
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+      setMessage("Failed to fetch users.");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+    }
+  };
 
-    useEffect(() => {
-        fetchUsers();
-        socket.on("updateUserLogs", (logs) => {
-            setUsers(logs);
-          });
-    }, []);
+  useEffect(() => {
+    fetchUsers();
+    socket.on("updateUserLogs", (logs) => {
+      setUsers(logs);
+      setFilteredUsers(logs);
+    });
+  }, []);
 
-    const handleUpdateUser = async (updatedUser) => {
-        if (!updatedUser.email || !updatedUser.firstname || !updatedUser.lastname || !updatedUser.phone || !updatedUser.role) {
-            setMessage("Please input all the fields");
-            setShowSuccessModal(true);
-            setTimeout(() => setShowSuccessModal(false), 2000);
-            return;
-        }
-
-        try {
-            const token = localStorage.getItem("token");
-            await axios.put(`http://localhost:5000/api/auth/${updatedUser._id}`, updatedUser, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            setMessage("User updated successfully!");
-            setShowSuccessModal(true);
-            setTimeout(() => setShowSuccessModal(false), 2000);
-
-            setIsEditModalOpen(false);
-            fetchUsers();
-        } catch (error) {
-            console.error("Error updating user:", error);
-            setMessage("Can't Update User");
-            setShowSuccessModal(true);
-            setTimeout(() => setShowSuccessModal(false), 2000);
-        }
-    };
-
-    const handleDeleteUser = async () => {
-        if (!userToDelete) return;
-
-        try {
-            const token = localStorage.getItem("token");
-            await axios.delete(`http://localhost:5000/api/auth/${userToDelete._id}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            setMessage("User deleted successfully!");
-            setShowSuccessModal(true);
-            setTimeout(() => setShowSuccessModal(false), 2000);
-            setIsConfirmModalOpen(false);
-            fetchUsers();
-        } catch (error) {
-            console.error("Error deleting user:", error);
-            setMessage("Can't Delete User");
-            setShowSuccessModal(true);
-            setTimeout(() => setShowSuccessModal(false), 2000);
-        }
-    };
-
-
-    return (
-        <div className="rounded-lg">
-            <EditUserModal
-                isOpen={isEditModalOpen}
-                onClose={() => setIsEditModalOpen(false)}
-                user={selectedUser}
-                onUpdateUser={handleUpdateUser}
-            />
-             <ConfirmModal
-                isOpen={isConfirmModalOpen}
-                onClose={() => setIsConfirmModalOpen(false)}
-                onConfirm={handleDeleteUser}
-                message="Are you sure you want to delete this user?"
-                user={userToDelete}
-            />
-            <SuccessModal message={message} isVisible={showSuccessModal} />
-
-            <div className="flex laptop:flex-row phone:flex-col gap-1 w-full mb-[8px]">
-                <h1 className="text-[22px] font-semibold mr-[8px]">Users</h1>
-                <div className="flex justify-start">
-                    <form className="flex flex-row items-center">
-                        <select className="px-2 py-2 h-10 w-48 text-sm border border-gray-700 rounded-l-lg outline-none">
-                            <option value="">ID</option>
-                            <option value="Moderator">Moderator</option>
-                            <option value="User">User</option>
-                        </select>
-                        <input type="text" placeholder="Search" className="w-full h-10 p-2 border border-gray-700 shadow-sm sm:text-sm outline-none rounded-r-lg" />
-                    </form>
-                </div>
-                <div className="flex ml-auto">
-                    <button onClick={openModal} className="cursor-pointer border flex items-center gap-[4px] bg-blue-800 hover:bg-blue-900 transition-all text-white px-3 py-2 rounded-lg">
-                        <FontAwesomeIcon icon="circle-plus" />
-                        <span>Add New User</span>
-                    </button>
-                </div>
-            </div>
-
-            <div className="w-full overflow-x-auto h-full rounded-lg shadow-md">
-                <table className="w-full bg-white">
-                    <thead className="bg-gray-200">
-                        <tr className="bg-gray-200 border-gray-400 text-sm text-left px-4">
-                            <th className="py-3 px-4 whitespace-nowrap">ID</th>
-                            <th className="py-3 px-4 whitespace-nowrap">Name</th>
-                            <th className="py-3 px-4 whitespace-nowrap">Role</th>
-                            <th className="py-3 px-4 whitespace-nowrap">Email</th>
-                            <th className="py-3 px-4 whitespace-nowrap">Contact Number</th>
-                            <th className="py-3 px-4 whitespace-nowrap">Status</th>
-                            <th className="py-3 px-4 whitespace-nowrap">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user) => (
-                            <tr key={user._id} className="text-left border-gray-300 border-b-[1px]">
-                                <td className="py-6 px-4 whitespace-nowrap">{user._id.slice(0, 6)}</td>
-                                <td className="py-6 px-4 whitespace-nowrap">{`${user.firstname} ${user.lastname}`}</td>
-                                <td className="py-6 px-4 whitespace-nowrap">{user.role}</td>
-                                <td className="py-6 px-4 whitespace-nowrap">{user.email}</td>
-                                <td className="py-6 px-4 whitespace-nowrap">{user.phone}</td>
-                                <td className="py-6 px-4 whitespace-nowrap">
-                                    {user.status === "active" ? (
-                                        <span className="text-green-900 bg-green-100 rounded-lg p-2 font-medium">Active</span>
-                                    ) : user.status === "inactive" ? (
-                                        <span className="text-red-900 bg-red-100 rounded-lg p-2 font-medium">Inactive</span>
-                                    ) : (
-                                        <span className="text-gray-900 bg-gray-200 rounded-lg p-2 font-medium">Deactivated</span>
-                                    )}
-                                </td>
-                                <td className="text-center space-x-2">
-                                    {user.role !== "Admin" && (
-                                        <div className="flex flex-row py-2 gap-1">
-                                            <button onClick={() => openEditModal(user)} className="flex flex-row gap-2 cursor-pointer items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full transition-all">
-                                                <FontAwesomeIcon icon="pen" />Edit
-                                            </button>
-                                            <button onClick={() => openDeleteModal(user)} className="flex flex-row gap-2 cursor-pointer items-center border border-white shadow-md bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-full transition-all">
-                                                <FontAwesomeIcon icon="trash" />Delete
-                                            </button>
-                                        </div>
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  useEffect(() => {
+    const filtered = users.filter(
+      (user) =>
+        user.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.lastname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
+    setFilteredUsers(filtered);
+  }, [searchQuery, users]);
+
+  const handleUpdateUser = async (updatedUser) => {
+    if (
+      !updatedUser.email ||
+      !updatedUser.firstname ||
+      !updatedUser.lastname ||
+      !updatedUser.phone ||
+      !updatedUser.role
+    ) {
+      setMessage("Please input all the fields");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://localhost:5000/api/auth/${updatedUser._id}`,
+        updatedUser,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setMessage("User updated successfully!");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+
+      setIsEditModalOpen(false);
+      fetchUsers();
+    } catch (error) {
+      console.error("Error updating user:", error);
+      setMessage("Can't Update User");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    if (!userToDelete) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://localhost:5000/api/auth/${userToDelete._id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setMessage("User deleted successfully!");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+      setIsConfirmModalOpen(false);
+      fetchUsers();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      setMessage("Can't Delete User");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+    }
+  };
+
+  const handleRoleFilter = (role) => {
+    setSelectedRole(role);
+    if (role === "All") {
+      setFilteredUsers(users);
+    } else {
+      setFilteredUsers(users.filter((user) => user.role === role));
+    }
+  };
+
+  return (
+    <div className="rounded-lg">
+      <EditUserModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        user={selectedUser}
+        onUpdateUser={handleUpdateUser}
+      />
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={handleDeleteUser}
+        message="Are you sure you want to delete this user?"
+        user={userToDelete}
+      />
+      <SuccessModal message={message} isVisible={showSuccessModal} />
+
+      <div className="flex laptop:flex-row items-center phone:flex-col gap-1 w-full mb-[8px]">
+        <h1 className="text-[22px] font-semibold mr-[8px]">Users</h1>
+        <div className="flex justify-start">
+          <form className="flex flex-row gap-[8px] items-center">
+            <input
+              type="text"
+              placeholder="Search by Name or Email"
+              className="w-full h-10 p-4 border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <div className="buttons flex p-[4px] gap-[4px]">
+              <button
+                type="button"
+                className={`px-3 py-[4px] rounded-lg transition-all cursor-pointer border ${
+                  selectedRole === "All"
+                    ? "bg-gray-400 text-white"
+                    : "text-gray-500 hover:bg-gray-400 hover:text-white"
+                }`}
+                onClick={() => handleRoleFilter("All")}
+              >
+                All
+              </button>
+              <button
+                type="button"
+                className={`px-3 py-[4px] rounded-lg transition-all cursor-pointer border ${
+                  selectedRole === "Moderator"
+                    ? "bg-gray-400 text-white"
+                    : "text-gray-500 hover:bg-gray-400 hover:text-white"
+                }`}
+                onClick={() => handleRoleFilter("Moderator")}
+              >
+                Moderator
+              </button>
+              <button
+                type="button"
+                className={`px-3 py-[4px] rounded-lg transition-all cursor-pointer border ${
+                  selectedRole === "User"
+                    ? "bg-gray-400 text-white"
+                    : "text-gray-500 hover:bg-gray-400 hover:text-white"
+                }`}
+                onClick={() => handleRoleFilter("User")}
+              >
+                User
+              </button>
+            </div>
+          </form>
+        </div>
+        <div className="flex ml-auto">
+          <button
+            onClick={openModal}
+            className="cursor-pointer border flex items-center gap-[4px] bg-blue-800 hover:bg-blue-900 transition-all text-white px-3 py-2 rounded-lg"
+          >
+            <FontAwesomeIcon icon="circle-plus" />
+            <span>Add New User</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="w-full overflow-x-auto h-full rounded-lg shadow-md">
+        <table className="w-full bg-white">
+          <thead className="bg-gray-200">
+            <tr className="bg-gray-200 border-gray-400 text-sm text-left px-4">
+              <th className="py-3 px-4 whitespace-nowrap">ID</th>
+              <th className="py-3 px-4 whitespace-nowrap">Name</th>
+              <th className="py-3 px-4 whitespace-nowrap">Role</th>
+              <th className="py-3 px-4 whitespace-nowrap">Email</th>
+              <th className="py-3 px-4 whitespace-nowrap">Contact Number</th>
+              <th className="py-3 px-4 whitespace-nowrap">Status</th>
+              <th className="py-3 px-4 whitespace-nowrap">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredUsers.map((user) => (
+              <tr
+                key={user._id}
+                className="text-left border-gray-300 border-b-[1px]"
+              >
+                <td className="py-6 px-4 whitespace-nowrap">
+                  {user._id.slice(0, 6)}
+                </td>
+                <td className="py-6 px-4 whitespace-nowrap">{`${user.firstname} ${user.lastname}`}</td>
+                <td className="py-6 px-4 whitespace-nowrap">{user.role}</td>
+                <td className="py-6 px-4 whitespace-nowrap">{user.email}</td>
+                <td className="py-6 px-4 whitespace-nowrap">{user.phone}</td>
+                <td className="py-6 px-4 whitespace-nowrap">
+                  {user.status === "active" ? (
+                    <span className="text-green-900 bg-green-100 rounded-lg p-2 font-medium">
+                      Active
+                    </span>
+                  ) : user.status === "inactive" ? (
+                    <span className="text-red-900 bg-red-100 rounded-lg p-2 font-medium">
+                      Inactive
+                    </span>
+                  ) : (
+                    <span className="text-gray-900 bg-gray-200 rounded-lg p-2 font-medium">
+                      Deactivated
+                    </span>
+                  )}
+                </td>
+                <td className="text-center space-x-2">
+                  {user.role !== "Admin" && (
+                    <div className="flex flex-row py-2 gap-1">
+                      <button
+                        onClick={() => openEditModal(user)}
+                        className="flex flex-row gap-2 cursor-pointer items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full transition-all"
+                      >
+                        <FontAwesomeIcon icon="pen" />
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => openDeleteModal(user)}
+                        className="flex flex-row gap-2 cursor-pointer items-center border border-white shadow-md bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-full transition-all"
+                      >
+                        <FontAwesomeIcon icon="trash" />
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 }
