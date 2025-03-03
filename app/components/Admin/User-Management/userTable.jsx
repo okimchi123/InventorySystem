@@ -21,6 +21,10 @@ export default function UserTable({ openModal }) {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRole, setSelectedRole] = useState("All");
+  const [sortOrder, setSortOrder] = useState("asc");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const openEditModal = (user) => {
     setSelectedUser(user);
@@ -63,6 +67,7 @@ export default function UserTable({ openModal }) {
         user.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredUsers(filtered);
+    setCurrentPage(1);
   }, [searchQuery, users]);
 
   const handleUpdateUser = async (updatedUser) => {
@@ -130,7 +135,27 @@ export default function UserTable({ openModal }) {
     } else {
       setFilteredUsers(users.filter((user) => user.role === role));
     }
+    setCurrentPage(1);
   };
+
+  const handleSort = () => {
+    const sortedUsers = [...filteredUsers].sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+
+      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+    });
+
+    setFilteredUsers(sortedUsers);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
+
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedUsers = filteredUsers.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   return (
     <div className="rounded-lg">
@@ -209,9 +234,15 @@ export default function UserTable({ openModal }) {
       </div>
 
       <div className="w-full overflow-x-auto h-full rounded-lg shadow-md">
-        <table className="w-full bg-white">
+        <table className="w-full bg-white relative">
+          <FontAwesomeIcon
+            icon="up-down"
+            className="select-none absolute right-3 top-1 cursor-pointer w-[30px] p-2 transition-transform duration-200 hover:scale-110"
+            size="lg"
+            onClick={handleSort}
+          />
           <thead className="bg-gray-200">
-            <tr className="bg-gray-200 border-gray-400 text-sm text-left px-4">
+            <tr className="bg-gray-200 border-gray-400 text-md text-left px-4">
               <th className="py-3 px-4 whitespace-nowrap">ID</th>
               <th className="py-3 px-4 whitespace-nowrap">Name</th>
               <th className="py-3 px-4 whitespace-nowrap">Role</th>
@@ -222,19 +253,19 @@ export default function UserTable({ openModal }) {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user) => (
+            {paginatedUsers.map((user) => (
               <tr
                 key={user._id}
                 className="text-left border-gray-300 border-b-[1px]"
               >
-                <td className="py-6 px-4 whitespace-nowrap">
+                <td className="py-4 px-4 whitespace-nowrap">
                   {user._id.slice(0, 6)}
                 </td>
-                <td className="py-6 px-4 whitespace-nowrap">{`${user.firstname} ${user.lastname}`}</td>
-                <td className="py-6 px-4 whitespace-nowrap">{user.role}</td>
-                <td className="py-6 px-4 whitespace-nowrap">{user.email}</td>
-                <td className="py-6 px-4 whitespace-nowrap">{user.phone}</td>
-                <td className="py-6 px-4 whitespace-nowrap">
+                <td className="py-4 px-4 whitespace-nowrap">{`${user.firstname} ${user.lastname}`}</td>
+                <td className="py-4 px-4 whitespace-nowrap">{user.role}</td>
+                <td className="py-4 px-4 whitespace-nowrap">{user.email}</td>
+                <td className="py-4 px-4 whitespace-nowrap">{user.phone}</td>
+                <td className="py-4 px-4 whitespace-nowrap">
                   {user.status === "active" ? (
                     <span className="text-green-900 bg-green-100 rounded-lg p-2 font-medium">
                       Active
@@ -274,6 +305,29 @@ export default function UserTable({ openModal }) {
           </tbody>
         </table>
       </div>
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-4">
+          {currentPage > 1 && (
+            <button
+              className="bg-blue-500 text-white px-2 py-1 rounded-md cursor-pointer hover:bg-blue-700 transition-all"
+              onClick={() => setCurrentPage((prev) => prev - 1)}
+            >
+              Previous
+            </button>
+          )}
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          {currentPage < totalPages && (
+            <button
+              className="bg-blue-500 text-white px-2 py-1 rounded-md cursor-pointer hover:bg-blue-700 transition-all"
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+            >
+              Next
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
