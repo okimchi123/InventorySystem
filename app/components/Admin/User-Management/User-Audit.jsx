@@ -13,6 +13,9 @@ export default function UserAudit() {
   const [auditLogs, setAuditLogs] = useState([]);
   const [sortOrder, setSortOrder] = useState("desc");
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   const fetchLogs = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
@@ -55,22 +58,29 @@ export default function UserAudit() {
       : new Date(b.createdAt) - new Date(a.createdAt);
   });
 
+  const totalPages = Math.ceil(sortedLogs.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedLogs = sortedLogs.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
   return (
     <div className="rounded-lg">
       <div className="top-part flex w-[100%] justify-between items-center pr-4">
         <h1 className="text-[22px] font-semibold mb-[6px]">History</h1>
-        <FontAwesomeIcon
-          icon="up-down"
-          className="cursor-pointer w-[30px] p-2 transition-transform duration-200 hover:scale-110"
-          size="lg"
-          onClick={toggleSortOrder}
-        />
       </div>
 
       <div className="w-full overflow-x-auto h-full rounded-lg shadow-md">
-        <table className="w-full bg-white">
+        <table className="w-full bg-white relative">
+          <FontAwesomeIcon
+            icon="up-down"
+            className="select-none absolute right-3 top-1 cursor-pointer w-[30px] p-2 transition-transform duration-200 hover:scale-110"
+            size="lg"
+            onClick={toggleSortOrder}
+          />
           <thead className="bg-gray-200">
-            <tr className="bg-gray-200 border-gray-400 text-sm text-left px-4">
+            <tr className="bg-gray-200 border-gray-400 text-md text-left px-4">
               <th className="py-3 px-4 whitespace-nowrap">Target User</th>
               <th className="py-3 px-4 whitespace-nowrap">Performed By</th>
               <th className="py-3 px-4 whitespace-nowrap">Role</th>
@@ -79,24 +89,33 @@ export default function UserAudit() {
             </tr>
           </thead>
           <tbody>
-            {sortedLogs.map((log) => (
-              <tr key={log._id} className="text-left border-gray-300 border-b-[1px]">
-                <td className="py-6 px-4 whitespace-nowrap">{log.userEmail}</td>
-                <td className="py-6 px-4 whitespace-nowrap">
+            {paginatedLogs.map((log) => (
+              <tr
+                key={log._id}
+                className="text-left border-gray-300 border-b-[1px]"
+              >
+                <td className="py-4 px-4 whitespace-nowrap">{log.userEmail}</td>
+                <td className="py-4 px-4 whitespace-nowrap">
                   {log.performedBy ? log.performedBy.email : "Unknown"}
                 </td>
-                <td className="py-6 px-4 whitespace-nowrap">{log.userRole}</td>
-                <td className="py-6 px-4 whitespace-nowrap">
+                <td className="py-4 px-4 whitespace-nowrap">{log.userRole}</td>
+                <td className="py-4 px-4 whitespace-nowrap">
                   <span
                     className={`font-medium rounded-lg p-2 
-                     ${log.action === "CREATE" ? "text-green-900 bg-green-100" :
-                      log.action === "UPDATE" ? "text-yellow-900 bg-yellow-100" :
-                      log.action === "DELETE" ? "text-red-900 bg-red-100" : "text-gray-900 bg-gray-200"}`}
+                     ${
+                       log.action === "CREATE"
+                         ? "text-green-900 bg-green-100"
+                         : log.action === "UPDATE"
+                         ? "text-yellow-900 bg-yellow-100"
+                         : log.action === "DELETE"
+                         ? "text-red-900 bg-red-100"
+                         : "text-gray-900 bg-gray-200"
+                     }`}
                   >
                     {log.action}
                   </span>
                 </td>
-                <td className="py-6 px-4 whitespace-nowrap">
+                <td className="py-4 px-4 whitespace-nowrap">
                   {moment(log.createdAt).format("MMMM D, YYYY h:mm A")}
                 </td>
               </tr>
@@ -104,6 +123,29 @@ export default function UserAudit() {
           </tbody>
         </table>
       </div>
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-4">
+          {currentPage > 1 && (
+            <button
+              className="bg-blue-500 text-white px-2 py-1 rounded-md cursor-pointer hover:bg-blue-700 transition-all"
+              onClick={() => setCurrentPage((prev) => prev - 1)}
+            >
+              Previous
+            </button>
+          )}
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          {currentPage < totalPages && (
+            <button
+              className="bg-blue-500 text-white px-2 py-1 rounded-md cursor-pointer hover:bg-blue-700 transition-all"
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+            >
+              Next
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
