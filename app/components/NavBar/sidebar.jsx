@@ -50,7 +50,7 @@ export default function SideBar() {
                 </li>
                 <li class="mb-4">
                         <NavLink
-                            to="/admin/dashboard"
+                            to="/admin/Asset-Management"
                             className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
                                 location.pathname === "/admin/Asset-Management"
                                   ? "bg-blue-500 text-white"
