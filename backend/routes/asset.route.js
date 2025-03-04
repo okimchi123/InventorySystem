@@ -2,14 +2,18 @@ const express = require("express");
 const {
     getAssets,
     addAsset,
+    updateAsset,
+    deleteAsset,
 } = require("../controllers/asset.controller")
 
 const router = express.Router();
 
-//read assets
 router.get("/", getAssets);
 
-//add asset
 router.post("/", addAsset);
+
+router.put("/:id", updateAsset);
+
+router.delete("/:id", deleteAsset);
 
 module.exports = router;
