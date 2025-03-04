@@ -1,40 +1,31 @@
 export default function AssetManagement() {
   return (
     <>
-      <div class="pt-22 py-6 laptop:px-12 phone:px-4">
+      <div class="pt-22 px-10 py-6 laptop:px-12 phone:px-4">
         {/* <!-- contents --> */}
         <div class="flex flex-col gap-1 items-end justify-center w-full mx-auto">
           <div class="flex flex-col gap-3 mx-auto py-4 w-full">
             {/* <!-- Filter --> */}
-            <div class="flex laptop:flex-row phone:flex-col gap-2 w-full">
+            <div class="flex items-center laptop:flex-row phone:flex-col gap-2 w-full">
+              <h1 className="text-[22px] font-semibold mb-[6px]"> Assets </h1>
               <div class="flex justify-start">
                 <form method="" class="flex flex-row items-center">
-                  <select
-                    name="filter"
-                    id="filterSelect"
-                    class="px-4 py-2 h-10 w-48 text-sm border border-gray-700 rounded-l-lg outline-none"
-                  ></select>
                   <input
                     type="text"
-                    name=""
-                    id=""
                     placeholder="Search"
-                    value
-                    class="w-full h-10 p-2 border border-gray-700 shadow-sm sm:text-sm outline-none rounded-r-lg"
+                    className="w-full h-10 p-4 border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
                   />
                 </form>
               </div>
               <div class="flex ml-auto gap-2">
                 <div class="flex flex-row gap-2">
-                  <a href="distribute.html">
-                    <button class="border border-black bg-orange-950 text-white px-4 py-2 rounded-lg">
+                    <button class="border-3 transition-all cursor-pointer font-semibold text-blue-800 hover:bg-blue-800 hover:text-white px-4 py-2 rounded-lg">
                       <i class="fa-regular fa-folder-open"></i>
                       Distribute Asset
                     </button>
-                  </a>
                   <button
                     id="openModalBtn1"
-                    class="border border-black bg-blue-950 text-white px-4 py-2 rounded-lg"
+                    class="border transition-all cursor-pointer bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg"
                   >
                     <i class="fa-solid fa-circle-plus"></i>
                     Add New Asset
