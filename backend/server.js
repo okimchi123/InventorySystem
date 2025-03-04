@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const http = require("http");
 const { Server } = require("socket.io");
 const authRoutes = require("./routes/account.route");
+const assetRoutes = require("./routes/asset.route")
 const adminRoutes = require("./routes/admin.route");
 const auditLogRoutes = require("./routes/auditlog.route");
 const AuditLog = require("./models/accountAudit");
@@ -35,6 +36,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/asset", assetRoutes);
 app.use("/api", adminRoutes);
 app.use("/api/audit-logs", auditLogRoutes);
 
