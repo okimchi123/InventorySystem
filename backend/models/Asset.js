@@ -25,6 +25,14 @@ const AssetSchema = new mongoose.Schema(
           enum: ["Pending", "Completed", "Cancelled"],
           default: "Pending",
         },
+        availablestock:{
+          type: Number,
+          required: true,
+        },
+        deployedstock:{
+          type: Number,
+          required: true,
+        },
       },
       {
         timestamps: true,
