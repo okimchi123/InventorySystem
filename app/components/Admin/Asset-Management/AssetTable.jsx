@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SuccessModal, ConfirmModal } from "../modal/success";
+import { SuccessModal} from "../modal/success";
 import AddAssetModal from "./AddAssetModal";
 import { io } from "socket.io-client";
 
@@ -11,7 +11,9 @@ export default function AssetTable() {
   const closeModal = () => setIsModalOpen(false);
   const [asset, setAsset] = useState([]);
   const [selectedAsset, setSelectedAsset] = useState(null);
-
+  const [message, setMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  
   const [formData, setFormData] = useState({
     productname: "",
     producttype: "",
@@ -101,6 +103,7 @@ export default function AssetTable() {
                 handleSubmit={handleSubmit}
                 formData={formData}
               />
+              <SuccessModal message={message} isVisible={showSuccessModal} />
       <div class="flex flex-col gap-3 mx-auto py-4 w-full">
         {/* <!-- Filter --> */}
         <div class="flex items-center laptop:flex-row phone:flex-col gap-2 w-full">

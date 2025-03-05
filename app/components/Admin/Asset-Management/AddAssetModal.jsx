@@ -32,35 +32,58 @@ export default function AddAssetModal({
               <label className="text-[20px] font-medium">Product Name</label>
               <input
                 type="text"
-                name="firstname"
+                name="productname"
                 placeholder="Input the product name here"
                 className="border border-gray-700 py-[16px] px-[8px] rounded-lg text-black"
                 onChange={handleChange}
-                value={formData.firstname}
+                value={formData.productname}
               />
             </div>
             <div className="flex flex-col gap-1 w-full">
               <label className="text-[20px] font-medium">Serial Number</label>
               <input
-                type="email"
-                name="email"
+                type="text"
+                name="serialnumber"
                 placeholder="SN"
                 className="border border-gray-700 py-[16px] px-[8px] rounded-lg"
                 onChange={handleChange}
-                value={formData.email}
+                value={formData.serialnumber}
               />
             </div>
-            
+          </div>
+          <div className="flex laptop:flex-row phone:flex-col gap-4">
+            <div className="flex flex-col gap-1 w-full">
+              <label className="text-[20px] font-medium">Available Stocks</label>
+              <input
+                type="text"
+                name="availablestock"
+                placeholder="Available Stocks"
+                className="border border-gray-700 py-[16px] px-[8px] rounded-lg text-black"
+                onChange={handleChange}
+                value={formData.availablestock}
+              />
+            </div>
+            <div className="flex flex-col gap-1 w-full">
+              <label className="text-[20px] font-medium">Deployed Stocks</label>
+              <input
+                type="text"
+                name="deployedstock"
+                placeholder="Deployed Stocks"
+                className="border border-gray-700 py-[16px] px-[8px] rounded-lg"
+                onChange={handleChange}
+                value={formData.deployedstock}
+              />
+            </div>
           </div>
           <div className="flex flex-col gap-1 w-full">
               <label className="text-[20px] font-medium">Description</label>
               <input
                 type="text"
-                name="phone"
+                name="description"
                 placeholder="Enter the description here"
                 className="border border-gray-700 py-[16px] px-[8px] rounded-lg"
                 onChange={handleChange}
-                value={formData.phone}
+                value={formData.description}
               />
             </div>
           <div className="flex laptop:flex-row phone:flex-col gap-4 w-[25%]">
@@ -68,10 +91,11 @@ export default function AddAssetModal({
               <label className="text-[20px] font-medium">Product Type</label>
               <select
                 className="border border-gray-700 py-[16px] px-[8px] rounded-lg bg-white"
-                name="role"
+                name="producttype"
                 onChange={handleChange}
-                value={formData.role}
+                value={formData.producttype}
               >
+                <option value="">Type</option>
                 <option value="Laptop">Laptop</option>
                 <option value="Phone">Phone</option>
                 <option value="Charger">Charger</option>
