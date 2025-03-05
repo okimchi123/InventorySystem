@@ -15,11 +15,11 @@ export const SuccessModal = ({ message, isVisible }) => {
         initial="hidden"
         animate="visible"
         exit="exit"
-        className={`fixed flex justify-center items-center gap-[8px] left-[40%] top-[10%] z-100 w-[300px] h-[70px] rounded-lg shadow-lg text-white ${isSuccess ? "bg-[#11B823]" : "bg-red-500"
+        className={`fixed flex justify-center items-center gap-[8px] left-[40%] top-[10%] z-100 py-5 px-3 rounded-lg shadow-lg text-white ${isSuccess ? "bg-[#11B823]" : "bg-red-500"
           }`}
       >
         <FontAwesomeIcon icon={isSuccess ? faCircleCheck : faCircleXmark} size="xl" />
-        <span className="text-[20px]">{message}</span>
+        <span className="text-[20px] max-w-[350px]">{message}</span>
       </motion.div>
     </AnimatePresence>
   );
