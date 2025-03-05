@@ -40,7 +40,7 @@ export default function TopBar(props) {
             <h1 class="font-medium">{props.name}</h1>
             <h1 class="text-sm">{props.role}</h1>
           </div>
-          <FontAwesomeIcon icon="angle-down" size="sm" className="pl-3" />
+          <FontAwesomeIcon icon="angle-down" size="md" className={`transition-transform ${isOpen ? "transform-[rotate(180deg)]" : "transform-none" }`} />
         </button>
         <AnimatePresence>
           {isOpen && (
