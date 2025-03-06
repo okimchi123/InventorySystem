@@ -21,7 +21,7 @@ export default function AssetTable() {
     serialnumber: "",
     availablestock: "",
     deployedstock: "",
-    status: "Pending",
+    condition: "",
   });
 
   const handleChange = (e) => {
@@ -35,7 +35,8 @@ export default function AssetTable() {
       !formData.producttype ||
       !formData.serialnumber ||
       !formData.availablestock ||
-      !formData.deployedstock
+      !formData.deployedstock ||
+      !formData.condition
     ) {
       setMessage("Please input all the fields");
       setShowSuccessModal(true);
@@ -66,7 +67,7 @@ export default function AssetTable() {
         serialnumber: "",
         availablestock: "",
         deployedstock: "",
-        status: "Pending",
+        condition: "",
       });
 
       closeModal(); // Close modal first
@@ -94,6 +95,10 @@ export default function AssetTable() {
     }
   };
 
+ useEffect(() => {
+    fetchUsers();
+  }, []);
+  
   return (
     <div class="flex flex-col gap-1 items-end justify-center w-full mx-auto">
         <AddAssetModal
@@ -147,13 +152,14 @@ export default function AssetTable() {
                   <th class="py-3 px-4 border-b">Product Name</th>
                   <th class="py-3 px-4 border-b">Serial Number</th>
                   <th class="py-3 px-4 border-b">Description</th>
-                  <th class="py-3 px-4 border-b">Asset Status</th>
+                  <th class="py-3 px-4 border-b">Condition</th>
                   <th class="py-3 px-4 border-b">Status</th>
                   <th class="py-3 px-4 border-b">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="border-b text-left">
+                {asset.map((item) => (
+                  <tr class="border-b text-left">
                   <td class="py-2 px-4 whitespace-nowrap">
                     <input type="checkbox" />
                   </td>
@@ -165,158 +171,32 @@ export default function AssetTable() {
                       src="https://contents.spin.ph/image/resize/image/2022/02/07/hp-pavilion14-j-1644233459.webp"
                       width="50"
                     />
-                    <span>Acer Aspire E1-571</span>
+                    <span>{item.productname}</span>
                   </td>
-                  <td class="py-2 px-4 whitespace-nowrap">120295</td>
-                  <td class="py-2 px-4 whitespace-nowrap">1293</td>
+                  <td class="py-2 px-4 whitespace-nowrap">{item.serialnumber}</td>
+                  <td class="py-2 px-4 whitespace-nowrap"><span>view</span></td>
                   <td class="py-2 px-4 whitespace-nowrap">
-                    <select class="border rounded-lg p-2">
-                      <option>Good Item</option>
-                      <option>Broken Item</option>
-                      <option>Scrap Item</option>
-                    </select>
+                    <span>{item.condition}</span>
                   </td>
-                  <td class="py-2 px-4 whitespace-nowrap">Pending</td>
+                  <td class="py-2 px-4 whitespace-nowrap">{item.status}</td>
 
                   <td class="text-center space-x-2">
                     <div class="flex flex-row py-2 px-4 gap-2">
                       <button
                         id="openModalBtn2"
-                        class="flex flex-row gap-2 items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full"
+                        class="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full"
                       >
                         <i class="fa-solid fa-pen"></i>
                         Edit
                       </button>
-                      <button class="flex flex-row gap-2 items-center border border-white shadow-md bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-full">
+                      <button class="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-full">
                         <i class="fa-solid fa-trash"></i>
                         Delete
                       </button>
                     </div>
                   </td>
                 </tr>
-                <tr class="border-b text-left">
-                  <td class="py-2 px-4 whitespace-nowrap">
-                    <input type="checkbox" />
-                  </td>
-                  <td class="py-2 px-4 flex items-center space-x-2">
-                    <img
-                      alt="Image of Acer Aspire E1-571"
-                      class="w-12 h-12"
-                      height="50"
-                      src="https://contents.spin.ph/image/resize/image/2022/02/07/hp-pavilion14-j-1644233459.webp"
-                      width="50"
-                    />
-                    <span>Acer Aspire E1-571</span>
-                  </td>
-                  <td class="py-2 px-4 whitespace-nowrap">120295</td>
-                  <td class="py-2 px-4 whitespace-nowrap">1293</td>
-                  <td class="py-2 px-4 whitespace-nowrap">
-                    <select class="border rounded-lg p-2">
-                      <option>Good Item</option>
-                      <option>Broken Item</option>
-                      <option>Scrap Item</option>
-                    </select>
-                  </td>
-                  <td class="py-2 px-4 whitespace-nowrap">Pending</td>
-
-                  <td class="text-center space-x-2">
-                    <div class="flex flex-row py-2 px-4 gap-2">
-                      <button
-                        id="openModalBtn2"
-                        class="flex flex-row gap-2 items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full"
-                      >
-                        <i class="fa-solid fa-pen"></i>
-                        Edit
-                      </button>
-                      <button class="flex flex-row gap-2 items-center border border-white shadow-md bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-full">
-                        <i class="fa-solid fa-trash"></i>
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="border-b text-left">
-                  <td class="py-2 px-4 whitespace-nowrap">
-                    <input type="checkbox" />
-                  </td>
-                  <td class="py-2 px-4 flex items-center space-x-2">
-                    <img
-                      alt="Image of Acer Aspire E1-571"
-                      class="w-12 h-12"
-                      height="50"
-                      src="https://contents.spin.ph/image/resize/image/2022/02/07/hp-pavilion14-j-1644233459.webp"
-                      width="50"
-                    />
-                    <span>Acer Aspire E1-571</span>
-                  </td>
-                  <td class="py-2 px-4 whitespace-nowrap">120295</td>
-                  <td class="py-2 px-4 whitespace-nowrap">1293</td>
-                  <td class="py-2 px-4 whitespace-nowrap">
-                    <select class="border rounded-lg p-2">
-                      <option>Good Item</option>
-                      <option>Broken Item</option>
-                      <option>Scrap Item</option>
-                    </select>
-                  </td>
-                  <td class="py-2 px-4 whitespace-nowrap">Pending</td>
-
-                  <td class="text-center space-x-2">
-                    <div class="flex flex-row py-2 px-4 gap-2">
-                      <button
-                        id="openModalBtn2"
-                        class="flex flex-row gap-2 items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full"
-                      >
-                        <i class="fa-solid fa-pen"></i>
-                        Edit
-                      </button>
-                      <button class="flex flex-row gap-2 items-center border border-white shadow-md bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-full">
-                        <i class="fa-solid fa-trash"></i>
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="border-b text-left">
-                  <td class="py-2 px-4 whitespace-nowrap">
-                    <input type="checkbox" />
-                  </td>
-                  <td class="py-2 px-4 flex items-center space-x-2">
-                    <img
-                      alt="Image of Acer Aspire E1-571"
-                      class="w-12 h-12"
-                      height="50"
-                      src="https://contents.spin.ph/image/resize/image/2022/02/07/hp-pavilion14-j-1644233459.webp"
-                      width="50"
-                    />
-                    <span>Acer Aspire E1-571</span>
-                  </td>
-                  <td class="py-2 px-4 whitespace-nowrap">120295</td>
-                  <td class="py-2 px-4 whitespace-nowrap">1293</td>
-                  <td class="py-2 px-4 whitespace-nowrap">
-                    <select class="border rounded-lg p-2">
-                      <option>Good Item</option>
-                      <option>Broken Item</option>
-                      <option>Scrap Item</option>
-                    </select>
-                  </td>
-                  <td class="py-2 px-4 whitespace-nowrap">Pending</td>
-
-                  <td class="text-center space-x-2">
-                    <div class="flex flex-row py-2 px-4 gap-2">
-                      <button
-                        id="openModalBtn2"
-                        class="flex flex-row gap-2 items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full"
-                      >
-                        <i class="fa-solid fa-pen"></i>
-                        Edit
-                      </button>
-                      <button class="flex flex-row gap-2 items-center border border-white shadow-md bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-full">
-                        <i class="fa-solid fa-trash"></i>
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                ))}                       
               </tbody>
             </table>
           </div>

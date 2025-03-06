@@ -17,7 +17,7 @@ export default function AddAssetModal({
         animate="visible"
         exit="exit"
         variants={modalVariants}
-        className="bg-white border border-gray-600 rounded-lg px-15 py-6 shadow-lg relative h-[70%] w-[60%]"
+        className="bg-white border border-gray-600 rounded-lg px-15 py-6 shadow-lg relative w-[60%]"
       >
         <div className="flex items-center gap-[4px]">
           <FontAwesomeIcon icon="box-archive" size="2xl" color="green" />
@@ -75,18 +75,21 @@ export default function AddAssetModal({
               />
             </div>
           </div>
-          <div className="flex flex-col gap-1 w-full">
-              <label className="text-[20px] font-medium">Description</label>
-              <input
-                type="text"
-                name="description"
-                placeholder="Enter the description here"
-                className="border border-gray-700 py-[16px] px-[8px] rounded-lg"
+          <div className="flex laptop:flex-row phone:flex-col gap-4">
+          <div className="flex flex-col gap-2 w-full">
+              <label className="text-[20px] font-medium">Condition</label>
+              <select
+                className="border border-gray-700 py-[16px] px-[8px] rounded-lg bg-white"
+                name="condition"
                 onChange={handleChange}
-                value={formData.description}
-              />
+                value={formData.condition}
+              >
+                <option value="">Type</option>
+                <option value="Good">Good</option>
+                <option value="Broken">Broken</option>
+                <option value="Scrap">Scrap</option>
+              </select>
             </div>
-          <div className="flex laptop:flex-row phone:flex-col gap-4 w-[25%]">
             <div className="flex flex-col gap-2 w-full">
               <label className="text-[20px] font-medium">Product Type</label>
               <select
@@ -103,10 +106,21 @@ export default function AddAssetModal({
               </select>
             </div>
           </div>
+          <div className="flex flex-col gap-1 w-full">
+              <label className="text-[20px] font-medium">Description</label>
+              <input
+                type="text"
+                name="description"
+                placeholder="Enter the description here"
+                className="border border-gray-700 py-[16px] px-[8px] rounded-lg"
+                onChange={handleChange}
+                value={formData.description}
+              />
+            </div>
         </div>
 
         {/* Modal Buttons */}
-        <div className="flex justify-end space-x-2 mt-4 absolute bottom-[24px] right-[5%]">
+        <div className="flex justify-end space-x-2 mt-4">
           <button
             onClick={closeModal}
             className="w-24 px-4 py-2 transition-all cursor-pointer hover:bg-blue-600 hover:text-white hover:border-blue-600 text-black border border-gray-700 font-medium rounded-lg"
