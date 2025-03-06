@@ -25,6 +25,11 @@ const AssetSchema = new mongoose.Schema(
           enum: ["Pending", "Completed", "Cancelled"],
           default: "Pending",
         },
+        condition: {
+          type: String,
+          enum: ["Good", "Broken", "Scrap"],
+          default: "Pending",
+        },
         availablestock:{
           type: Number,
           required: true,
