@@ -1,4 +1,5 @@
 const Asset = require("../models/Asset");
+const {emitAssetLogs} = require("../utils/socketUtils")
 
 const getAssets = async (req, res) => {
     try {
@@ -21,6 +22,8 @@ const addAsset = async (req, res) => {
 
     const asset = await Asset.create({ productname, producttype, serialnumber, description, availablestock, deployedstock, condition});
     
+    await emitAssetLogs(Asset);
+
     res.status(201).json({ message: "Asset created successfully!", asset });
   } catch (error) {
     res.status(500).json({ message: error.message });
