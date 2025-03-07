@@ -266,19 +266,18 @@ export default function UserTable({ openModal }) {
                 <td className="py-4 px-4 whitespace-nowrap">{user.email}</td>
                 <td className="py-4 px-4 whitespace-nowrap">{user.phone}</td>
                 <td className="py-4 px-4 whitespace-nowrap">
-                  {user.status === "active" ? (
-                    <span className="text-green-900 bg-green-100 rounded-lg p-2 font-medium">
-                      Active
+                  <div className={`w-[75px] py-[6px] rounded-lg text-center text-[18px]
+                      ${
+                        user.status === "active"
+                          ? "text-green-900 bg-green-100"
+                          : user.status === "inactive"
+                          ? "text-red-900 bg-red-100" 
+                          : "text-gray-900 bg-gray-200"
+                      }`}>
+                    <span>
+                      {user.status}
                     </span>
-                  ) : user.status === "inactive" ? (
-                    <span className="text-red-900 bg-red-100 rounded-lg p-2 font-medium">
-                      Inactive
-                    </span>
-                  ) : (
-                    <span className="text-gray-900 bg-gray-200 rounded-lg p-2 font-medium">
-                      Deactivated
-                    </span>
-                  )}
+                  </div >
                 </td>
                 <td className="text-center space-x-2">
                   {user.role !== "Admin" && (
