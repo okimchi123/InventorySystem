@@ -203,8 +203,20 @@ export default function AssetTable() {
                         view
                       </button>
                     </td>
-                    <td class="py-2 px-4 whitespace-nowrap">
-                      <span>{item.condition}</span>
+                    <td class="py-2 px-1 whitespace-nowrap">
+                      <div className={`w-[80px] py-1 rounded-lg text-center
+                      ${
+                        item.condition === "Good"
+                          ? "text-green-900 bg-green-100"
+                          : item.condition === "Broken"
+                          ? "text-red-900 bg-red-100" 
+                          : "text-gray-900 bg-gray-200"
+                      }`}
+                      >
+                        <span className="font-medium rounded-lg"
+                        >{item.condition}</span>
+                      </div>
+                      
                     </td>
                     <td class="py-2 px-4 whitespace-nowrap">{item.status}</td>
 
