@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SuccessModal} from "../modal/success";
+import { SuccessModal } from "../modal/success";
 import AddAssetModal from "./AddAssetModal";
 import { io } from "socket.io-client";
+import Description from "../modal/description";
 
 const socket = io("http://localhost:5000", {
   transports: ["websocket"],
@@ -18,7 +19,13 @@ export default function AssetTable() {
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [message, setMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  
+  const [descriptionModalOpen, setDescriptionModalOpen] = useState(false);
+
+  const openDescriptionModal = (item) => {
+    setSelectedAsset(item);
+    setDescriptionModalOpen(true);
+  };
+
   const [formData, setFormData] = useState({
     productname: "",
     producttype: "",
@@ -32,15 +39,13 @@ export default function AssetTable() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
+
   const handleSubmit = async () => {
     if (
       !formData.description ||
       !formData.productname ||
       !formData.producttype ||
       !formData.serialnumber ||
-      !formData.availablestock ||
-      !formData.deployedstock ||
       !formData.condition
     ) {
       setMessage("Please input all the fields");
@@ -70,8 +75,6 @@ export default function AssetTable() {
         producttype: "",
         description: "",
         serialnumber: "",
-        availablestock: "",
-        deployedstock: "",
         condition: "",
       });
 
@@ -84,7 +87,7 @@ export default function AssetTable() {
       setTimeout(() => setShowSuccessModal(false), 2000);
     }
   };
-  
+
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -100,23 +103,28 @@ export default function AssetTable() {
     }
   };
 
- useEffect(() => {
+  useEffect(() => {
     fetchUsers();
     socket.on("updateAssetLogs", (logs) => {
       setAsset(logs);
     });
   }, []);
-  
+
   return (
     <div class="flex flex-col gap-1 items-end justify-center w-full mx-auto">
-        <AddAssetModal
-                isModalOpen={isModalOpen}
-                closeModal={closeModal}
-                handleChange={handleChange}
-                handleSubmit={handleSubmit}
-                formData={formData}
-              />
-              <SuccessModal message={message} isVisible={showSuccessModal} />
+      <AddAssetModal
+        isModalOpen={isModalOpen}
+        closeModal={closeModal}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        formData={formData}
+      />
+      <SuccessModal message={message} isVisible={showSuccessModal} />
+      <Description
+              isOpen={descriptionModalOpen}
+              onClose={() => setDescriptionModalOpen(false)}
+              item={selectedAsset}
+        />
       <div class="flex flex-col gap-3 mx-auto py-4 w-full">
         {/* <!-- Filter --> */}
         <div class="flex items-center laptop:flex-row phone:flex-col gap-2 w-full">
@@ -149,62 +157,74 @@ export default function AssetTable() {
         </div>
 
         {/* <!-- Audit trail table --> */}
-        <div class="rounded-lg shadow-md">
+        <div class="rounded-lg shadow-md relative">
           <div class="w-full overflow-x-auto h-full rounded-lg">
             <table class="w-full bg-white">
               <thead class="bg-gray-200 ">
-                <tr class="bg-gray-200 border-b border-gray-400 text-sm text-left px-4">
-                  <th class="py-3 px-4 border-b">
+                <tr class="bg-gray-200 border-gray-400 text-md text-left px-4">
+                  <th class="py-3 px-4">
                     <input type="checkbox" onclick="toggleSelectAll(this)" />
                   </th>
-                  <th class="py-3 px-4 border-b">Product Name</th>
-                  <th class="py-3 px-4 border-b">Serial Number</th>
-                  <th class="py-3 px-4 border-b">Description</th>
-                  <th class="py-3 px-4 border-b">Condition</th>
-                  <th class="py-3 px-4 border-b">Status</th>
-                  <th class="py-3 px-4 border-b">Actions</th>
+                  <th class="py-3 px-4">Product Name</th>
+                  <th class="py-3 px-4">Serial Number</th>
+                  <th class="py-3 px-4">Description</th>
+                  <th class="py-3 px-4">Condition</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {asset.map((item) => (
-                  <tr class="border-b text-left">
-                  <td class="py-2 px-4 whitespace-nowrap">
-                    <input type="checkbox" />
-                  </td>
-                  <td class="py-2 px-4 flex items-center space-x-2">
-                    <img
-                      alt="Image of Acer Aspire E1-571"
-                      class="w-12 h-12"
-                      height="50"
-                      src="https://contents.spin.ph/image/resize/image/2022/02/07/hp-pavilion14-j-1644233459.webp"
-                      width="50"
-                    />
-                    <span>{item.productname}</span>
-                  </td>
-                  <td class="py-2 px-4 whitespace-nowrap">{item.serialnumber}</td>
-                  <td class="py-2 px-4 whitespace-nowrap"><span>view</span></td>
-                  <td class="py-2 px-4 whitespace-nowrap">
-                    <span>{item.condition}</span>
-                  </td>
-                  <td class="py-2 px-4 whitespace-nowrap">{item.status}</td>
-
-                  <td class="text-center space-x-2">
-                    <div class="flex flex-row py-2 px-4 gap-2">
+                  <tr
+                    key={item._id}
+                    class="text-left border-gray-300 border-b-[1px]"
+                  >
+                    <td class="py-2 px-4 whitespace-nowrap">
+                      <input type="checkbox" />
+                    </td>
+                    <td class="py-2 px-4 flex items-center space-x-2">
+                      <img
+                        alt="Image of Acer Aspire E1-571"
+                        class="w-12 h-12"
+                        height="50"
+                        src="https://contents.spin.ph/image/resize/image/2022/02/07/hp-pavilion14-j-1644233459.webp"
+                        width="50"
+                      />
+                      <span>{item.productname}</span>
+                    </td>
+                    <td class="py-2 px-4 whitespace-nowrap">
+                      {item.serialnumber}
+                    </td>
+                    <td class="py-2 px-4 whitespace-nowrap">
                       <button
-                        id="openModalBtn2"
-                        class="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full"
+                        onClick={() => openDescriptionModal(item)}
+                        className="text-[18px] ml-5 cursor-pointer font-semibold hover:font-bold transition-all"
                       >
-                        <i class="fa-solid fa-pen"></i>
-                        Edit
+                        view
                       </button>
-                      <button class="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-full">
-                        <i class="fa-solid fa-trash"></i>
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                ))}                       
+                    </td>
+                    <td class="py-2 px-4 whitespace-nowrap">
+                      <span>{item.condition}</span>
+                    </td>
+                    <td class="py-2 px-4 whitespace-nowrap">{item.status}</td>
+
+                    <td class="text-center space-x-2">
+                      <div class="flex flex-row py-2 px-4 gap-2">
+                        <button
+                          id="openModalBtn2"
+                          class="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full"
+                        >
+                          <i class="fa-solid fa-pen"></i>
+                          Edit
+                        </button>
+                        <button class="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-full">
+                          <i class="fa-solid fa-trash"></i>
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
