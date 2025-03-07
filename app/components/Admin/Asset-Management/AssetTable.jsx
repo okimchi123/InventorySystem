@@ -218,7 +218,11 @@ export default function AssetTable() {
                       </div>
                       
                     </td>
-                    <td class="py-2 px-4 whitespace-nowrap">{item.status}</td>
+                    <td class="py-2 px-4 whitespace-nowrap">
+                      {item.status === "just_added" ? <p>Just Added</p>
+                        : <p> {item.status} </p>
+                      }
+                      </td>
 
                     <td class="text-center space-x-2">
                       <div class="flex flex-row py-2 px-4 gap-2">
