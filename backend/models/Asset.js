@@ -22,8 +22,8 @@ const AssetSchema = new mongoose.Schema(
         },
         status: {
           type: String,
-          enum: ["Pending", "Completed", "Cancelled"],
-          default: "Pending",
+          enum: ["just_added" ,"Pending", "Completed", "Cancelled"],
+          default: "just_added",
         },
         condition: {
           type: String,
