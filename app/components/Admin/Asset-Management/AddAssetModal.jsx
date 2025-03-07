@@ -50,31 +50,7 @@ export default function AddAssetModal({
                 value={formData.serialnumber}
               />
             </div>
-          </div>
-          <div className="flex laptop:flex-row phone:flex-col gap-4">
-            <div className="flex flex-col gap-1 w-full">
-              <label className="text-[20px] font-medium">Available Stocks</label>
-              <input
-                type="text"
-                name="availablestock"
-                placeholder="Available Stocks"
-                className="border border-gray-700 py-[16px] px-[8px] rounded-lg text-black"
-                onChange={handleChange}
-                value={formData.availablestock}
-              />
-            </div>
-            <div className="flex flex-col gap-1 w-full">
-              <label className="text-[20px] font-medium">Deployed Stocks</label>
-              <input
-                type="text"
-                name="deployedstock"
-                placeholder="Deployed Stocks"
-                className="border border-gray-700 py-[16px] px-[8px] rounded-lg"
-                onChange={handleChange}
-                value={formData.deployedstock}
-              />
-            </div>
-          </div>
+          </div>  
           <div className="flex laptop:flex-row phone:flex-col gap-4">
           <div className="flex flex-col gap-2 w-full">
               <label className="text-[20px] font-medium">Condition</label>
