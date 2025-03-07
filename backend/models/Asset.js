@@ -32,11 +32,13 @@ const AssetSchema = new mongoose.Schema(
         },
         availablestock:{
           type: Number,
-          required: true,
+          required: false,
+          default: 0,
         },
         deployedstock:{
           type: Number,
-          required: true,
+          required: false,
+          default: 0,
         },
       },
       {
