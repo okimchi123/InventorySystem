@@ -5,6 +5,11 @@ import { SuccessModal} from "../modal/success";
 import AddAssetModal from "./AddAssetModal";
 import { io } from "socket.io-client";
 
+const socket = io("http://localhost:5000", {
+  transports: ["websocket"],
+  reconnectionAttempts: 5,
+});
+
 export default function AssetTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
@@ -97,6 +102,9 @@ export default function AssetTable() {
 
  useEffect(() => {
     fetchUsers();
+    socket.on("updateAssetLogs", (logs) => {
+      setAsset(logs);
+    });
   }, []);
   
   return (
