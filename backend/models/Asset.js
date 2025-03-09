@@ -8,7 +8,17 @@ const AssetSchema = new mongoose.Schema(
         },
         producttype: {
           type: String,
-          enum: ["Laptop", "Charger", "Mouse", "Phone"],
+          enum: ["Laptop", 
+            "Charger", 
+            "Mouse", 
+            "Phone",
+            "Chair",
+            "Table",
+            "Box",
+            "Cable",
+            "Monitor",
+            "Printer",
+          ],
           required: true,
         },
         serialnumber: {
