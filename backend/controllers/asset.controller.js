@@ -42,6 +42,8 @@ const updateAsset = async (req, res) => {
 
     const asset = await Asset.findByIdAndUpdate(id, req.body, { new: true });
 
+    await emitAssetLogs(Asset);
+
     res.status(200).json(asset);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -59,6 +61,8 @@ const deleteAsset = async (req, res) => {
     }
 
     const asset = await Asset.findByIdAndDelete(id);
+
+    await emitAssetLogs(Asset);
 
     res.status(200).json({ message: `${asset.productname} asset is deleted` });
   } catch (error) {
