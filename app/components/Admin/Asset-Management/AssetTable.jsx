@@ -6,6 +6,17 @@ import AddAssetModal from "./AddAssetModal";
 import { io } from "socket.io-client";
 import Description from "../modal/description";
 
+import laptop from "../../../assets/images/items/laptop.jpg"
+import mouse from "../../../assets/images/items/mouse.jpg"
+import phone from "../../../assets/images/items/phone.jpg"
+import box from "../../../assets/images/items/box.jpg"
+import charger from "../../../assets/images/items/charger.jpg"
+import monitor from "../../../assets/images/items/monitor.jpg"
+import printer from "../../../assets/images/items/printer.jpg"
+import chair from "../../../assets/images/items/chair.jpg"
+import table from "../../../assets/images/items/table.jpg"
+import cable from "../../../assets/images/items/cable.jpg"
+
 const socket = io("http://localhost:5000", {
   transports: ["websocket"],
   reconnectionAttempts: 5,
@@ -162,11 +173,12 @@ export default function AssetTable() {
             <table class="w-full bg-white">
               <thead class="bg-gray-200 ">
                 <tr class="bg-gray-200 border-gray-400 text-md text-left px-4">
-                  <th class="py-3 px-4">
-                    <input type="checkbox" onclick="toggleSelectAll(this)" />
+                  <th class="py-3 px-1">
+                    <input type="checkbox" onclick="" />
                   </th>
-                  <th class="py-3 px-4">Product Name</th>
+                  <th class="py-3 px-2">Product</th>
                   <th class="py-3 px-4">Serial Number</th>
+                  <th class="py-3 px-4">Product Type</th>
                   <th class="py-3 px-4">Description</th>
                   <th class="py-3 px-4">Condition</th>
                   <th class="py-3 px-4">Status</th>
@@ -179,21 +191,35 @@ export default function AssetTable() {
                     key={item._id}
                     class="text-left border-gray-300 border-b-[1px]"
                   >
-                    <td class="py-2 px-4 whitespace-nowrap">
+                    <td class="py-2 px-1">
                       <input type="checkbox" />
                     </td>
-                    <td class="py-2 px-4 flex items-center space-x-2">
+                    <td class="py-2 flex items-center gap-4">
                       <img
-                        alt="Image of Acer Aspire E1-571"
-                        class="w-12 h-12"
-                        height="50"
-                        src="https://contents.spin.ph/image/resize/image/2022/02/07/hp-pavilion14-j-1644233459.webp"
-                        width="50"
+                        alt="item image"
+                        class="w-16 h-12"
+                         src=
+                         {
+                           item.producttype === "Laptop" ? laptop
+                           : item.producttype === "Mouse" ? mouse
+                           : item.producttype === "Phone" ?  phone
+                           : item.producttype === "Charger" ?  charger
+                           : item.producttype === "Chair" ?  chair
+                           : item.producttype === "Box" ?  box
+                           : item.producttype === "Table" ?  table
+                           : item.producttype === "Monitor" ?  monitor
+                           : item.producttype === "Printer" ?  printer
+                           : item.producttype === "Cable" ?  cable
+                           : ""
+                         }
                       />
                       <span>{item.productname}</span>
                     </td>
                     <td class="py-2 px-4 whitespace-nowrap">
                       {item.serialnumber}
+                    </td>
+                    <td class="py-2 px-4 whitespace-nowrap">
+                      {item.producttype}
                     </td>
                     <td class="py-2 px-4 whitespace-nowrap">
                       <button
