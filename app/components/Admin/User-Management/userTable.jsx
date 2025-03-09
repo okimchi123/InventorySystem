@@ -16,7 +16,6 @@ export default function UserTable({ openModal }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [userToDelete, setUserToDelete] = useState(null);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -31,7 +30,7 @@ export default function UserTable({ openModal }) {
     setIsEditModalOpen(true);
   };
   const openDeleteModal = (user) => {
-    setUserToDelete(user);
+    setSelectedUser(user);
     setIsConfirmModalOpen(true);
   };
 
@@ -108,11 +107,11 @@ export default function UserTable({ openModal }) {
   };
 
   const handleDeleteUser = async () => {
-    if (!userToDelete) return;
+    if (!selectedUser) return;
 
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/auth/${userToDelete._id}`, {
+      await axios.delete(`http://localhost:5000/api/auth/${selectedUser._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessage("User deleted successfully!");
@@ -143,11 +142,11 @@ export default function UserTable({ openModal }) {
       const dateA = new Date(a.createdAt);
       const dateB = new Date(b.createdAt);
 
-      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+      return sortOrder === "desc" ? dateA - dateB : dateB - dateA;
     });
 
     setFilteredUsers(sortedUsers);
-    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    setSortOrder(sortOrder === "desc" ? "asc" : "desc");
   };
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
@@ -170,7 +169,7 @@ export default function UserTable({ openModal }) {
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={handleDeleteUser}
         message="Are you sure you want to delete this user?"
-        user={userToDelete}
+        user={selectedUser ? selectedUser.email : selectedUser}
       />
       <SuccessModal message={message} isVisible={showSuccessModal} />
 
