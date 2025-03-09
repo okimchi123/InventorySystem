@@ -169,7 +169,7 @@ export default function UserTable({ openModal }) {
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={handleDeleteUser}
         message="Are you sure you want to delete this user?"
-        user={selectedUser ? selectedUser.email : selectedUser}
+        user={selectedUser ? selectedUser.email : ""}
       />
       <SuccessModal message={message} isVisible={showSuccessModal} />
 

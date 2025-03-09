@@ -209,7 +209,7 @@ export default function AssetTable() {
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={handleDeleteAsset}
         message="Are you sure you want to delete this item?"
-        user={selectedAsset ? selectedAsset.productname : selectedAsset}
+        user={selectedAsset ? selectedAsset.productname : ""}
       />
 
       <SuccessModal message={message} isVisible={showSuccessModal} />
@@ -256,7 +256,7 @@ export default function AssetTable() {
               <thead class="bg-gray-200 ">
                 <tr class="bg-gray-200 border-gray-400 text-md text-left px-4">
                   <th class="py-3 px-1">
-                    <input type="checkbox" onclick="" />
+                    <input type="checkbox"  />
                   </th>
                   <th class="py-3 px-2">Product</th>
                   <th class="py-3 px-4">Serial Number</th>
