@@ -40,7 +40,7 @@ export const ConfirmModal = ({ isOpen, onClose, onConfirm, message, user }) => {
         <h1 className="text-[32px]">Confirm Action</h1>
         <div className="bg-gray-300 py-[6px] my-[8px] self-center flex items-center gap-[6px] px-[12px] rounded-sm">
           <FontAwesomeIcon icon="trash" color="#e62626" size="lg" />
-          <span className="text-black font-semibold text-[18px]"> {user.email} </span>
+          <span className="text-black font-semibold text-[18px]"> {user} </span>
         </div>
         <p className="mb-4 text-[16px] self-center text-center">{message}</p>
         <div className="flex justify-end gap-2 self-end">
