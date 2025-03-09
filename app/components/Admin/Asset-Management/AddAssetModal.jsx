@@ -9,7 +9,7 @@ export default function AddAssetModal({
   handleSubmit,
   formData,
 }) {
-    if (!isModalOpen) return null;
+  if (!isModalOpen) return null;
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50 bg-gray-900/75">
       <motion.div
@@ -26,46 +26,7 @@ export default function AddAssetModal({
 
         {/* Form Fields */}
         <div className="flex flex-col gap-4 mt-4">
-            
           <div className="flex laptop:flex-row phone:flex-col gap-4">
-            <div className="flex flex-col gap-1 w-full">
-              <label className="text-[20px] font-medium">Product Name</label>
-              <input
-                type="text"
-                name="productname"
-                placeholder="Input the product name here"
-                className="border border-gray-700 py-[16px] px-[8px] rounded-lg text-black"
-                onChange={handleChange}
-                value={formData.productname}
-              />
-            </div>
-            <div className="flex flex-col gap-1 w-full">
-              <label className="text-[20px] font-medium">Serial Number</label>
-              <input
-                type="text"
-                name="serialnumber"
-                placeholder="SN"
-                className="border border-gray-700 py-[16px] px-[8px] rounded-lg"
-                onChange={handleChange}
-                value={formData.serialnumber}
-              />
-            </div>
-          </div>  
-          <div className="flex laptop:flex-row phone:flex-col gap-4">
-          <div className="flex flex-col gap-2 w-full">
-              <label className="text-[20px] font-medium">Condition</label>
-              <select
-                className="border border-gray-700 py-[16px] px-[8px] rounded-lg bg-white"
-                name="condition"
-                onChange={handleChange}
-                value={formData.condition}
-              >
-                <option value="">Type</option>
-                <option value="Good">Good</option>
-                <option value="Broken">Broken</option>
-                <option value="Scrap">Scrap</option>
-              </select>
-            </div>
             <div className="flex flex-col gap-2 w-full">
               <label className="text-[20px] font-medium">Product Type</label>
               <select
@@ -79,20 +40,64 @@ export default function AddAssetModal({
                 <option value="Phone">Phone</option>
                 <option value="Charger">Charger</option>
                 <option value="Mouse">Mouse</option>
+                <option value="Chair">Chair</option>
+                <option value="Table">Table</option>
+                <option value="Box">Box</option>
+                <option value="Cable">Cable</option>
+                <option value="Monitor">Monitor</option>
+                <option value="Printer">Printer</option>
+              </select>
+            </div>
+            <div className="flex flex-col gap-1 w-full">
+              <label className="text-[20px] font-medium">Product Name</label>
+              <input
+                type="text"
+                name="productname"
+                placeholder="Input the product name here"
+                className="border border-gray-700 py-[16px] px-[8px] rounded-lg text-black"
+                onChange={handleChange}
+                value={formData.productname}
+              />
+            </div>
+          </div>
+          <div className="flex laptop:flex-row phone:flex-col gap-4">
+            <div className="flex flex-col gap-1 w-full">
+              <label className="text-[20px] font-medium">Serial Number</label>
+              <input
+                type="text"
+                name="serialnumber"
+                placeholder="SN"
+                className="border border-gray-700 py-[16px] px-[8px] rounded-lg"
+                onChange={handleChange}
+                value={formData.serialnumber}
+              />
+            </div>
+            <div className="flex flex-col gap-2 w-full">
+              <label className="text-[20px] font-medium">Condition</label>
+              <select
+                className="border border-gray-700 py-[16px] px-[8px] rounded-lg bg-white"
+                name="condition"
+                onChange={handleChange}
+                value={formData.condition}
+              >
+                <option value="">Type</option>
+                <option value="Good">Good</option>
+                <option value="Broken">Broken</option>
+                <option value="Scrap">Scrap</option>
               </select>
             </div>
           </div>
           <div className="flex flex-col gap-1 w-full">
-              <label className="text-[20px] font-medium">Description</label>
-              <input
-                type="text"
-                name="description"
-                placeholder="Enter the description here"
-                className="border border-gray-700 py-[16px] px-[8px] rounded-lg"
-                onChange={handleChange}
-                value={formData.description}
-              />
-            </div>
+            <label className="text-[20px] font-medium">Description</label>
+            <input
+              type="text"
+              name="description"
+              placeholder="Enter the description here"
+              className="border border-gray-700 py-[16px] px-[8px] rounded-lg"
+              onChange={handleChange}
+              value={formData.description}
+            />
+          </div>
         </div>
 
         {/* Modal Buttons */}
