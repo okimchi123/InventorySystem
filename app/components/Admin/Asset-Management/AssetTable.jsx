@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SuccessModal } from "../modal/success";
+import { SuccessModal, ConfirmModal } from "../modal/success";
 import AddAssetModal from "./AddAssetModal";
+import EditAssetModal from "./editAssetModal";
 import { io } from "socket.io-client";
 import Description from "../modal/description";
 
-import laptop from "../../../assets/images/items/laptop.jpg"
-import mouse from "../../../assets/images/items/mouse.jpg"
-import phone from "../../../assets/images/items/phone.jpg"
-import box from "../../../assets/images/items/box.jpg"
-import charger from "../../../assets/images/items/charger.jpg"
-import monitor from "../../../assets/images/items/monitor.jpg"
-import printer from "../../../assets/images/items/printer.jpg"
-import chair from "../../../assets/images/items/chair.jpg"
-import table from "../../../assets/images/items/table.jpg"
-import cable from "../../../assets/images/items/cable.jpg"
+import laptop from "../../../assets/images/items/laptop.jpg";
+import mouse from "../../../assets/images/items/mouse.jpg";
+import phone from "../../../assets/images/items/phone.jpg";
+import box from "../../../assets/images/items/box.jpg";
+import charger from "../../../assets/images/items/charger.jpg";
+import monitor from "../../../assets/images/items/monitor.jpg";
+import printer from "../../../assets/images/items/printer.jpg";
+import chair from "../../../assets/images/items/chair.jpg";
+import table from "../../../assets/images/items/table.jpg";
+import cable from "../../../assets/images/items/cable.jpg";
 
 const socket = io("http://localhost:5000", {
   transports: ["websocket"],
@@ -24,6 +25,8 @@ const socket = io("http://localhost:5000", {
 
 export default function AssetTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const [asset, setAsset] = useState([]);
@@ -37,13 +40,21 @@ export default function AssetTable() {
     setDescriptionModalOpen(true);
   };
 
+  const openEditModal = (item) => {
+    setSelectedAsset(item);
+    setIsEditModalOpen(true);
+  };
+
+  const openDeleteModal = (user) => {
+    setSelectedAsset(user);
+    setIsConfirmModalOpen(true);
+  };
+
   const [formData, setFormData] = useState({
     productname: "",
     producttype: "",
     description: "",
     serialnumber: "",
-    availablestock: "",
-    deployedstock: "",
     condition: "",
   });
 
@@ -99,7 +110,7 @@ export default function AssetTable() {
     }
   };
 
-  const fetchUsers = async () => {
+  const fetchAsset = async () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get("http://localhost:5000/api/asset", {
@@ -115,11 +126,68 @@ export default function AssetTable() {
   };
 
   useEffect(() => {
-    fetchUsers();
+    fetchAsset();
     socket.on("updateAssetLogs", (logs) => {
       setAsset(logs);
     });
   }, []);
+
+  const handleUpdateAsset = async (updatedAsset) => {
+    if (
+      !updatedAsset.description ||
+      !updatedAsset.productname ||
+      !updatedAsset.producttype ||
+      !updatedAsset.serialnumber ||
+      !updatedAsset.condition
+    ) {
+      setMessage("Please input all the fields");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://localhost:5000/api/asset/${updatedAsset._id}`,
+        updatedAsset,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setMessage("Item updated successfully!");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+
+      setIsEditModalOpen(false);
+
+    } catch (error) {
+      console.error("Error updating user:", error);
+      setMessage("Can't Update User");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+    }
+  };
+
+  const handleDeleteAsset = async () => {
+    if (!selectedAsset) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://localhost:5000/api/asset/${selectedAsset._id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setMessage("Item deleted successfully!");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+      setIsConfirmModalOpen(false);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      setMessage("Can't Delete Item");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+    }
+  };
 
   return (
     <div class="flex flex-col gap-1 items-end justify-center w-full mx-auto">
@@ -130,12 +198,26 @@ export default function AssetTable() {
         handleSubmit={handleSubmit}
         formData={formData}
       />
+      <EditAssetModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        item={selectedAsset}
+        onUpdateAsset={handleUpdateAsset}
+      />
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={handleDeleteAsset}
+        message="Are you sure you want to delete this item?"
+        user={selectedAsset ? selectedAsset.productname : selectedAsset}
+      />
+
       <SuccessModal message={message} isVisible={showSuccessModal} />
       <Description
-              isOpen={descriptionModalOpen}
-              onClose={() => setDescriptionModalOpen(false)}
-              item={selectedAsset}
-        />
+        isOpen={descriptionModalOpen}
+        onClose={() => setDescriptionModalOpen(false)}
+        item={selectedAsset}
+      />
       <div class="flex flex-col gap-3 mx-auto py-4 w-full">
         {/* <!-- Filter --> */}
         <div class="flex items-center laptop:flex-row phone:flex-col gap-2 w-full">
@@ -198,20 +280,29 @@ export default function AssetTable() {
                       <img
                         alt="item image"
                         class="w-16 h-12"
-                         src=
-                         {
-                           item.producttype === "Laptop" ? laptop
-                           : item.producttype === "Mouse" ? mouse
-                           : item.producttype === "Phone" ?  phone
-                           : item.producttype === "Charger" ?  charger
-                           : item.producttype === "Chair" ?  chair
-                           : item.producttype === "Box" ?  box
-                           : item.producttype === "Table" ?  table
-                           : item.producttype === "Monitor" ?  monitor
-                           : item.producttype === "Printer" ?  printer
-                           : item.producttype === "Cable" ?  cable
-                           : ""
-                         }
+                        src={
+                          item.producttype === "Laptop"
+                            ? laptop
+                            : item.producttype === "Mouse"
+                            ? mouse
+                            : item.producttype === "Phone"
+                            ? phone
+                            : item.producttype === "Charger"
+                            ? charger
+                            : item.producttype === "Chair"
+                            ? chair
+                            : item.producttype === "Box"
+                            ? box
+                            : item.producttype === "Table"
+                            ? table
+                            : item.producttype === "Monitor"
+                            ? monitor
+                            : item.producttype === "Printer"
+                            ? printer
+                            : item.producttype === "Cable"
+                            ? cable
+                            : ""
+                        }
                       />
                       <span>{item.productname}</span>
                     </td>
@@ -230,36 +321,42 @@ export default function AssetTable() {
                       </button>
                     </td>
                     <td class="py-2 px-1 whitespace-nowrap">
-                      <div className={`w-[80px] py-1 rounded-lg text-center
+                      <div
+                        className={`w-[80px] py-1 rounded-lg text-center
                       ${
                         item.condition === "Good"
                           ? "text-green-900 bg-green-100"
                           : item.condition === "Broken"
-                          ? "text-red-900 bg-red-100" 
+                          ? "text-red-900 bg-red-100"
                           : "text-gray-900 bg-gray-200"
                       }`}
                       >
-                        <span className="font-medium rounded-lg"
-                        >{item.condition}</span>
+                        <span className="font-medium rounded-lg">
+                          {item.condition}
+                        </span>
                       </div>
-                      
                     </td>
                     <td class="py-2 px-4 whitespace-nowrap">
-                      {item.status === "just_added" ? <p>Just Added</p>
-                        : <p> {item.status} </p>
-                      }
-                      </td>
+                      {item.status === "just_added" ? (
+                        <p>Undistributed</p>
+                      ) : (
+                        <p> {item.status} </p>
+                      )}
+                    </td>
 
                     <td class="text-center space-x-2">
                       <div class="flex flex-row py-2 px-4 gap-2">
                         <button
                           id="openModalBtn2"
+                          onClick={() => openEditModal(item)}
                           class="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full"
                         >
                           <i class="fa-solid fa-pen"></i>
                           Edit
                         </button>
-                        <button class="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-full">
+                        <button 
+                        onClick={() => openDeleteModal(item)}
+                        class="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-full">
                           <i class="fa-solid fa-trash"></i>
                           Delete
                         </button>
