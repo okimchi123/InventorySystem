@@ -31,9 +31,26 @@ export default function AssetTable() {
   const closeModal = () => setIsModalOpen(false);
   const [asset, setAsset] = useState([]);
   const [selectedAsset, setSelectedAsset] = useState(null);
+  const [selectedAssets, setSelectedAssets] = useState([]);
   const [message, setMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [descriptionModalOpen, setDescriptionModalOpen] = useState(false);
+
+  const handleCheckboxChange = (assetId) => {
+    setSelectedAssets((prevSelected) =>
+      prevSelected.includes(assetId)
+        ? prevSelected.filter((id) => id !== assetId)
+        : [...prevSelected, assetId]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (selectedAssets.length === asset.length) {
+      setSelectedAssets([]);
+    } else {
+      setSelectedAssets(asset.map((item) => item._id));
+    }
+  };
 
   const openDescriptionModal = (item) => {
     setSelectedAsset(item);
@@ -162,7 +179,6 @@ export default function AssetTable() {
       setTimeout(() => setShowSuccessModal(false), 2000);
 
       setIsEditModalOpen(false);
-
     } catch (error) {
       console.error("Error updating user:", error);
       setMessage("Can't Update User");
@@ -176,9 +192,12 @@ export default function AssetTable() {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/asset/${selectedAsset._id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `http://localhost:5000/api/asset/${selectedAsset._id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setMessage("Item deleted successfully!");
       setShowSuccessModal(true);
       setTimeout(() => setShowSuccessModal(false), 2000);
@@ -235,16 +254,29 @@ export default function AssetTable() {
           </div>
           <div class="flex ml-auto gap-2">
             <div class="flex flex-row gap-2">
-              <button class="border-3 transition-all cursor-pointer font-semibold text-blue-800 hover:bg-blue-800 hover:text-white px-4 py-2 rounded-lg">
+              {selectedAssets.length ? 
+              <button class="border transition-all cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                <FontAwesomeIcon icon="trash" className="mr-2" />
+                Delete All
+              </button> 
+              : <></>
+              }
+              <button
+                disabled={!selectedAssets.length}
+                class={`border-3 transition-all cursor-pointer font-semibold px-4 py-2 rounded-lg hover:text-white ${
+                  selectedAssets.length
+                    ? "text-blue-800 hover:bg-blue-800  "
+                    : "bg-gray-400 cursor-not-allowed text-white"
+                } `}
+              >
                 <i class="fa-regular fa-folder-open"></i>
                 Distribute Asset
               </button>
               <button
                 onClick={openModal}
-                id="openModalBtn1"
                 class="border transition-all cursor-pointer bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg"
               >
-                <i class="fa-solid fa-circle-plus"></i>
+                <FontAwesomeIcon icon="circle-plus" className="mr-1" />
                 Add New Asset
               </button>
             </div>
@@ -257,8 +289,16 @@ export default function AssetTable() {
             <table class="w-full bg-white">
               <thead class="bg-gray-200 ">
                 <tr class="bg-gray-200 border-gray-400 text-md text-left px-4">
-                  <th class="py-3 px-1">
-                    <input type="checkbox"  />
+                  <th className="py-2 pl-2">
+                    <input
+                      type="checkbox"
+                      className="w-4 h-4"
+                      onChange={handleSelectAll}
+                      checked={
+                        selectedAssets.length === asset.length &&
+                        asset.length > 0
+                      }
+                    />
                   </th>
                   <th class="py-3 px-2">Product</th>
                   <th class="py-3 px-4">Serial Number</th>
@@ -275,8 +315,13 @@ export default function AssetTable() {
                     key={item._id}
                     class="text-left border-gray-300 border-b-[1px]"
                   >
-                    <td class="py-2 px-1">
-                      <input type="checkbox" />
+                    <td className="py-2 pl-2">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4"
+                        checked={selectedAssets.includes(item._id)}
+                        onChange={() => handleCheckboxChange(item._id)}
+                      />
                     </td>
                     <td class="py-2 flex items-center gap-4">
                       <img
@@ -350,16 +395,27 @@ export default function AssetTable() {
                       <div class="flex flex-row py-2 px-4 gap-2">
                         <button
                           id="openModalBtn2"
+                          disabled={selectedAssets.length}
                           onClick={() => openEditModal(item)}
-                          class="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white bg-amber-400 hover:bg-amber-600 text-white px-3 py-1.5 rounded-full"
+                          class={`flex flex-row gap-2 cursor-pointer transition-all items-center border border-white  text-white px-3 py-1.5 rounded-full ${
+                            !selectedAssets.length
+                              ? "bg-amber-400 hover:bg-amber-600"
+                              : "bg-gray-400 cursor-not-allowed"
+                          }  `}
                         >
-                          <i class="fa-solid fa-pen"></i>
+                          <FontAwesomeIcon icon="pen" />
                           Edit
                         </button>
-                        <button 
-                        onClick={() => openDeleteModal(item)}
-                        class="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-full">
-                          <i class="fa-solid fa-trash"></i>
+                        <button
+                          disabled={selectedAssets.length}
+                          onClick={() => openDeleteModal(item)}
+                          class={`flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md  text-white px-3 py-1.5 rounded-full  ${
+                            !selectedAssets.length
+                              ? "bg-red-600 hover:bg-red-500"
+                              : "bg-gray-400 cursor-not-allowed"
+                          } `}
+                        >
+                          <FontAwesomeIcon icon="trash" />
                           Delete
                         </button>
                       </div>
