@@ -36,6 +36,12 @@ const accountSchema = mongoose.Schema(
       enum: ["inactive", "active", "deactivated"],
       default: "inactive",
     },
+    handlingAssets: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Assets",
+      },
+    ],
   },
   {
     timestamps: true,

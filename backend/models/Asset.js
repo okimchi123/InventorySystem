@@ -30,6 +30,10 @@ const AssetSchema = new mongoose.Schema(
           type: String,
           required: [true, "Please enter a Product Description "],
         },
+        reason: {
+          type: String,
+          required: false,
+        },
         status: {
           type: String,
           enum: ["just_added" ,"Pending", "Completed", "Cancelled"],
@@ -49,6 +53,11 @@ const AssetSchema = new mongoose.Schema(
           type: Number,
           required: false,
           default: 0,
+        },
+        distributedTo: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Account",
+          required: false,
         },
       },
       {
