@@ -12,7 +12,7 @@ const getAssets = async (req, res) => {
 
 const addAsset = async (req, res) => {
   try {
-    const {productname, producttype, serialnumber, description, condition} = req.body;
+    const {productname, producttype, serialnumber, description, condition, reason} = req.body;
 
     const existingAsset = await Asset.findOne({ serialnumber });
     
@@ -20,7 +20,7 @@ const addAsset = async (req, res) => {
       return res.status(400).json({ message: "Serial Number is already used" });
     }
 
-    const asset = await Asset.create({ productname, producttype, serialnumber, description, condition});
+    const asset = await Asset.create({ productname, producttype, serialnumber, description, condition, reason});
     
     await emitAssetLogs(Asset);
 
