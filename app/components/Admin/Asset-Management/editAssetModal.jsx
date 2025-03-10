@@ -10,6 +10,7 @@ export default function EditAssetModal({ isOpen, onClose, item, onUpdateAsset })
     condition: "",
     serialnumber: "",
     description: "",
+    reason: "",
   });
   const [isFormChanged, setIsFormChanged] = useState(false);
 
@@ -21,6 +22,7 @@ export default function EditAssetModal({ isOpen, onClose, item, onUpdateAsset })
         condition: item.condition,
         serialnumber: item.serialnumber,
         description: item.description,
+        reason: item.reason,
       });
       setIsFormChanged(false);
     }
@@ -116,6 +118,20 @@ export default function EditAssetModal({ isOpen, onClose, item, onUpdateAsset })
                 </select>
               </div>
             </div>
+            {formData.condition === "Broken" ? 
+            <div className="flex flex-col gap-1 w-full">
+            <label className="text-[20px] font-medium">Reason for being broken</label>
+            <input
+              type="text"
+              name="reason"
+              placeholder="Enter the reason here"
+              className="border border-gray-700 py-[16px] px-[8px] rounded-lg"
+              onChange={handleChange}
+              value={formData.reason}
+            />
+          </div> 
+          : <></>
+          }
             <div className="flex flex-col gap-1 w-full">
               <label className="text-[20px] font-medium">Description</label>
               <input

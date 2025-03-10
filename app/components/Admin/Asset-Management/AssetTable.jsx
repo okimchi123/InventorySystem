@@ -56,6 +56,7 @@ export default function AssetTable() {
     description: "",
     serialnumber: "",
     condition: "",
+    reason: "",
   });
 
   const handleChange = (e) => {
@@ -98,6 +99,7 @@ export default function AssetTable() {
         description: "",
         serialnumber: "",
         condition: "",
+        reason: "",
       });
 
       closeModal(); // Close modal first

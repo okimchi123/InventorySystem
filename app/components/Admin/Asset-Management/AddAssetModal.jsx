@@ -87,6 +87,20 @@ export default function AddAssetModal({
               </select>
             </div>
           </div>
+          {formData.condition === "Broken" ? 
+            <div className="flex flex-col gap-1 w-full">
+            <label className="text-[20px] font-medium">Reason for being broken</label>
+            <input
+              type="text"
+              name="reason"
+              placeholder="Enter the reason here"
+              className="border border-gray-700 py-[16px] px-[8px] rounded-lg"
+              onChange={handleChange}
+              value={formData.reason}
+            />
+          </div> 
+          : <></>
+          }
           <div className="flex flex-col gap-1 w-full">
             <label className="text-[20px] font-medium">Description</label>
             <input
