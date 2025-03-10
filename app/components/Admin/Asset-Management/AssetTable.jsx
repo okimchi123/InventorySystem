@@ -257,7 +257,7 @@ export default function AssetTable() {
               {selectedAssets.length ? 
               <button class="border transition-all cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
                 <FontAwesomeIcon icon="trash" className="mr-2" />
-                Delete All
+                Delete
               </button> 
               : <></>
               }

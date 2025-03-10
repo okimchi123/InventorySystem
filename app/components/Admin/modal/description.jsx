@@ -25,7 +25,7 @@ export default function Description({ item, isOpen, onClose }) {
           className="bg-white py-6 px-8 rounded-lg shadow-lg "
         >
           <div className="flex flex-col gap-[22px] mb-[12px]">
-            <h1 className="text-[32px]">{item.productname}</h1>
+            <h1 className="text-[30px]">{item.productname}</h1>
             <div className="flex gap-5">
               <img
                 alt="item image"
@@ -56,13 +56,13 @@ export default function Description({ item, isOpen, onClose }) {
               />
               <div className="item-info flex flex-col gap-2">
                 <div className="flex gap-[8px]">
-                  <span className="text-[22px] font-semibold">Product Type:</span><p className="text-[22px]">{item.producttype}</p>
+                  <span className="text-[20px] font-semibold">Product Type:</span><p className="text-[20px]">{item.producttype}</p>
                 </div>
                 <div className="flex gap-[8px]">
-                  <span className="text-[22px] font-semibold">Serial Number:</span><p className="text-[22px]">{item.serialnumber}</p>
+                  <span className="text-[20px] font-semibold">Serial Number:</span><p className="text-[20px]">{item.serialnumber}</p>
                 </div>
                 <div className="flex gap-[8px]">
-                  <span className="text-[22px] font-semibold">Condition:</span><p className={`text-[20px] px-3 py-1
+                  <span className="text-[20px] font-semibold">Condition:</span><p className={`text-[18px] px-3 py-1
                      ${
                         item.condition === "Good"
                           ? "text-green-900 bg-green-100"
@@ -73,11 +73,11 @@ export default function Description({ item, isOpen, onClose }) {
                     `}>{item.condition}</p>
                 </div>
                 <div className="flex gap-[8px]">
-                  <span className="text-[22px] font-semibold">Description:</span><p className="text-[22px]">{item.description}</p>
+                  <span className="text-[20px] font-semibold">Description:</span><p className="text-[20px]">{item.description}</p>
                 </div>
                 {item.condition === "Broken" ?
                   <div className="flex gap-[8px]">
-                  <span className="text-[22px] font-semibold">Reason:</span><p className="text-[22px]">{item.reason}</p>
+                  <span className="text-[20px] font-semibold">Reason:</span><p className="text-[20px]">{item.reason}</p>
                 </div> : <></>
                 }
                 
