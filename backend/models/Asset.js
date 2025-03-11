@@ -36,7 +36,7 @@ const AssetSchema = new mongoose.Schema(
         },
         status: {
           type: String,
-          enum: ["just_added" ,"Pending", "Completed", "Cancelled"],
+          enum: ["just_added", "Distributed", "Cancelled"],
           default: "just_added",
         },
         condition: {
@@ -57,6 +57,10 @@ const AssetSchema = new mongoose.Schema(
         distributedTo: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Account",
+          required: false,
+        },
+        distributedToName: {  
+          type: String,
           required: false,
         },
       },
