@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SuccessModal, ConfirmModal } from "../modal/success";
 import AddAssetModal from "./AddAssetModal";
 import EditAssetModal from "./editAssetModal";
+import DistributeModal from "./distributeModal";
 import { io } from "socket.io-client";
 import Description from "../modal/description";
 
@@ -26,6 +27,7 @@ const socket = io("http://localhost:5000", {
 export default function AssetTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDistributeOpen, setIsDistributeModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -232,6 +234,13 @@ export default function AssetTable() {
         message="Are you sure you want to delete this item?"
         user={selectedAsset ? selectedAsset.productname : ""}
       />
+      <DistributeModal
+        isOpen={isDistributeOpen}
+        onClose={() => setIsDistributeModalOpen(false)}
+        selectedAssets={asset.filter((item) =>
+          selectedAssets.includes(item._id)
+        )}
+      />
 
       <SuccessModal message={message} isVisible={showSuccessModal} />
       <Description
@@ -254,15 +263,17 @@ export default function AssetTable() {
           </div>
           <div class="flex ml-auto gap-2">
             <div class="flex flex-row gap-2">
-              {selectedAssets.length ? 
-              <button class="border transition-all cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
-                <FontAwesomeIcon icon="trash" className="mr-2" />
-                Delete
-              </button> 
-              : <></>
-              }
+              {selectedAssets.length ? (
+                <button class="border transition-all cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                  <FontAwesomeIcon icon="trash" className="mr-2" />
+                  Delete
+                </button>
+              ) : (
+                <></>
+              )}
               <button
                 disabled={!selectedAssets.length}
+                onClick={() => setIsDistributeModalOpen(true)}
                 class={`border-3 transition-all cursor-pointer font-semibold px-4 py-2 rounded-lg hover:text-white ${
                   selectedAssets.length
                     ? "text-blue-800 hover:bg-blue-800  "
