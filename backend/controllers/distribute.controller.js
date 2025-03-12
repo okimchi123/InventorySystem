@@ -1,6 +1,6 @@
 const Asset = require("../models/Asset");
 const Account = require("../models/User.js");
-const {emitAssetLogs} = require("../utils/socketUtils")
+const {emitAssetLogs, emitAssetSummary} = require("../utils/socketUtils")
 const mongoose = require("mongoose");
 
 const distributeAsset = async (req, res) => {
@@ -35,6 +35,7 @@ const distributeAsset = async (req, res) => {
     await user.save();
 
     await emitAssetLogs(Asset);
+    await emitAssetSummary(Asset);
 
     res.status(200).json({ message: "Assets successfully distributed" });
   } catch (error) {
