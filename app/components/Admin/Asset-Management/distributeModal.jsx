@@ -9,6 +9,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { modalVariants } from "../../../utils/animation/animation";
 import EmployeeSelectionModal from "./EmployeeSelectionModal";
+import { OkayModal } from "../modal/success";
+
 
 import laptop from "../../../assets/images/items/laptop.jpg";
 import mouse from "../../../assets/images/items/mouse.jpg";
@@ -21,9 +23,12 @@ import chair from "../../../assets/images/items/chair.jpg";
 import table from "../../../assets/images/items/table.jpg";
 import cable from "../../../assets/images/items/cable.jpg";
 
-export default function DistributeModal({ isOpen, onClose, selectedAssets }) {
+export default function DistributeModal({ isOpen, onClose, selectedAssets, onSubmit }) {
   const [isEmployeeModalOpen, setEmployeeModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+
+  const [message, setMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -42,8 +47,9 @@ export default function DistributeModal({ isOpen, onClose, selectedAssets }) {
         userId: selectedUser._id,
       });
 
-      alert(response.data.message);
-      onClose();
+      setMessage(response.data.message);
+      setShowSuccessModal(true);
+      onSubmit();
     } catch (error) {
       console.error("Error distributing assets:", error);
       alert("Failed to distribute assets.");
@@ -56,6 +62,7 @@ export default function DistributeModal({ isOpen, onClose, selectedAssets }) {
 
   return (
     <div className="fixed inset-0 flex justify-center items-start z-50 bg-gray-900/75">
+      <OkayModal isVisible={showSuccessModal} onConfirm={onClose} message={message}/>
       <motion.div
         initial="hidden"
         animate="visible"

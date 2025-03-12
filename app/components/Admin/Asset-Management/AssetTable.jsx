@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SuccessModal, ConfirmModal } from "../modal/success";
+import { SuccessModal, ConfirmModal, AreYouSureModal } from "../modal/success";
 import AddAssetModal from "./AddAssetModal";
 import EditAssetModal from "./editAssetModal";
 import DistributeModal from "./distributeModal";
@@ -26,6 +26,7 @@ const socket = io("http://localhost:5000", {
 
 export default function AssetTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAreYouSureModal, setIsAreYouSureModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDistributeOpen, setIsDistributeModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -212,6 +213,36 @@ export default function AssetTable() {
     }
   };
 
+  const submitDistribute = () => {
+    setSelectedAssets([]);
+  };
+
+  const handleDeleteMultiple = async () => {
+    if (!selectedAssets.length) return;
+
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.delete("http://localhost:5000/api/asset/delete-multiple", {
+        headers: { Authorization: `Bearer ${token}` },
+        data: { ids: selectedAssets },
+      });
+
+      setMessage(`${selectedAssets.length} assets deleted successfully!`);
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+
+      setIsAreYouSureModal(false);
+
+      setSelectedAssets([]);
+    } catch (error) {
+      console.error("Error deleting assets:", error);
+      setMessage("Can't delete selected assets.");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+    }
+  };
+
   return (
     <div class="flex flex-col gap-1 items-end justify-center w-full mx-auto">
       <AddAssetModal
@@ -234,12 +265,19 @@ export default function AssetTable() {
         message="Are you sure you want to delete this item?"
         user={selectedAsset ? selectedAsset.productname : ""}
       />
+      <AreYouSureModal
+        isOpen={isAreYouSureModal}
+        onClose={() => setIsAreYouSureModal(false)}
+        onConfirm={handleDeleteMultiple}
+      />
+
       <DistributeModal
         isOpen={isDistributeOpen}
         onClose={() => setIsDistributeModalOpen(false)}
         selectedAssets={asset.filter((item) =>
           selectedAssets.includes(item._id)
         )}
+        onSubmit={submitDistribute}
       />
 
       <SuccessModal message={message} isVisible={showSuccessModal} />
@@ -264,7 +302,10 @@ export default function AssetTable() {
           <div class="flex ml-auto gap-2">
             <div class="flex flex-row gap-2">
               {selectedAssets.length ? (
-                <button class="border transition-all cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                <button
+                  onClick={() => setIsAreYouSureModal(true)}
+                  class="border transition-all cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
+                >
                   <FontAwesomeIcon icon="trash" className="mr-2" />
                   Delete
                 </button>
@@ -272,15 +313,35 @@ export default function AssetTable() {
                 <></>
               )}
               <button
-                disabled={!selectedAssets.length}
+                disabled={
+                  !selectedAssets.length ||
+                  selectedAssets.some(
+                    (id) =>
+                      asset.find((item) => item._id === id)?.status ===
+                      "Distributed"
+                  )
+                }
                 onClick={() => setIsDistributeModalOpen(true)}
                 class={`border-3 transition-all cursor-pointer font-semibold px-4 py-2 rounded-lg hover:text-white ${
-                  selectedAssets.length
-                    ? "text-blue-800 hover:bg-blue-800  "
-                    : "bg-gray-400 cursor-not-allowed text-white"
-                } `}
+                  !selectedAssets.length ||
+                  selectedAssets.some(
+                    (id) =>
+                      asset.find((item) => item._id === id)?.status ===
+                      "Distributed"
+                  )
+                    ? "bg-gray-400 cursor-not-allowed text-white"
+                    : "text-blue-800 hover:bg-blue-800"
+                }`}
               >
                 <i class="fa-regular fa-folder-open"></i>
+                {!(
+                  !selectedAssets.length ||
+                  selectedAssets.some(
+                    (id) =>
+                      asset.find((item) => item._id === id)?.status ===
+                      "Distributed"
+                  )
+                ) && <FontAwesomeIcon icon="share" className="mr-2" />}
                 Distribute Asset
               </button>
               <button

@@ -10,6 +10,8 @@ export default function UserManagement() {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  const [loading, setLoading] = useState(false);
+  
   const [message, setMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -32,7 +34,7 @@ export default function UserManagement() {
       setTimeout(() => setShowSuccessModal(false), 2000);
       return;
     }
-  
+    setLoading(true);
     try {
       const token = localStorage.getItem("token");
   
@@ -89,6 +91,7 @@ export default function UserManagement() {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         formData={formData}
+        loading = {loading}
       />
     </div>
   );
