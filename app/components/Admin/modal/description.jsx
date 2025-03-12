@@ -72,14 +72,14 @@ export default function Description({ item, isOpen, onClose }) {
                       }
                     `}>{item.condition}</p>
                 </div>
-                <div className="flex gap-[8px]">
-                  <span className="text-[20px] font-semibold">Description:</span><p className="text-[20px]">{item.description}</p>
-                </div>
                 {item.condition === "Broken" ?
                   <div className="flex gap-[8px]">
                   <span className="text-[20px] font-semibold">Reason:</span><p className="text-[20px]">{item.reason}</p>
                 </div> : <></>
                 }
+                <div className="flex gap-[8px]">
+                  <span className="text-[20px] font-semibold">Description:</span><p className="text-[20px]">{item.description}</p>
+                </div>
                 {item.status === "Distributed" ?
                   <div className="flex gap-[8px]">
                   <span className="text-[20px] font-semibold">Distributed To:</span><p className="text-[20px]">{item.distributedToName}</p>
