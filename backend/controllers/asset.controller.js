@@ -70,9 +70,34 @@ const deleteAsset = async (req, res) => {
   }
 };
 
+const deleteMultipleAssets = async (req, res) => {
+  try {
+    const { ids } = req.body; // Expecting an array of asset IDs
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: "No assets selected for deletion" });
+    }
+
+    const existingAssets = await Asset.find({ _id: { $in: ids } });
+
+    if (existingAssets.length === 0) {
+      return res.status(404).json({ message: "No matching assets found" });
+    }
+
+    await Asset.deleteMany({ _id: { $in: ids } });
+
+    await emitAssetLogs(Asset);
+
+    res.status(200).json({ message: `${existingAssets.length} assets have been deleted` });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
     getAssets,
     addAsset,
     updateAsset,
     deleteAsset,
+    deleteMultipleAssets,
 }
