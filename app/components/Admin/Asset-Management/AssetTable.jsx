@@ -315,20 +315,26 @@ export default function AssetTable() {
               <button
                 disabled={
                   !selectedAssets.length ||
-                  selectedAssets.some(
-                    (id) =>
-                      asset.find((item) => item._id === id)?.status ===
-                      "Distributed"
-                  )
+                  selectedAssets.some((id) => {
+                    const item = asset.find((item) => item._id === id);
+                    return (
+                      item?.status === "Distributed" ||
+                      item?.condition === "Broken" ||
+                      item?.condition === "Scrap"
+                    );
+                  })
                 }
                 onClick={() => setIsDistributeModalOpen(true)}
                 class={`border-3 transition-all cursor-pointer font-semibold px-4 py-2 rounded-lg hover:text-white ${
                   !selectedAssets.length ||
-                  selectedAssets.some(
-                    (id) =>
-                      asset.find((item) => item._id === id)?.status ===
-                      "Distributed"
-                  )
+                  selectedAssets.some((id) => {
+                    const item = asset.find((item) => item._id === id);
+                    return (
+                      item?.status === "Distributed" ||
+                      item?.condition === "Broken" ||
+                      item?.condition === "Scrap"
+                    );
+                  })
                     ? "bg-gray-400 cursor-not-allowed text-white"
                     : "text-blue-800 hover:bg-blue-800"
                 }`}
@@ -336,11 +342,14 @@ export default function AssetTable() {
                 <i class="fa-regular fa-folder-open"></i>
                 {!(
                   !selectedAssets.length ||
-                  selectedAssets.some(
-                    (id) =>
-                      asset.find((item) => item._id === id)?.status ===
-                      "Distributed"
-                  )
+                  selectedAssets.some((id) => {
+                    const item = asset.find((item) => item._id === id);
+                    return (
+                      item?.status === "Distributed" ||
+                      item?.condition === "Broken" ||
+                      item?.condition === "Scrap"
+                    );
+                  })
                 ) && <FontAwesomeIcon icon="share" className="mr-2" />}
                 Distribute Asset
               </button>

@@ -1,20 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:5000");
 
 const AssetGrid = () => {
-  const assets = [
-    { name: "Laptop", total: 12, available: 43, distributed: 14 },
-    { name: "Phone", total: 14, available: 34, distributed: 13 },
-    { name: "Charger", total: 14, available: 14, distributed: 124 },
-    { name: "Mouse", total: 124, available: 34, distributed: 134 },
-    { name: "Charger", total: 50, available: 25, distributed: 25 },
-    { name: "Chair", total: 30, available: 10, distributed: 20 },
-    { name: "Table", total: 30, available: 10, distributed: 20 },
-    { name: "Printer", total: 30, available: 10, distributed: 20 },
-  ];
-
+  const [assets, setAssets] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 4;
+
+  useEffect(() => {
+    const fetchAssetSummary = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/asset/summary");
+        setAssets(response.data);
+      } catch (error) {
+        console.error("Error fetching asset summary:", error);
+      }
+    };
+
+    fetchAssetSummary();
+
+    socket.on("updateAssetSummary", (updatedAssets) => {
+      setAssets(updatedAssets);
+    });
+    return () => {
+      socket.off("updateAssetSummary");
+    };
+  }, []);
 
   const nextPage = () => {
     if (currentPage < Math.ceil(assets.length / itemsPerPage) - 1) {
@@ -34,14 +48,14 @@ const AssetGrid = () => {
   );
 
   return (
-    <div className="flex justify-between items-center w-full">
+    <div className="flex justify-between mb-4 items-center w-full">
       <div
         onClick={prevPage}
-        className={`bg-blue-500 hover:bg-blue-700 transition-all px-4 py-3 flex items-center justify-center rounded-full cursor-pointer ${
+        className={`bg-blue-500 select-none hover:bg-blue-700 transition-all px-4 py-3 flex items-center justify-center rounded-full cursor-pointer ${
           currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""
         }`}
       >
-        <FontAwesomeIcon icon="angle-left" color="white" />
+        {currentPage > 0 && <FontAwesomeIcon icon="angle-left" color="white" />}
       </div>
 
       <div className="grid w-[90%] px-1 grid-cols-4 gap-4">
@@ -51,7 +65,7 @@ const AssetGrid = () => {
             className="bg-white py-2 px-4 rounded-lg text-start border border-gray-200 shadow-lg"
           >
             <h1 className="text-[22px] font-lg font-russo text-blue-500">
-              {item.name}
+              {item._id}
             </h1>
             <div className="flex justify-between">
               <div className="w-[32%] flex flex-col items-center">
@@ -77,13 +91,15 @@ const AssetGrid = () => {
 
       <div
         onClick={nextPage}
-        className={`bg-blue-500 hover:bg-blue-700 transition-all px-4 py-3 flex items-center justify-center rounded-full cursor-pointer ${
+        className={`bg-blue-500 select-none hover:bg-blue-700 transition-all px-4 py-3 flex items-center justify-center rounded-full cursor-pointer ${
           currentPage >= Math.ceil(assets.length / itemsPerPage) - 1
             ? "opacity-50 cursor-not-allowed"
             : ""
         }`}
       >
-        <FontAwesomeIcon icon="angle-right" color="white" />
+        {currentPage < Math.ceil(assets.length / itemsPerPage) - 1 && (
+          <FontAwesomeIcon icon="angle-right" color="white" />
+        )}
       </div>
     </div>
   );
