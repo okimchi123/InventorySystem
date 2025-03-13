@@ -128,7 +128,6 @@ export default function AssetTable() {
 
       setMessage("Asset added successfully!");
 
-      // Reset the form
       setFormData({
         productname: "",
         producttype: "",
@@ -138,8 +137,8 @@ export default function AssetTable() {
         reason: "",
       });
 
-      closeModal(); // Close modal first
-      setShowSuccessModal(true); // Show success message
+      closeModal(); 
+      setShowSuccessModal(true);
       setTimeout(() => setShowSuccessModal(false), 2000);
     } catch (error) {
       setMessage(error.response?.data?.message || "Failed to add user.");
