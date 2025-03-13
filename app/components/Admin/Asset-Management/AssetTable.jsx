@@ -38,6 +38,8 @@ export default function AssetTable() {
   const [message, setMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [descriptionModalOpen, setDescriptionModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredAssets, setFilteredAssets] = useState([]);
 
   const handleCheckboxChange = (assetId) => {
     setSelectedAssets((prevSelected) =>
@@ -139,12 +141,24 @@ export default function AssetTable() {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAsset(res.data);
+      setFilteredAssets(res.data);
     } catch (error) {
       console.error("Failed to fetch users:", error);
       setMessage("Failed to fetch users.");
       setShowSuccessModal(true);
       setTimeout(() => setShowSuccessModal(false), 2000);
     }
+  };
+
+  const handleSearch = (event) => {
+    const value = event.target.value.toLowerCase();
+    setSearchTerm(value);
+    const filtered = asset.filter(asset =>
+      asset.productname.toLowerCase().includes(value) ||
+      asset.serialnumber.toLowerCase().includes(value) ||
+      asset.producttype.toLowerCase().includes(value)
+    );
+    setFilteredAssets(filtered);
   };
 
   useEffect(() => {
@@ -290,14 +304,14 @@ export default function AssetTable() {
         {/* <!-- Filter --> */}
         <div class="flex items-center laptop:flex-row phone:flex-col gap-2 w-full">
           <h1 className="text-[22px] font-semibold mb-[6px]"> Assets </h1>
-          <div class="flex justify-start">
-            <form method="" class="flex flex-row items-center">
+          <div class="flex justify-start w-[23%]">
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Search Name | Serial | Product Type"
+                value={searchTerm}
+                onChange={handleSearch}
                 className="w-full h-10 p-4 border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
               />
-            </form>
           </div>
           <div class="flex ml-auto gap-2">
             <div class="flex flex-row gap-2">
@@ -391,7 +405,7 @@ export default function AssetTable() {
                 </tr>
               </thead>
               <tbody>
-                {asset.map((item) => (
+                {filteredAssets.map((item) => (
                   <tr
                     key={item._id}
                     class="text-left border-gray-300 border-b-[1px]"
