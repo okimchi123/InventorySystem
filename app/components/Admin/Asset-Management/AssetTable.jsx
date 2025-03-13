@@ -64,10 +64,10 @@ export default function AssetTable() {
   };
 
   const handleSelectAll = () => {
-    if (selectedAssets.length === asset.length) {
+    if (selectedAssets.length === filteredAssets.length) {
       setSelectedAssets([]);
     } else {
-      setSelectedAssets(asset.map((item) => item._id));
+      setSelectedAssets(filteredAssets.map((item) => item._id));
     }
   };
 
