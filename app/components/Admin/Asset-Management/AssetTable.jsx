@@ -40,6 +40,8 @@ export default function AssetTable() {
   const [descriptionModalOpen, setDescriptionModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredAssets, setFilteredAssets] = useState([]);
+  const [conditionFilter, setConditionFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const handleCheckboxChange = (assetId) => {
     setSelectedAssets((prevSelected) =>
@@ -47,6 +49,18 @@ export default function AssetTable() {
         ? prevSelected.filter((id) => id !== assetId)
         : [...prevSelected, assetId]
     );
+  };
+
+  const handleConditionChange = (event) => {
+    setConditionFilter(event.target.value);
+  };
+
+  const handleStatusChange = (event) => {
+    setStatusFilter(event.target.value);
+  };
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value.toLowerCase());
   };
 
   const handleSelectAll = () => {
@@ -150,16 +164,30 @@ export default function AssetTable() {
     }
   };
 
-  const handleSearch = (event) => {
-    const value = event.target.value.toLowerCase();
-    setSearchTerm(value);
-    const filtered = asset.filter(asset =>
-      asset.productname.toLowerCase().includes(value) ||
-      asset.serialnumber.toLowerCase().includes(value) ||
-      asset.producttype.toLowerCase().includes(value)
-    );
-    setFilteredAssets(filtered);
-  };
+  useEffect(() => {
+    let updatedAssets = asset;
+  
+    if (conditionFilter !== "all") {
+      updatedAssets = updatedAssets.filter((item) => item.condition.toLowerCase() === conditionFilter);
+    }
+
+    if (statusFilter !== "all") {
+      updatedAssets = updatedAssets.filter((item) => {
+        return statusFilter === "undistributed" ? item.status === "just_added" : item.status.toLowerCase() === statusFilter;
+      });
+    }
+
+    if (searchTerm) {
+      updatedAssets = updatedAssets.filter(
+        (item) =>
+          item.productname.toLowerCase().includes(searchTerm) ||
+          item.serialnumber.toLowerCase().includes(searchTerm) ||
+          item.producttype.toLowerCase().includes(searchTerm)
+      );
+    }
+  
+    setFilteredAssets(updatedAssets);
+  }, [conditionFilter, statusFilter, searchTerm, asset]);
 
   useEffect(() => {
     fetchAsset();
@@ -305,14 +333,33 @@ export default function AssetTable() {
         <div class="flex items-center laptop:flex-row phone:flex-col gap-2 w-full">
           <h1 className="text-[22px] font-semibold mb-[6px]"> Assets </h1>
           <div class="flex justify-start w-[23%]">
-              <input
-                type="text"
-                placeholder="Search Name | Serial | Product Type"
-                value={searchTerm}
-                onChange={handleSearch}
-                className="w-full h-10 p-4 border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
-              />
+            <input
+              type="text"
+              placeholder="Search Name | Serial | Product Type"
+              value={searchTerm}
+              onChange={handleSearch}
+              className="w-full h-10 py-4 px-3 border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
+            />
           </div>
+          <select className="px-1 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700"
+                  onChange={handleConditionChange}
+                  value={conditionFilter}
+          >
+            <option value="all">Condition</option>
+            <option value="all">All</option>
+            <option value="good">Good</option>
+            <option value="broken">Broken</option>
+            <option value="scrap">Scrap</option>
+          </select>
+          <select className="px-1 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700"
+                  onChange={handleStatusChange}
+                  value={statusFilter}
+          >
+            <option value="all">Status</option>
+            <option value="all">All</option>
+            <option value="undistributed">Undistributed</option>
+            <option value="distributed">Distributed</option>
+          </select>
           <div class="flex ml-auto gap-2">
             <div class="flex flex-row gap-2">
               {selectedAssets.length ? (
@@ -387,7 +434,7 @@ export default function AssetTable() {
                   <th className="py-2 pl-2">
                     <input
                       type="checkbox"
-                      className="w-4 h-4"
+                      className="w-5 h-5"
                       onChange={handleSelectAll}
                       checked={
                         selectedAssets.length === asset.length &&
@@ -413,7 +460,7 @@ export default function AssetTable() {
                     <td className="py-2 pl-2">
                       <input
                         type="checkbox"
-                        className="w-4 h-4"
+                        className="w-5 h-5"
                         checked={selectedAssets.includes(item._id)}
                         onChange={() => handleCheckboxChange(item._id)}
                       />
