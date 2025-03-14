@@ -36,6 +36,13 @@ export default function DistributeModal({ isOpen, onClose, selectedAssets, onSub
     setSelectedUser(null);
   };
 
+  const handleConfirm = () => {
+    onClose();
+    onSubmit();
+    setShowSuccessModal(false);
+    setSelectedUser(null);
+  }
+
   const handleDistribute = async () => {
     if (!selectedUser || selectedAssets.length === 0) return;
     
@@ -62,7 +69,7 @@ export default function DistributeModal({ isOpen, onClose, selectedAssets, onSub
 
   return (
     <div className="fixed inset-0 flex justify-center items-start z-50 bg-gray-900/75">
-      <OkayModal isVisible={showSuccessModal} onConfirm={onClose} message={message}/>
+      <OkayModal isVisible={showSuccessModal} onConfirm={handleConfirm} message={message}/>
       <motion.div
         initial="hidden"
         animate="visible"
