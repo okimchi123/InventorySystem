@@ -4,6 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SuccessModal, ConfirmModal } from "../modal/success";
 import EditUserModal from "./editUserModal";
 import { io } from "socket.io-client";
+import ReactPaginate from "react-paginate";
+
+const USER_PER_PAGE = 10;
 
 const socket = io("http://localhost:5000", {
   transports: ["websocket"],
@@ -23,7 +26,6 @@ export default function UserTable({ openModal }) {
   const [sortOrder, setSortOrder] = useState("asc");
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
 
   const openEditModal = (user) => {
     setSelectedUser(user);
@@ -66,7 +68,7 @@ export default function UserTable({ openModal }) {
         user.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredUsers(filtered);
-    setCurrentPage(1);
+    setCurrentPage(0);
   }, [searchQuery, users]);
 
   const handleUpdateUser = async (updatedUser) => {
@@ -134,7 +136,7 @@ export default function UserTable({ openModal }) {
     } else {
       setFilteredUsers(users.filter((user) => user.role === role));
     }
-    setCurrentPage(1);
+    setCurrentPage(0);
   };
 
   const handleSort = () => {
@@ -149,12 +151,15 @@ export default function UserTable({ openModal }) {
     setSortOrder(sortOrder === "desc" ? "asc" : "desc");
   };
 
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
+  const pageCount = Math.ceil(filteredUsers.length / USER_PER_PAGE);
   const paginatedUsers = filteredUsers.slice(
-    startIndex,
-    startIndex + itemsPerPage
+    currentPage * USER_PER_PAGE,
+    (currentPage + 1) * USER_PER_PAGE
   );
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
 
   return (
     <div className="rounded-lg">
@@ -265,18 +270,18 @@ export default function UserTable({ openModal }) {
                 <td className="py-4 px-4 whitespace-nowrap">{user.email}</td>
                 <td className="py-4 px-4 whitespace-nowrap">{user.phone}</td>
                 <td className="py-4 px-4 whitespace-nowrap">
-                  <div className={`w-[75px] py-[6px] rounded-lg text-center text-[18px]
+                  <div
+                    className={`w-[75px] py-[6px] rounded-lg text-center text-[18px]
                       ${
                         user.status === "active"
                           ? "text-green-900 bg-green-100"
                           : user.status === "inactive"
-                          ? "text-red-900 bg-red-100" 
+                          ? "text-red-900 bg-red-100"
                           : "text-gray-900 bg-gray-200"
-                      }`}>
-                    <span>
-                      {user.status}
-                    </span>
-                  </div >
+                      }`}
+                  >
+                    <span>{user.status}</span>
+                  </div>
                 </td>
                 <td className="text-center space-x-2">
                   {user.role !== "Admin" && (
@@ -303,28 +308,27 @@ export default function UserTable({ openModal }) {
           </tbody>
         </table>
       </div>
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-2 mt-4">
-          {currentPage > 1 && (
-            <button
-              className="bg-blue-500 text-white px-2 py-1 rounded-md cursor-pointer hover:bg-blue-700 transition-all"
-              onClick={() => setCurrentPage((prev) => prev - 1)}
-            >
-              Previous
-            </button>
-          )}
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
-          {currentPage < totalPages && (
-            <button
-              className="bg-blue-500 text-white px-2 py-1 rounded-md cursor-pointer hover:bg-blue-700 transition-all"
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-            >
-              Next
-            </button>
-          )}
-        </div>
+      {pageCount > 1 && (
+        <ReactPaginate
+        previousLabel={"← Previous"}
+        nextLabel={"Next →"}
+        breakLabel={"..."}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={3}
+        onPageChange={handlePageClick}
+        containerClassName="flex items-center justify-center space-x-2 mt-4"
+        pageClassName="border rounded-md text-blue-600 transition"
+        pageLinkClassName="inline-block select-none px-3 py-2 w-full h-full cursor-pointer hover:bg-blue-500 hover:text-white rounded-md transition-all"
+        activeClassName="bg-blue-500 text-white font-bold"
+        previousClassName="border rounded-md select-none text-gray-600 transition"
+        previousLinkClassName="inline-block select-none px-3 py-2 cursor-pointer hover:bg-gray-100"
+        nextClassName="border rounded-md select-none text-gray-600 transition"
+        nextLinkClassName="inline-block select-none px-3 py-2 cursor-pointer hover:bg-gray-300"
+        breakClassName="text-gray-500"
+        breakLinkClassName="inline-block px-3 py-2"
+        disabledClassName="opacity-50 cursor-not-allowed"
+      />
       )}
     </div>
   );
