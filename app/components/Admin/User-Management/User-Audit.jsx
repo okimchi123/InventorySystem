@@ -3,6 +3,9 @@ import axios from "axios";
 import moment from "moment";
 import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReactPaginate from "react-paginate";
+
+const USER_PER_PAGE = 10;
 
 const socket = io("http://localhost:5000", {
   transports: ["websocket"],
@@ -13,8 +16,7 @@ export default function UserAudit() {
   const [auditLogs, setAuditLogs] = useState([]);
   const [sortOrder, setSortOrder] = useState("desc");
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(0);
 
   const fetchLogs = useCallback(async () => {
     try {
@@ -58,12 +60,15 @@ export default function UserAudit() {
       : new Date(b.createdAt) - new Date(a.createdAt);
   });
 
-  const totalPages = Math.ceil(sortedLogs.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
+  const pageCount = Math.ceil(sortedLogs.length / USER_PER_PAGE);
   const paginatedLogs = sortedLogs.slice(
-    startIndex,
-    startIndex + itemsPerPage
+    currentPage * USER_PER_PAGE,
+    (currentPage + 1) * USER_PER_PAGE
   );
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
 
   return (
     <div className="rounded-lg">
@@ -123,28 +128,27 @@ export default function UserAudit() {
           </tbody>
         </table>
       </div>
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-2 mt-4">
-          {currentPage > 1 && (
-            <button
-              className="bg-blue-500 text-white px-2 py-1 rounded-md cursor-pointer hover:bg-blue-700 transition-all"
-              onClick={() => setCurrentPage((prev) => prev - 1)}
-            >
-              Previous
-            </button>
-          )}
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
-          {currentPage < totalPages && (
-            <button
-              className="bg-blue-500 text-white px-2 py-1 rounded-md cursor-pointer hover:bg-blue-700 transition-all"
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-            >
-              Next
-            </button>
-          )}
-        </div>
+      {pageCount > 1 && (
+        <ReactPaginate
+        previousLabel={"← Previous"}
+        nextLabel={"Next →"}
+        breakLabel={"..."}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={3}
+        onPageChange={handlePageClick}
+        containerClassName="flex items-center justify-center space-x-2 mt-4"
+        pageClassName="border rounded-md text-blue-600 transition"
+        pageLinkClassName="inline-block select-none px-3 py-2 w-full h-full cursor-pointer hover:bg-blue-500 hover:text-white rounded-md transition-all"
+        activeClassName="bg-blue-500 text-white font-bold"
+        previousClassName="border rounded-md select-none text-gray-600 transition"
+        previousLinkClassName="inline-block select-none px-3 py-2 cursor-pointer hover:bg-gray-100"
+        nextClassName="border rounded-md select-none text-gray-600 transition"
+        nextLinkClassName="inline-block select-none px-3 py-2 cursor-pointer hover:bg-gray-300"
+        breakClassName="text-gray-500"
+        breakLinkClassName="inline-block px-3 py-2"
+        disabledClassName="opacity-50 cursor-not-allowed"
+        />
       )}
     </div>
   );
