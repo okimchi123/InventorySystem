@@ -7,6 +7,7 @@ import EditAssetModal from "./editAssetModal";
 import DistributeModal from "./distributeModal";
 import { io } from "socket.io-client";
 import Description from "../modal/description";
+import ReactPaginate from "react-paginate";
 
 import laptop from "../../../assets/images/items/laptop.jpg";
 import mouse from "../../../assets/images/items/mouse.jpg";
@@ -18,6 +19,8 @@ import printer from "../../../assets/images/items/printer.jpg";
 import chair from "../../../assets/images/items/chair.jpg";
 import table from "../../../assets/images/items/table.jpg";
 import cable from "../../../assets/images/items/cable.jpg";
+
+const ITEMS_PER_PAGE = 10;
 
 const socket = io("http://localhost:5000", {
   transports: ["websocket"],
@@ -42,6 +45,7 @@ export default function AssetTable() {
   const [filteredAssets, setFilteredAssets] = useState([]);
   const [conditionFilter, setConditionFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(0);
 
   const handleCheckboxChange = (assetId) => {
     setSelectedAssets((prevSelected) =>
@@ -137,7 +141,7 @@ export default function AssetTable() {
         reason: "",
       });
 
-      closeModal(); 
+      closeModal();
       setShowSuccessModal(true);
       setTimeout(() => setShowSuccessModal(false), 2000);
     } catch (error) {
@@ -165,14 +169,18 @@ export default function AssetTable() {
 
   useEffect(() => {
     let updatedAssets = asset;
-  
+
     if (conditionFilter !== "all") {
-      updatedAssets = updatedAssets.filter((item) => item.condition.toLowerCase() === conditionFilter);
+      updatedAssets = updatedAssets.filter(
+        (item) => item.condition.toLowerCase() === conditionFilter
+      );
     }
 
     if (statusFilter !== "all") {
       updatedAssets = updatedAssets.filter((item) => {
-        return statusFilter === "undistributed" ? item.status === "just_added" : item.status.toLowerCase() === statusFilter;
+        return statusFilter === "undistributed"
+          ? item.status === "just_added"
+          : item.status.toLowerCase() === statusFilter;
       });
     }
 
@@ -184,9 +192,20 @@ export default function AssetTable() {
           item.producttype.toLowerCase().includes(searchTerm)
       );
     }
-  
+
     setFilteredAssets(updatedAssets);
+    setCurrentPage(0);
   }, [conditionFilter, statusFilter, searchTerm, asset]);
+
+  const pageCount = Math.ceil(filteredAssets.length / ITEMS_PER_PAGE);
+  const paginatedAssets = filteredAssets.slice(
+    currentPage * ITEMS_PER_PAGE,
+    (currentPage + 1) * ITEMS_PER_PAGE
+  );
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
 
   useEffect(() => {
     fetchAsset();
@@ -340,9 +359,10 @@ export default function AssetTable() {
               className="w-full h-10 py-4 px-3 border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
             />
           </div>
-          <select className="px-1 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700"
-                  onChange={handleConditionChange}
-                  value={conditionFilter}
+          <select
+            className="px-1 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700"
+            onChange={handleConditionChange}
+            value={conditionFilter}
           >
             <option value="all">Condition</option>
             <option value="all">All</option>
@@ -350,9 +370,10 @@ export default function AssetTable() {
             <option value="broken">Broken</option>
             <option value="scrap">Scrap</option>
           </select>
-          <select className="px-1 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700"
-                  onChange={handleStatusChange}
-                  value={statusFilter}
+          <select
+            className="px-1 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700"
+            onChange={handleStatusChange}
+            value={statusFilter}
           >
             <option value="all">Status</option>
             <option value="all">All</option>
@@ -451,7 +472,7 @@ export default function AssetTable() {
                 </tr>
               </thead>
               <tbody>
-                {filteredAssets.map((item) => (
+                {paginatedAssets.map((item) => (
                   <tr
                     key={item._id}
                     class="text-left border-gray-300 border-b-[1px]"
@@ -565,6 +586,26 @@ export default function AssetTable() {
                 ))}
               </tbody>
             </table>
+            <ReactPaginate
+              previousLabel={"← Previous"}
+              nextLabel={"Next →"}
+              breakLabel={"..."}
+              pageCount={pageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={3}
+              onPageChange={handlePageClick}
+              containerClassName="flex items-center justify-center space-x-2 mt-4"
+              pageClassName="border rounded-md text-blue-600 transition"
+              pageLinkClassName="inline-block select-none px-3 py-2 w-full h-full cursor-pointer hover:bg-blue-500 hover:text-white rounded-md transition-all"
+              activeClassName="bg-blue-500 text-white font-bold"
+              previousClassName="border rounded-md select-none text-gray-600 transition"
+              previousLinkClassName="inline-block select-none px-3 py-2 cursor-pointer hover:bg-gray-100"
+              nextClassName="border rounded-md select-none text-gray-600 transition"
+              nextLinkClassName="inline-block select-none px-3 py-2 cursor-pointer hover:bg-gray-300"
+              breakClassName="text-gray-500"
+              breakLinkClassName="inline-block px-3 py-2"
+              disabledClassName="opacity-50 cursor-not-allowed"
+            />
           </div>
         </div>
       </div>
