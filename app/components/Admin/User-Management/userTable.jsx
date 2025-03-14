@@ -310,25 +310,25 @@ export default function UserTable({ openModal }) {
       </div>
       {pageCount > 1 && (
         <ReactPaginate
-        previousLabel={"← Previous"}
-        nextLabel={"Next →"}
-        breakLabel={"..."}
-        pageCount={pageCount}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={3}
-        onPageChange={handlePageClick}
-        containerClassName="flex items-center justify-center space-x-2 mt-4"
-        pageClassName="border rounded-md text-blue-600 transition"
-        pageLinkClassName="inline-block select-none px-3 py-2 w-full h-full cursor-pointer hover:bg-blue-500 hover:text-white rounded-md transition-all"
-        activeClassName="bg-blue-500 text-white font-bold"
-        previousClassName="border rounded-md select-none text-gray-600 transition"
-        previousLinkClassName="inline-block select-none px-3 py-2 cursor-pointer hover:bg-gray-100"
-        nextClassName="border rounded-md select-none text-gray-600 transition"
-        nextLinkClassName="inline-block select-none px-3 py-2 cursor-pointer hover:bg-gray-300"
-        breakClassName="text-gray-500"
-        breakLinkClassName="inline-block px-3 py-2"
-        disabledClassName="opacity-50 cursor-not-allowed"
-      />
+          previousLabel={"< Previous"}
+          nextLabel={"Next >"}
+          breakLabel={"..."}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={3}
+          onPageChange={handlePageClick}
+          containerClassName="flex items-center justify-center space-x-2 mt-3"
+          pageClassName="rounded-md border text-blue-600 transition"
+          pageLinkClassName="inline-block select-none px-3 py-2 w-full h-full cursor-pointer hover:bg-blue-500 hover:text-white rounded-md transition-all"
+          activeClassName="bg-blue-500 text-white font-bold"
+          previousClassName="rounded-md border-gray-400 font-semibold border select-none text-gray-600 transition"
+          previousLinkClassName="inline-block select-none px-3 py-2 transition-all cursor-pointer hover:bg-gray-400 hover:text-white rounded-md"
+          nextClassName="rounded-md border-gray-400 font-semibold border select-none text-gray-600 transition"
+          nextLinkClassName="inline-block select-none px-3 py-2 transition-all cursor-pointer hover:bg-gray-400 hover:text-white rounded-md"
+          breakClassName="text-gray-500"
+          breakLinkClassName="inline-block px-3 py-2"
+          disabledClassName="opacity-50 cursor-not-allowed"
+        />
       )}
     </div>
   );
