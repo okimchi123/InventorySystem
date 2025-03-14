@@ -11,7 +11,7 @@ export default function SideBar() {
                 <li class="mb-4">
                         <NavLink
                             to="/admin/Dashboard"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
+                            className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
                                 location.pathname === "/admin/Dashboard"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"
@@ -24,34 +24,8 @@ export default function SideBar() {
                 </li>
                 <li class="mb-4">
                         <NavLink
-                            to="/admin/Audit-Trail"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
-                                location.pathname === "/admin/Audit-Trail"
-                                  ? "bg-blue-500 text-white"
-                                  : "hover:bg-blue-700"
-                              }` }
-                        >
-                            <FontAwesomeIcon icon="list-alt" className="mr-3" />
-                            Audit Trail
-                        </NavLink>
-                </li>
-                <li class="mb-4">
-                        <NavLink
-                            to="/admin/dashboard"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
-                                location.pathname === "/admin/Inventory-Management"
-                                  ? "bg-blue-500 text-white"
-                                  : "hover:bg-blue-700"
-                              }` }
-                        >
-                            <FontAwesomeIcon icon="warehouse" className="mr-3" />
-                            Inventory Management
-                        </NavLink>
-                </li>
-                <li class="mb-4">
-                        <NavLink
                             to="/admin/Asset-Management"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
+                            className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
                                 location.pathname === "/admin/Asset-Management"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"
@@ -63,34 +37,21 @@ export default function SideBar() {
                 </li>
                 <li class="mb-4">
                         <NavLink
-                            to="/admin/dashboard"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
-                                location.pathname === "/admin/Broken-Item-List"
+                            to="/admin/Audit-Trail"
+                            className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
+                                location.pathname === "/admin/Audit-Trail"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"
                               }` }
                         >
-                            <FontAwesomeIcon icon="exclamation-triangle" className="mr-3" />
-                            Broken Item List
-                        </NavLink>
-                </li>
-                <li class="mb-4">
-                        <NavLink
-                            to="/admin/dashboard"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
-                                location.pathname === "/admin/Scrap-Item-List"
-                                  ? "bg-blue-500 text-white"
-                                  : "hover:bg-blue-700"
-                              }` }
-                        >
-                            <FontAwesomeIcon icon="recycle" className="mr-3" />
-                            Scrap Item List
+                            <FontAwesomeIcon icon="list-alt" className="mr-3" />
+                            Audit Trail
                         </NavLink>
                 </li>
                 <li class="mb-4">
                         <NavLink
                             to="/admin/User-Management"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
+                            className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
                                 location.pathname === "/admin/User-Management"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"
@@ -103,7 +64,7 @@ export default function SideBar() {
                 <li class="mb-4">
                         <NavLink
                             to="/admin/dashboard"
-                            className={`flex items-center p-2 text-[18px] font-medium rounded-lg transition-all ${
+                            className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
                                 location.pathname === "/admin/Employee"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"
