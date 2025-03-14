@@ -51,7 +51,7 @@ export default function UserManagement() {
       );
   
       setMessage("User added successfully!");
-  
+      setLoading(false);
       // Reset the form
       setFormData({
         firstname: "",
