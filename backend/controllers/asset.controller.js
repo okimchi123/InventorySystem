@@ -1,4 +1,6 @@
 const Asset = require("../models/Asset");
+const AssetLog = require("../models/assetAudit");
+const Account = require("../models/User");
 const {emitAssetLogs, emitAssetSummary} = require("../utils/socketUtils")
 
 const getAssets = async (req, res) => {
@@ -12,6 +14,13 @@ const getAssets = async (req, res) => {
 
 const addAsset = async (req, res) => {
   try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "User ID missing" });
+    }
+    const userId = req.user.id;
+
+    const user = await Account.findById(userId);
+
     const {productname, producttype, serialnumber, description, condition, reason} = req.body;
 
     const existingAsset = await Asset.findOne({ serialnumber });
@@ -22,6 +31,16 @@ const addAsset = async (req, res) => {
 
     const asset = await Asset.create({ productname, producttype, serialnumber, description, condition, reason});
     
+    await AssetLog.create({
+          action: "CREATE",
+          userID: userId,
+          targetProduct: asset._id,
+          userEmail: user.email,
+          userRole: user.role,
+          productName: asset.productname,
+          productSN: asset.serialnumber
+        });
+
     await emitAssetLogs(Asset);
     await emitAssetSummary(Asset);
 
@@ -33,6 +52,13 @@ const addAsset = async (req, res) => {
 
 const updateAsset = async (req, res) => {
   try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "User ID missing" });
+    }
+    const userId = req.user.id;
+
+    const user = await Account.findById(userId);
+
     const { id } = req.params;
 
     const existingAsset = await Asset.findById(id);
@@ -42,6 +68,16 @@ const updateAsset = async (req, res) => {
     }
 
     const asset = await Asset.findByIdAndUpdate(id, req.body, { new: true });
+
+    await AssetLog.create({
+      action: "UPDATE",
+      userID: userId,
+      targetProduct: asset._id,
+      userEmail: user.email,
+      userRole: user.role,
+      productName: asset.productname,
+      productSN: asset.serialnumber
+    });
 
     await emitAssetLogs(Asset);
 
@@ -53,6 +89,13 @@ const updateAsset = async (req, res) => {
 
 const deleteAsset = async (req, res) => {
   try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "User ID missing" });
+    }
+    const userId = req.user.id;
+
+    const user = await Account.findById(userId);
+
     const { id } = req.params;
 
     const existingAsset = await Asset.findById(id);
@@ -62,6 +105,16 @@ const deleteAsset = async (req, res) => {
     }
 
     const asset = await Asset.findByIdAndDelete(id);
+
+    await AssetLog.create({
+      action: "DELETE",
+      userID: userId,
+      targetProduct: asset._id,
+      userEmail: user.email,
+      userRole: user.role,
+      productName: asset.productname,
+      productSN: asset.serialnumber
+    });
 
     await emitAssetLogs(Asset);
     await emitAssetSummary(Asset);
@@ -74,7 +127,14 @@ const deleteAsset = async (req, res) => {
 
 const deleteMultipleAssets = async (req, res) => {
   try {
-    const { ids } = req.body; // Expecting an array of asset IDs
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "User ID missing" });
+    }
+    const userId = req.user.id;
+
+    const user = await Account.findById(userId);
+
+    const { ids } = req.body; 
 
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
       return res.status(400).json({ message: "No assets selected for deletion" });
@@ -86,7 +146,19 @@ const deleteMultipleAssets = async (req, res) => {
       return res.status(404).json({ message: "No matching assets found" });
     }
 
+    const deletedAssets = await Asset.find({ _id: { $in: ids } });
+
     await Asset.deleteMany({ _id: { $in: ids } });
+
+    await AssetLog.create({
+      action: "MULTIDELETE",
+      userID: user.id,
+      targetProduct: deletedAssets.map(asset => asset._id),
+      userEmail: user.email,
+      userRole: user.role,
+      productName: deletedAssets.map(asset => asset.productname),
+      productSN: deletedAssets.map(asset => asset.serialnumber)
+    });
 
     await emitAssetLogs(Asset);
     await emitAssetSummary(Asset);
