@@ -1,4 +1,5 @@
 const express = require("express");
+const authenticateToken = require("../middleware/authMiddleware");
 const {
     getAssets,
     addAsset,
@@ -12,13 +13,13 @@ const router = express.Router();
 
 router.get("/", getAssets);
 
-router.post("/", addAsset);
+router.post("/", authenticateToken, addAsset);
 
-router.delete("/delete-multiple", deleteMultipleAssets);
+router.delete("/delete-multiple", authenticateToken, deleteMultipleAssets);
 
-router.put("/:id", updateAsset);
+router.put("/:id", authenticateToken, updateAsset);
 
-router.delete("/:id", deleteAsset);
+router.delete("/:id", authenticateToken, deleteAsset);
 
 router.get("/summary", getAssetSummary);
 

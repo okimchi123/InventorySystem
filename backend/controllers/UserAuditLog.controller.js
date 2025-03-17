@@ -9,7 +9,7 @@ const getUserAuditLogs = async (req, res) => {
 
     res.status(200).json(logs);
   } catch (error) {
-    console.error("❌ Error fetching logs:", error); // Log error
+    console.error(" Error fetching logs:", error); // Log error
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
