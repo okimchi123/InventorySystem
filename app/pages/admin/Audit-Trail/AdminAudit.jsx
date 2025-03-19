@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import DistributeTable from "../../../components/Admin/audit/DistributeTable";
 import axios from "axios";
 import moment from "moment";
 import ReactPaginate from "react-paginate";
@@ -42,20 +43,20 @@ export default function AuditTrail() {
   
   useEffect(() => {
     const filtered = assetLogs.filter((log) =>
-      log.userEmail.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      log.productName.some((name) => name.toLowerCase().includes(searchQuery.toLowerCase()))
+      log.productName.some((name) => name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      log.productSN.some((SN) => SN.toLowerCase().includes(searchQuery.toLowerCase()))
     );
     setFilteredLogs(filtered);
   }, [searchQuery, assetLogs]);
 
   return (
-    <div className="pt-22 py-6 laptop:px-12 px-10 phone:px-4">
-      <div className="flex flex-col gap-1 items-end justify-center w-full mx-auto">
+    <div className="pt-22 py-6 flex flex-col gap-5 laptop:px-12 px-10 phone:px-4">
+      <div className="flex flex-col items-end justify-center w-full mx-auto">
         <div className="flex gap-3 mx-auto py-4 w-full">
           <h1 className="text-2xl font-bold">Asset History</h1>
           <input
             type="text"
-            placeholder="Search email or product name"
+            placeholder="Search product name or SN"
             className="py-2 px-3 w-[240px] border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -151,6 +152,7 @@ export default function AuditTrail() {
         />
       )}
       </div>
+      <DistributeTable   />
     </div>
   );
 }
