@@ -588,7 +588,8 @@ export default function AssetTable() {
             </table>
           </div>
         </div>
-        <ReactPaginate
+      </div>
+      <ReactPaginate
               previousLabel={"< Previous"}
               nextLabel={"Next >"}
               breakLabel={"..."}
@@ -608,7 +609,6 @@ export default function AssetTable() {
               breakLinkClassName="inline-block px-3 py-2"
               disabledClassName="opacity-50 cursor-not-allowed"
             />
-      </div>
     </div>
   );
 }

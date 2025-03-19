@@ -71,7 +71,7 @@ export default function UserAudit() {
   };
 
   return (
-    <div className="rounded-lg">
+    <div className="rounded-lg flex flex-col items-end">
       <div className="top-part flex w-[100%] justify-between items-center pr-4">
         <h1 className="text-[22px] font-semibold mb-[6px]">History</h1>
       </div>

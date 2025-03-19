@@ -1,11 +1,15 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import moment from "moment";
+import ReactPaginate from "react-paginate";
+
+const ITEMS_PER_PAGE = 8;
 
 export default function AuditTrail() {
   const [assetLogs, setAssetLogs] = useState([]);
   const [filteredLogs, setFilteredLogs] = useState(assetLogs);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
 
   const fetchLogs = useCallback(async () => {
     try {
@@ -22,6 +26,16 @@ export default function AuditTrail() {
     }
   }, []);
 
+  const pageCount = Math.ceil(filteredLogs.length / ITEMS_PER_PAGE);
+  const paginatedLogs = filteredLogs.slice(
+    currentPage * ITEMS_PER_PAGE,
+    (currentPage + 1) * ITEMS_PER_PAGE
+  );
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+  
   useEffect(() => {
     fetchLogs();
   }, []); 
@@ -42,7 +56,7 @@ export default function AuditTrail() {
           <input
             type="text"
             placeholder="Search email or product name"
-            className="h-10 py-4 px-3 border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
+            className="py-2 px-3 w-[240px] border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
@@ -61,7 +75,7 @@ export default function AuditTrail() {
               </tr>
             </thead>
             <tbody>
-              {filteredLogs.map((log) => (
+              {paginatedLogs.map((log) => (
                 <tr
                   key={log._id}
                   className="text-left border-gray-300 border-b-[1px]"
@@ -114,6 +128,28 @@ export default function AuditTrail() {
             </tbody>
           </table>
         </div>
+        {pageCount > 1 && (
+        <ReactPaginate
+          previousLabel={"< Previous"}
+          nextLabel={"Next >"}
+          breakLabel={"..."}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={3}
+          onPageChange={handlePageClick}
+          containerClassName="flex items-center justify-center space-x-2 mt-3"
+          pageClassName="rounded-md border text-blue-600 transition"
+          pageLinkClassName="inline-block select-none px-3 py-2 w-full h-full cursor-pointer hover:bg-blue-500 hover:text-white rounded-md transition-all"
+          activeClassName="bg-blue-500 text-white font-bold"
+          previousClassName="rounded-md border-gray-400 font-semibold border select-none text-gray-600 transition"
+          previousLinkClassName="inline-block select-none px-3 py-2 transition-all cursor-pointer hover:bg-gray-400 hover:text-white rounded-md"
+          nextClassName="rounded-md border-gray-400 font-semibold border select-none text-gray-600 transition"
+          nextLinkClassName="inline-block select-none px-3 py-2 transition-all cursor-pointer hover:bg-gray-400 hover:text-white rounded-md"
+          breakClassName="text-gray-500"
+          breakLinkClassName="inline-block px-3 py-2"
+          disabledClassName="opacity-50 cursor-not-allowed"
+        />
+      )}
       </div>
     </div>
   );
