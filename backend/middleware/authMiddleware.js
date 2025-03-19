@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.header("Authorization");
-  console.log("Authorization Header:", authHeader); // ✅ Debug log
+  console.log("Authorization Header:", authHeader); //  Debug log
 
   if (!authHeader) {
     return res.status(401).json({ message: "Access denied: No token provided" });
@@ -15,7 +15,7 @@ const authenticateToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded Token:", decoded); // ✅ Debug log decoded token
+    console.log("Decoded Token:", decoded); //  Debug log decoded token
     req.user = decoded; // Attach user data to request
     next();
   } catch (error) {

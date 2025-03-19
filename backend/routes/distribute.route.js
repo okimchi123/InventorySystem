@@ -1,21 +1,14 @@
 const express = require("express");
+const authenticateToken = require("../middleware/authMiddleware");
+
 const {
     distributeAsset,
-    getUserAsset,
-    getAssetUser,
-    getAllUserWithAssets,
-    getAllDistributedAssets,
+    getDistributeLogs,
 } = require("../controllers/distribute.controller")
 
 const router = express.Router();
 
-router.get("/user/:id", getUserAsset);
-router.get("/user", getAllUserWithAssets);
-
-router.get("/asset/:id", getAssetUser);
-router.get("/asset", getAllDistributedAssets);
-
-router.post("/", distributeAsset);
-
+router.get("/distributeLogs", authenticateToken, getDistributeLogs);
+router.post("/", authenticateToken, distributeAsset);
 
 module.exports = router;
