@@ -4,7 +4,7 @@ import axios from "axios";
 import moment from "moment";
 import ReactPaginate from "react-paginate";
 
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 5;
 
 export default function AuditTrail() {
   const [assetLogs, setAssetLogs] = useState([]);
@@ -50,7 +50,7 @@ export default function AuditTrail() {
   }, [searchQuery, assetLogs]);
 
   return (
-    <div className="pt-22 py-6 flex flex-col gap-5 laptop:px-12 px-10 phone:px-4">
+    <div className="pt-22 py-6 flex flex-col gap-1 laptop:px-12 px-10 phone:px-4">
       <div className="flex flex-col items-end justify-center w-full mx-auto">
         <div className="flex gap-3 mx-auto py-4 w-full">
           <h1 className="text-2xl font-bold">Asset History</h1>
