@@ -49,10 +49,18 @@ export default function DistributeModal({ isOpen, onClose, selectedAssets, onSub
     setLoading(true);
     
     try {
-      const response = await axios.post("http://localhost:5000/api/distribute", {
-        assetIds: selectedAssets.map(asset => asset._id),
-        userId: selectedUser._id,
-      });
+      const token = localStorage.getItem("token");
+    
+      const response = await axios.post(
+        "http://localhost:5000/api/distribute",
+        {
+          assetIds: selectedAssets.map(asset => asset._id),
+          userId: selectedUser._id,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       setMessage(response.data.message);
       setShowSuccessModal(true);
