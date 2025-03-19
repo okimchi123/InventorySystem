@@ -64,30 +64,30 @@ const AssetGrid = () => {
             key={index}
             className="bg-white py-2 px-4 rounded-lg text-start border border-gray-200 shadow-lg"
           >
-            <h1 className="text-[22px] font-lg font-russo text-blue-500">
+            <h1 className="text-[22px] select-none font-lg font-russo text-blue-500">
               {item._id}
             </h1>
             <div className="flex justify-between">
               <div className="w-[32%] flex flex-col items-center">
-                <h4 className={`text-[20px] font-lg font-russo
+                <h4 className={`text-[20px] select-none font-lg font-russo
                   ${item.total > 0 ? "text-blue-500"
                     : "text-gray-600"
                   }
                   `}>{item.total}</h4>
-                <p className="text-base font-medium">Total</p>
+                <p className="text-base select-none font-medium">Total</p>
               </div>
               <div className="w-[32%] flex flex-col items-center">
-                <h4 className={`text-[20px] font-lg font-russo 
+                <h4 className={`text-[20px] select-none font-lg font-russo 
                   ${item.available > 0 ?  "text-green-500"
                     : "text-gray-600"
                   }
                   `}>
                   {item.available}
                 </h4>
-                <p className="text-base font-medium">Available</p>
+                <p className="text-base select-none font-medium">Available</p>
               </div>
               <div className="w-[32%] flex flex-col items-center">
-                <h4 className={`text-[20px] font-lg font-russo
+                <h4 className={`text-[20px] select-none font-lg font-russo
                   ${ item.distributed > 0 ? "text-orange-600"
                     : "text-gray-600"
                     
@@ -96,7 +96,7 @@ const AssetGrid = () => {
                    `}>
                   {item.distributed}
                 </h4>
-                <p className="text-base font-medium">Distributed</p>
+                <p className="text-base select-none font-medium">Distributed</p>
               </div>
             </div>
           </div>
