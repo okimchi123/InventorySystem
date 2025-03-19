@@ -37,15 +37,41 @@ export default function SideBar() {
                 </li>
                 <li class="mb-4">
                         <NavLink
-                            to="/admin/Audit-Trail"
+                            to="/admin/Asset-Log"
                             className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
-                                location.pathname === "/admin/Audit-Trail"
+                                location.pathname === "/admin/Asset-Log"
                                   ? "bg-blue-500 text-white"
                                   : "hover:bg-blue-700"
                               }` }
                         >
                             <FontAwesomeIcon icon="list-alt" className="mr-3" />
-                            Audit Trail
+                            Asset Log
+                        </NavLink>
+                </li>
+                <li class="mb-4">
+                        <NavLink
+                            to="/admin/Distribute-History"
+                            className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
+                                location.pathname === "/admin/Distribute-History"
+                                  ? "bg-blue-500 text-white"
+                                  : "hover:bg-blue-700"
+                              }` }
+                        >
+                            <FontAwesomeIcon icon="list-alt" className="mr-3" />
+                            Distribute History
+                        </NavLink>
+                </li>
+                <li class="mb-4">
+                        <NavLink
+                            to="/admin/Asset-Condition"
+                            className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
+                                location.pathname === "/admin/Asset-Condition"
+                                  ? "bg-blue-500 text-white"
+                                  : "hover:bg-blue-700"
+                              }` }
+                        >
+                            <FontAwesomeIcon icon="list-alt" className="mr-3" />
+                            Asset Condition Log
                         </NavLink>
                 </li>
                 <li class="mb-4">
