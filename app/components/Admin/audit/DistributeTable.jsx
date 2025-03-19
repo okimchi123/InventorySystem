@@ -64,14 +64,14 @@ export default function DistributeTable() {
           <table className="w-full bg-white">
             <thead>
               <tr className="bg-gray-200 border-gray-400 text-md text-left px-4">
-                <th className="py-3 px-4 whitespace-nowrap">Date</th>
                 <th className="py-3 px-4 whitespace-nowrap">Distributed By</th>
                 <th className="py-3 px-4 whitespace-nowrap">Product</th>
                 <th className="py-3 px-4 whitespace-nowrap">
                   Product Serial Number
                 </th>
                 <th className="py-3 px-4 whitespace-nowrap">Target User</th>
-                <th className="py-3 px-4 whitespace-nowrap">Action</th>
+                <th className="py-3 px-4 whitespace-nowrap text-center">Action</th>
+                <th className="py-3 px-4 whitespace-nowrap">Date</th>
               </tr>
             </thead>
             <tbody>
@@ -80,9 +80,6 @@ export default function DistributeTable() {
                   key={log._id}
                   className="text-left border-gray-300 border-b-[1px]"
                 >
-                  <td className="py-4 px-4 whitespace-nowrap">
-                    {moment(log.createdAt).format("MMMM D, YYYY h:mm A")}
-                  </td>
                   <td className="py-4 px-4 whitespace-nowrap">
                     {log.fromUser}
                   </td>
@@ -122,6 +119,9 @@ export default function DistributeTable() {
                     >
                       <span>{log.action}</span>
                     </div>
+                  </td>
+                  <td className="py-4 px-4 whitespace-nowrap">
+                    {moment(log.createdAt).format("MMMM D, YYYY h:mm A")}
                   </td>
                 </tr>
               ))}
