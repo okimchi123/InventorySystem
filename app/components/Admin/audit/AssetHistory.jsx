@@ -3,7 +3,7 @@ import axios from "axios";
 import moment from "moment";
 import ReactPaginate from "react-paginate";
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 8;
 
 export default function AssetHistory() {
   const [assetLogs, setAssetLogs] = useState([]);

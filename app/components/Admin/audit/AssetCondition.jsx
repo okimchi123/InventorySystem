@@ -3,6 +3,17 @@ import axios from "axios";
 import moment from "moment";
 import ReactPaginate from "react-paginate";
 
+import laptop from "../../../assets/images/items/laptop.jpg";
+import mouse from "../../../assets/images/items/mouse.jpg";
+import phone from "../../../assets/images/items/phone.jpg";
+import box from "../../../assets/images/items/box.jpg";
+import charger from "../../../assets/images/items/charger.jpg";
+import monitor from "../../../assets/images/items/monitor.jpg";
+import printer from "../../../assets/images/items/printer.jpg";
+import chair from "../../../assets/images/items/chair.jpg";
+import table from "../../../assets/images/items/table.jpg";
+import cable from "../../../assets/images/items/cable.jpg";
+
 const ITEMS_PER_PAGE = 5;
 
 export default function AssetCondition() {
@@ -31,10 +42,11 @@ export default function AssetCondition() {
   }, []);
 
   useEffect(() => {
-    const filtered = distributeLogs.filter((log) =>
-      log.fromUser.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      log.productname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      log.serialnumber.toLowerCase().includes(searchQuery.toLowerCase()) 
+    const filtered = distributeLogs.filter(
+      (log) =>
+        log.fromUser.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        log.productname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        log.serialnumber.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredLogs(filtered);
   }, [searchQuery, distributeLogs]);
@@ -50,74 +62,106 @@ export default function AssetCondition() {
   };
 
   return (
-      <div className="flex flex-col items-end justify-center w-full mx-auto">
-        <div className="flex gap-3 mx-auto py-4 w-full">
-          <h1 className="text-2xl font-bold">Asset Condition Log</h1>
-          <input
-            type="text"
-            placeholder="Search"
-            className="py-2 px-3 w-[240px] border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-        <div className="w-full overflow-x-auto h-full border border-gray-300 rounded-lg shadow-md">
-          <table className="w-full bg-white">
-            <thead>
-              <tr className="bg-gray-200 border-gray-400 text-md text-left px-4">
-                <th className="py-3 px-4 whitespace-nowrap">Altered by</th>
-                <th className="py-3 px-4 whitespace-nowrap">Product</th>
-                <th className="py-3 px-4 whitespace-nowrap">
-                  Product Serial Number
-                </th>
-                <th className="py-3 px-4 whitespace-nowrap">Reason</th>
-                <th className="py-3 px-4 whitespace-nowrap text-center">Action</th>
-                <th className="py-3 px-4 whitespace-nowrap">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedLogs.map((log) => (
-                <tr
-                  key={log._id}
-                  className="text-left border-gray-300 border-b-[1px]"
-                >
-                  <td className="py-4 px-4 whitespace-nowrap">
-                    {log.fromUser}
-                  </td>
-                  <td className="py-4 px-4">
-                    {log.productname}
-                  </td>
-                  <td className="py-4 px-4">
-                    {log.serialnumber}
-                  </td>
-                  <td className="py-4 px-4 whitespace-nowrap">
-                    { log.condition === "Good"? "Fixed"
-                      : log.condition === "Scrap"? "Scrapped"
-                      : log.reason  
-                  }
-                    </td>
-                  <td className="py-4 px-4 whitespace-nowrap">
-                    <div
-                      className={`py-[6px] rounded-lg text-center text-[18px] 
+    <div className="flex flex-col items-end justify-center w-full mx-auto">
+      <div className="flex gap-3 mx-auto py-4 w-full">
+        <h1 className="text-2xl font-bold">Asset Condition Log</h1>
+        <input
+          type="text"
+          placeholder="Search"
+          className="py-2 px-3 w-[240px] border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+      <div className="w-full overflow-x-auto h-full border border-gray-300 rounded-lg shadow-md">
+        <table className="w-full bg-white">
+          <thead>
+            <tr className="bg-gray-200 border-gray-400 text-md text-left px-4">
+              <th className="py-3 px-4 whitespace-nowrap">Altered by</th>
+              <th className="py-3 px-4 whitespace-nowrap text-center">Product</th>
+              <th className="py-3 px-4 whitespace-nowrap">
+                Product Serial Number
+              </th>
+              <th className="py-3 px-4 whitespace-nowrap">Reason</th>
+              <th className="py-3 px-4 whitespace-nowrap text-center">
+                Action
+              </th>
+              <th className="py-3 px-4 whitespace-nowrap">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedLogs.map((log) => (
+              <tr
+                key={log._id}
+                className="text-left border-gray-300 border-b-[1px]"
+              >
+                <td className="py-4 px-4 whitespace-nowrap">{log.fromUser}</td>
+                <td className="py-4 px-4">
+                  <div className="flex gap-[12px]">
+                    <img
+                      alt="item image"
+                      class="w-25 h-20"
+                      src={
+                        log.producttype === "Laptop"
+                          ? laptop
+                          : log.producttype === "Mouse"
+                          ? mouse
+                          : log.producttype === "Phone"
+                          ? phone
+                          : log.producttype === "Charger"
+                          ? charger
+                          : log.producttype === "Chair"
+                          ? chair
+                          : log.producttype === "Box"
+                          ? box
+                          : log.producttype === "Table"
+                          ? table
+                          : log.producttype === "Monitor"
+                          ? monitor
+                          : log.producttype === "Printer"
+                          ? printer
+                          : log.producttype === "Cable"
+                          ? cable
+                          : ""
+                      }
+                    />
+                    <div className="flex flex-col mt-3">
+                      <span className="text-[20px] font-medium">{log.productname} </span>
+                      <span className="text-[16px] text-gray-500"> {log.producttype}</span>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td className="py-4 px-4">{log.serialnumber}</td>
+                <td className="py-4 px-4 whitespace-nowrap">
+                  {log.condition === "Good"
+                    ? "Fixed"
+                    : log.condition === "Scrap"
+                    ? "Scrapped"
+                    : log.reason}
+                </td>
+                <td className="py-4 px-4 whitespace-nowrap">
+                  <div
+                    className={`py-[6px] rounded-lg text-center text-[18px] 
                       ${
                         log.condition === "Good"
-                        ? "text-green-900 bg-green-100"
-                        : log.condition === "Broken"
-                        ? "text-red-900 bg-red-100"
-                        : "text-gray-900 bg-gray-200"
+                          ? "text-green-900 bg-green-100"
+                          : log.condition === "Broken"
+                          ? "text-red-900 bg-red-100"
+                          : "text-gray-900 bg-gray-200"
                       }`}
-                    >
-                      <span>{log.condition}</span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-4 whitespace-nowrap">
-                    {moment(log.createdAt).format("MMMM D, YYYY h:mm A")}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {pageCount > 1 && (
+                  >
+                    <span>{log.condition}</span>
+                  </div>
+                </td>
+                <td className="py-4 px-4 whitespace-nowrap">
+                  {moment(log.createdAt).format("MMMM D, YYYY h:mm A")}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {pageCount > 1 && (
         <ReactPaginate
           previousLabel={"< Previous"}
           nextLabel={"Next >"}
@@ -139,6 +183,6 @@ export default function AssetCondition() {
           disabledClassName="opacity-50 cursor-not-allowed"
         />
       )}
-      </div>
+    </div>
   );
 }

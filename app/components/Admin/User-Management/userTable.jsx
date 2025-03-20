@@ -247,7 +247,6 @@ export default function UserTable({ openModal }) {
           />
           <thead className="bg-gray-200">
             <tr className="bg-gray-200 border-gray-400 text-md text-left px-4">
-              <th className="py-3 px-4 whitespace-nowrap">ID</th>
               <th className="py-3 px-4 whitespace-nowrap">Name</th>
               <th className="py-3 px-4 whitespace-nowrap">Role</th>
               <th className="py-3 px-4 whitespace-nowrap">Email</th>
@@ -262,9 +261,6 @@ export default function UserTable({ openModal }) {
                 key={user._id}
                 className="text-left border-gray-300 border-b-[1px]"
               >
-                <td className="py-4 px-4 whitespace-nowrap">
-                  {user._id.slice(0, 6)}
-                </td>
                 <td className="py-4 px-4 whitespace-nowrap">{`${user.firstname} ${user.lastname}`}</td>
                 <td className="py-4 px-4 whitespace-nowrap">{user.role}</td>
                 <td className="py-4 px-4 whitespace-nowrap">{user.email}</td>
