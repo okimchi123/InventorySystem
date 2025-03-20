@@ -22,10 +22,10 @@ export default function Description({ item, isOpen, onClose }) {
           animate="visible"
           exit="exit"
           variants={modalVariants}
-          className="bg-white py-6 px-8 rounded-lg shadow-lg "
+          className="bg-white py-20 px-18 rounded-lg shadow-lg relative"
         >
           <div className="flex flex-col gap-[22px] mb-[12px]">
-            <h1 className="text-[30px]">{item.productname}</h1>
+            <h1 className="text-[30px] absolute left-[24px] top-[12px]">{item.productname}</h1>
             <div className="flex gap-5">
               <img
                 alt="item image"
@@ -56,10 +56,10 @@ export default function Description({ item, isOpen, onClose }) {
               />
               <div className="item-info flex flex-col gap-2">
                 <div className="flex gap-[8px]">
-                  <span className="text-[20px] font-semibold">Product Type:</span><p className="text-[20px]">{item.producttype}</p>
+                  <span className="text-[20px] font-semibold">Product Type:</span><p className="text-[20px] text-gray-700">{item.producttype}</p>
                 </div>
                 <div className="flex gap-[8px]">
-                  <span className="text-[20px] font-semibold">Serial Number:</span><p className="text-[20px]">{item.serialnumber}</p>
+                  <span className="text-[20px] font-semibold">Serial Number:</span><p className="text-[20px] text-gray-700">{item.serialnumber}</p>
                 </div>
                 <div className="flex gap-[8px]">
                   <span className="text-[20px] font-semibold">Condition:</span><p className={`text-[18px] px-3 py-1
@@ -74,15 +74,15 @@ export default function Description({ item, isOpen, onClose }) {
                 </div>
                 {item.condition === "Broken" ?
                   <div className="flex gap-[8px]">
-                  <span className="text-[20px] font-semibold">Reason:</span><p className="text-[20px]">{item.reason}</p>
+                  <span className="text-[20px] font-semibold ">Reason:</span><p className="text-[20px] text-gray-700">{item.reason}</p>
                 </div> : <></>
                 }
                 <div className="flex gap-[8px]">
-                  <span className="text-[20px] font-semibold">Description:</span><p className="text-[20px]">{item.description}</p>
+                  <span className="text-[20px] font-semibold">Description:</span><p className="text-[20px] text-gray-700">{item.description}</p>
                 </div>
                 {item.status === "Distributed" ?
                   <div className="flex gap-[8px]">
-                  <span className="text-[20px] font-semibold">Distributed To:</span><p className="text-[20px]">{item.distributedToName}</p>
+                  <span className="text-[20px] font-semibold">Distributed To:</span><p className="text-[20px] text-gray-700">{item.distributedToName}</p>
                 </div> : <></>
                 }
 
@@ -93,7 +93,7 @@ export default function Description({ item, isOpen, onClose }) {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 cursor-pointer transition-all hover:bg-gray-700 bg-gray-500 text-white rounded-lg"
+              className="px-4 py-2 absolute right-[24px] bottom-[12px] cursor-pointer transition-all hover:bg-gray-700 bg-gray-500 text-white rounded-lg"
             >
               Cancel
             </button>

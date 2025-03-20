@@ -524,7 +524,7 @@ export default function AssetTable() {
                     <td class="py-2 px-4 whitespace-nowrap">
                       <button
                         onClick={() => openDescriptionModal(item)}
-                        className="text-[18px] ml-5 cursor-pointer font-semibold hover:font-bold transition-all"
+                        className="text-[18px] ml-3 bg-blue-900 text-white py-1 px-3 rounded-2xl cursor-pointer font-semibold hover:bg-blue-700 transition-all"
                       >
                         view
                       </button>
