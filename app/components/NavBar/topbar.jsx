@@ -24,21 +24,21 @@ export default function TopBar(props) {
   }, []);
 
   return (
-    <div class="fixed w-4/5 bg-white z-10 px-6 py-3 flex justify-between items-center shadow-md">
+    <div className="fixed w-4/5 bg-white z-10 px-6 py-3 flex justify-between items-center shadow-md">
 
-      <div class="flex flex-row items-center gap-4">
-        <button class="text-black focus:outline-none">
+      <div className="flex flex-row items-center gap-4">
+        <button className="text-black focus:outline-none">
           <FontAwesomeIcon icon="bars" />
         </button>
-        <h2 class="text-xl font-semibold mr-4">{pageTitle}</h2>
+        <h2 className="text-xl font-semibold mr-4">{pageTitle}</h2>
       </div>
 
-      <div class="relative dropdown" ref={dropdownRef}>
-        <button onClick={toggleDropdown} class="flex flex-row items-center gap-3 border border-black shadow-gray-700 shadow-sm bg-amber-400 text-black px-4 w-fit rounded-xl cursor-pointer">
+      <div className="relative dropdown" ref={dropdownRef}>
+        <button onClick={toggleDropdown} className="flex flex-row items-center gap-3 border border-black shadow-gray-700 shadow-sm bg-amber-400 text-black px-4 w-fit rounded-xl cursor-pointer">
           <FontAwesomeIcon icon="user" size="xl" />
-          <div class="flex flex-col items-start">
-            <h1 class="font-medium">{props.name}</h1>
-            <h1 class="text-sm">{props.role}</h1>
+          <div className="flex flex-col items-start">
+            <h1 className="font-medium">{props.name}</h1>
+            <h1 className="text-sm">{props.role}</h1>
           </div>
           <FontAwesomeIcon icon="angle-down" size="md" className={`transition-transform ${isOpen ? "transform-[rotate(180deg)]" : "transform-none" }`} />
         </button>

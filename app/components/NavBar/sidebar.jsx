@@ -5,10 +5,10 @@ export default function SideBar() {
     const location = useLocation();
 
     return (
-        <div class="w-1/5 bg-blue-600 text-white h-screen px-[12px] py-[24px] fixed flex flex-col items-center">
-            <h1 class="text-4xl mb-6 mt-2 font-medium font-russo">E-Inventory</h1>
-            <ul class="font-monserat">
-                <li class="mb-4">
+        <div className="w-1/5 bg-blue-600 text-white h-screen px-[12px] py-[24px] fixed flex flex-col items-center">
+            <h1 className="text-4xl mb-6 mt-2 font-medium font-russo">E-Inventory</h1>
+            <ul className="font-monserat">
+                <li className="mb-4">
                         <NavLink
                             to="/admin/Dashboard"
                             className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
@@ -22,7 +22,7 @@ export default function SideBar() {
                         </NavLink>
 
                 </li>
-                <li class="mb-4">
+                <li className="mb-4">
                         <NavLink
                             to="/admin/Asset-Management"
                             className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
@@ -35,7 +35,7 @@ export default function SideBar() {
                             Asset Management
                         </NavLink>
                 </li>
-                <li class="mb-4">
+                <li className="mb-4">
                         <NavLink
                             to="/admin/Asset-Log"
                             className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
@@ -48,7 +48,7 @@ export default function SideBar() {
                             Asset Log
                         </NavLink>
                 </li>
-                <li class="mb-4">
+                <li className="mb-4">
                         <NavLink
                             to="/admin/Distribute-History"
                             className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
@@ -61,7 +61,7 @@ export default function SideBar() {
                             Distribute History
                         </NavLink>
                 </li>
-                <li class="mb-4">
+                <li className="mb-4">
                         <NavLink
                             to="/admin/Asset-Condition"
                             className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
@@ -74,7 +74,7 @@ export default function SideBar() {
                             Asset Condition Log
                         </NavLink>
                 </li>
-                <li class="mb-4">
+                <li className="mb-4">
                         <NavLink
                             to="/admin/User-Management"
                             className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
