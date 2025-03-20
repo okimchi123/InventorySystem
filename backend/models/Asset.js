@@ -44,16 +44,6 @@ const AssetSchema = new mongoose.Schema(
           enum: ["Good", "Broken", "Scrap"],
           default: "Pending",
         },
-        availablestock:{
-          type: Number,
-          required: false,
-          default: 0,
-        },
-        deployedstock:{
-          type: Number,
-          required: false,
-          default: 0,
-        },
         distributedTo: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Account",
