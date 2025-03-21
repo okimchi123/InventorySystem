@@ -12,9 +12,9 @@ import DistributePage from "./pages/admin/Distribute-History/DistributePage";
 import AssetConditionLogs from "./pages/admin/Asset-Condition/AssetConditionPage";
 import EmployeeList from "./pages/admin/Employee-list/EmployeeList";
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faChartSimple, faUserPlus, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+import { faChartSimple, faUpRightAndDownLeftFromCenter, faUserPlus, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 
-library.add( faChartSimple, faUserPlus, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation)
+library.add( faChartSimple, faUpRightAndDownLeftFromCenter, faUserPlus, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation)
 
 function App() {
   return (
