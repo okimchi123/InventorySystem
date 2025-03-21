@@ -54,7 +54,7 @@ const InventoryPieChart = () => {
   }, [assets]);
 
   return (
-    <div className="p-6 rounded-2xl h-[95%] w-[68%] shadow-lg">
+    <div className="p-6 rounded-2xl h-[95%] w-[68%] shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
       <h2 className="text-xl font-semibold mb-4">Assets Overview</h2>
       <div className="w-[100%] h-[100%]">
         <Pie data={chartData} />
