@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { modalVariants } from "../../../utils/animation/animation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import moment from "moment";
+
 
 import laptop from "../../../assets/images/items/laptop.jpg";
 import mouse from "../../../assets/images/items/mouse.jpg";
@@ -29,6 +31,7 @@ export default function Description({ item, isOpen, onClose }) {
             <div className="flex gap-5">
               <img
                 alt="item image"
+                
                 class="w-40 h-40"
                 src={
                   item.producttype === "Laptop"
@@ -81,9 +84,15 @@ export default function Description({ item, isOpen, onClose }) {
                   <span className="text-[20px] font-semibold">Description:</span><p className="text-[20px] text-gray-700">{item.description}</p>
                 </div>
                 {item.status === "Distributed" ?
+                <>
                   <div className="flex gap-[8px]">
                   <span className="text-[20px] font-semibold">Distributed To:</span><p className="text-[20px] text-gray-700">{item.distributedToName}</p>
-                </div> : <></>
+                </div>
+                <div className="flex gap-[8px]">
+                  <span className="text-[20px] font-semibold">Distribution Date:</span><p className="text-[20px] text-gray-700">{moment(item.distributionDate).format("MMMM D, YYYY h:mm A")}</p>
+                </div>
+                </>
+                : <></>
                 }
 
               </div>

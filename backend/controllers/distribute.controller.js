@@ -35,6 +35,7 @@ const distributeAsset = async (req, res) => {
           distributedTo: userId,
           distributedToName: `${user.firstname} ${user.lastname}`,
           status: "Distributed",
+          distributionDate: new Date(),
         },
       }
     );
