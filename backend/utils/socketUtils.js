@@ -97,7 +97,7 @@ async function emitAssetStatistics(Asset) {
     };
 
     if (io) {
-      io.emit("updateAssetStatistics", statistics);
+      io.sockets.emit("updateAssetStatistics", statistics); // Broadcast to all clients
     } else {
       console.error("Socket.io not initialized");
     }
