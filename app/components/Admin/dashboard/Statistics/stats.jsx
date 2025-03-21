@@ -125,7 +125,7 @@ const AssetTrendsChart = () => {
           ))}
         </div>
         <select
-          className="border p-2 rounded-lg"
+          className="border p-2 rounded-lg border-gray-500 text-gray-800"
           value={selectedProduct}
           onChange={(e) => {
             setSelectedProduct(e.target.value);
