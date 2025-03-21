@@ -41,7 +41,7 @@ export default function AdminMain(){
     });
     socket.on("updateAssetStatistics", (statistics) => {
       setAssets(statistics);
-    });
+    }); 
 
     return () => {
       socket.off("updateAssetStatistics");
