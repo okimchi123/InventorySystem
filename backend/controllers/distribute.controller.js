@@ -76,7 +76,25 @@ const getDistributeLogs = async (req, res) => {
   }
 };
 
+const getUsersWithAssets = async (req, res) => {
+  try {
+    const users = await Account.find({ handlingAssets: { $exists: true, $ne: [] } })
+      .populate("handlingAssets")
+      .select("firstname lastname phone email role handlingAssets");
+
+    if (!users.length) {
+      return res.status(404).json({ message: "No users handling assets found." });
+    }
+
+    res.status(200).json({ users });
+  } catch (error) {
+    console.error("Error fetching users with assets:", error);
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
 module.exports = {
   distributeAsset,
   getDistributeLogs,
+  getUsersWithAssets,
 };
