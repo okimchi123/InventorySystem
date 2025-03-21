@@ -15,12 +15,12 @@ const InventoryPieChart = () => {
   });
 
   const [chartData, setChartData] = useState({
-    labels: ["Available", "Distributed", "Broken"],
+    labels: ["Available", "Distributed", "Broken", "Scrap"],
     datasets: [
       {
         label: "Total Count",
-        data: [0, 0, 0],
-        backgroundColor: ["#09CE1F", "#F8B721", "#A3A3A3"],
+        data: [0, 0, 0, 0],
+        backgroundColor: ["#09CE1F", "#F8B721", "#A3A3A3", "#E01013"],
       },
     ],
   });
@@ -42,19 +42,19 @@ const InventoryPieChart = () => {
     if (!assets.totalAssets) return;
 
     setChartData({
-      labels: ["Available", "Distributed", "Broken"],
+      labels: ["Available", "Distributed", "Broken", "Scrap"],
       datasets: [
         {
           label: "Total Count",
-          data: [assets.totalAvailable, assets.totalDistributed, assets.totalBroken], 
-          backgroundColor: ["#09CE1F", "#F8B721", "#A3A3A3"],
+          data: [assets.totalAvailable, assets.totalDistributed, assets.totalBroken, assets.totalScrap], 
+          backgroundColor: ["#09CE1F", "#F8B721", "#A3A3A3", "#E01013"],
         },
       ],
     });
   }, [assets]);
 
   return (
-    <div className="p-6 rounded-2xl h-[95%] w-[68%] shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+    <div className="p-6 rounded-2xl h-[95%] w-[68%] shadow-[0_3px_10px_rgb(0,0,0,0.2)] hover:shadow-sm transition-all">
       <h2 className="text-xl font-semibold mb-4">Assets Overview</h2>
       <div className="w-[100%] h-[100%]">
         <Pie data={chartData} />

@@ -87,6 +87,19 @@ export default function SideBar() {
                             User Management
                         </NavLink>
                 </li>
+                <li className="mb-4">
+                        <NavLink
+                            to="/admin/User-Management"
+                            className={`flex items-center px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
+                                location.pathname === "/admin/User-Management"
+                                  ? "bg-blue-500 text-white"
+                                  : "hover:bg-blue-700"
+                              }` }
+                        >
+                            <FontAwesomeIcon icon="users" className="mr-3" />
+                            Employee List
+                        </NavLink>
+                </li>
             </ul>
         </div>
     )
