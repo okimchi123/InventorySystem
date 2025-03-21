@@ -2,6 +2,12 @@ import  TotalAssets  from "./Statistics/stats"
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:5000", {
+  transports: ["websocket"],
+  reconnectionAttempts: 5,
+});
 
 export default function AdminMain(){
   const [assets, setAssets] = useState({
@@ -24,6 +30,24 @@ export default function AdminMain(){
 
     fetchTotalAssets();
   }, []);
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("Connected to WebSocket server");
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Disconnected from WebSocket server");
+    });
+    socket.on("updateAssetStatistics", (statistics) => {
+      setAssets(statistics);
+    });
+
+    return () => {
+      socket.off("updateAssetStatistics");
+    };
+  }
+  , []);
 
   return (
     <div className="pt-22 py-6 flex flex-col gap-1 laptop:px-12 px-10 phone:px-4">
@@ -58,6 +82,7 @@ export default function AdminMain(){
       <div className="flex flex-wrap -mx-2">
         <div className="w-full md:w-1/2 p-2">
           <TotalAssets />
+          
         </div>
       </div>
     </div>

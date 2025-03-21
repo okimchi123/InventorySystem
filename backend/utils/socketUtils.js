@@ -80,4 +80,30 @@ async function emitAssetSummary(Asset) {
   }
 }
 
-module.exports = { setIO, emitAuditLogs, emitUserLogs, emitAssetLogs, emitAssetSummary };
+async function emitAssetStatistics(Asset) {
+  try {
+    const totalAssets = await Asset.countDocuments();
+    const totalAvailable = await Asset.countDocuments({ status: "just_added", condition: "Good" });
+    const totalDistributed = await Asset.countDocuments({ status: "Distributed" });
+    const totalBroken = await Asset.countDocuments({ condition: "Broken" });
+    const totalScrap = await Asset.countDocuments({ condition: "Scrap" });
+
+    const statistics = {
+      totalAssets,
+      totalAvailable,
+      totalDistributed,
+      totalBroken,
+      totalScrap
+    };
+
+    if (io) {
+      io.emit("updateAssetStatistics", statistics);
+    } else {
+      console.error("Socket.io not initialized");
+    }
+  } catch (error) {
+    console.error("Error emitting asset statistics:", error);
+  }
+}
+
+module.exports = { setIO, emitAuditLogs, emitUserLogs, emitAssetLogs, emitAssetSummary, emitAssetStatistics };

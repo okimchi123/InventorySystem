@@ -2,7 +2,7 @@ const Asset = require("../models/Asset");
 const AssetLog = require("../models/assetAudit");
 const AssetConditionLog = require("../models/assetCondition");
 const Account = require("../models/User");
-const { emitAssetLogs, emitAssetSummary } = require("../utils/socketUtils");
+const { emitAssetLogs, emitAssetSummary, emitAssetStatistics } = require("../utils/socketUtils");
 
 const getAssets = async (req, res) => {
   try {
@@ -71,6 +71,7 @@ const addAsset = async (req, res) => {
 
     await emitAssetLogs(Asset);
     await emitAssetSummary(Asset);
+    await emitAssetStatistics(Asset);
 
     res.status(201).json({ message: "Asset created successfully!", asset });
   } catch (error) {
