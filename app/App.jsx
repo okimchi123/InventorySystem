@@ -10,10 +10,11 @@ import UserManagement from "./pages/admin/User-Management/UserManagement"
 import AssetManagement from "./pages/admin/Asset-Management/AssetManagement";
 import DistributePage from "./pages/admin/Distribute-History/DistributePage";
 import AssetConditionLogs from "./pages/admin/Asset-Condition/AssetConditionPage";
+import EmployeeList from "./pages/admin/Employee-list/EmployeeList";
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faChartSimple, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+import { faChartSimple, faUserPlus, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 
-library.add( faChartSimple, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation)
+library.add( faChartSimple, faUserPlus, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation)
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/admin/Asset-Management" element={<AssetManagement />} /> 
             <Route path="/admin/Distribute-History" element={<DistributePage />} /> 
             <Route path="/admin/Asset-Condition" element={<AssetConditionLogs />} /> 
+            <Route path="/admin/Employee-List" element={<EmployeeList />} /> 
           </Route>
         </Route>
       </Routes>

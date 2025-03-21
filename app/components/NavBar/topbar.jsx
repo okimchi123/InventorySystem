@@ -30,17 +30,17 @@ export default function TopBar(props) {
         <button className="text-black focus:outline-none">
           <FontAwesomeIcon icon="bars" />
         </button>
-        <h2 className="text-xl font-semibold mr-4">{pageTitle}</h2>
+        <h2 className="text-xl font-semibold mr-4 select-none">{pageTitle}</h2>
       </div>
 
       <div className="relative dropdown" ref={dropdownRef}>
-        <button onClick={toggleDropdown} className="flex flex-row items-center gap-3 border border-black shadow-gray-700 shadow-sm bg-amber-400 text-black px-4 w-fit rounded-xl cursor-pointer">
-          <FontAwesomeIcon icon="user" size="xl" />
+        <button onClick={toggleDropdown} className="flex flex-row py-1 items-center gap-3 shadow-gray-700 bg-blue-600 hover:bg-blue-500 transition-all text-black px-4 w-fit rounded-xl cursor-pointer">
+          <FontAwesomeIcon icon="user" size="xl" color="white" />
           <div className="flex flex-col items-start">
-            <h1 className="font-medium">{props.name}</h1>
-            <h1 className="text-sm">{props.role}</h1>
+            <h1 className="font-medium select-none text-gray-100">{props.name}</h1>
+            <h1 className="text-sm select-none text-gray-100">{props.role}</h1>
           </div>
-          <FontAwesomeIcon icon="angle-down" size="md" className={`transition-transform ${isOpen ? "transform-[rotate(180deg)]" : "transform-none" }`} />
+          <FontAwesomeIcon icon="angle-down" size="md" color="white" className={`transition-transform ${isOpen ? "transform-[rotate(180deg)]" : "transform-none" }`} />
         </button>
         <AnimatePresence>
           {isOpen && (
@@ -49,17 +49,17 @@ export default function TopBar(props) {
               animate="visible"
               exit="exit"
               variants={dropdownVariants}
-              className="dropdown-menu absolute right-0 mt-2 w-48 bg-white shadow-lg py-2 z-20 rounded-lg"
+              className="dropdown-menu absolute right-0 mt-2 w-48 bg-blue-600 shadow-lg py-2 z-20 rounded-lg"
             >
-              <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-200 transition-all">
+              <a href="#" className="block px-4 py-2 text-white hover:bg-blue-400 transition-all">
                 Profile
               </a>
-              <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-200 transition-all">
+              <a href="#" className="block px-4 py-2 text-white hover:bg-blue-400 transition-all">
                 Settings
               </a>
               <a
                 onClick={props.onLogout}
-                className="block px-4 py-2 text-gray-800 hover:bg-gray-200 cursor-pointer transition-all"
+                className="block px-4 py-2 text-white hover:bg-blue-400 cursor-pointer transition-all"
               >
                 Logout
               </a>

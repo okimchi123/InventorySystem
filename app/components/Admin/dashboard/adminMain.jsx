@@ -52,7 +52,6 @@ export default function AdminMain(){
 
   return (
     <div className="pt-22 py-6 flex flex-col gap-1 laptop:px-12 px-10 phone:px-4">
-      <h1 className="text-2xl font-bold">Overview</h1>
       <div className="grid grid-cols-5 gap-4 mb-6">
         <div className="bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
           <h4 className="text-4xl font-lg font-russo select-none text-gray-700 ">{assets.totalAssets}</h4>

@@ -51,7 +51,6 @@ export default function AssetHistory() {
   return (
       <div className="flex flex-col items-end justify-center w-full mx-auto">
         <div className="flex gap-3 mx-auto py-4 w-full">
-          <h1 className="text-2xl font-bold">Asset Log</h1>
           <input
             type="text"
             placeholder="Search product name or SN"

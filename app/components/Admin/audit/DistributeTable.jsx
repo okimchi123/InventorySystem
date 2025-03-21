@@ -52,7 +52,6 @@ export default function DistributeTable() {
   return (
       <div className="flex flex-col items-end justify-center w-full mx-auto">
         <div className="flex gap-3 mx-auto py-4 w-full">
-          <h1 className="text-2xl font-bold">Distribute History</h1>
           <input
             type="text"
             placeholder="Search"
