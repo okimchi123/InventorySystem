@@ -1,4 +1,5 @@
 import  TotalAssets  from "./Statistics/stats"
+import InventoryPieChart from "./Statistics/piechart";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
@@ -79,10 +80,12 @@ export default function AdminMain(){
           <FontAwesomeIcon icon="trash-can" size="xl" color="red" className="absolute right-5 bottom-5" />
         </div>
       </div>
-      <div className="flex flex-wrap -mx-2">
-        <div className="w-full md:w-1/2 p-2">
+      <div className="flex gap-4 justify-between -mx-2">
+        <div className="w-[55%] p-2">
           <TotalAssets />
-          
+        </div>
+        <div className="w-[45%] p-2 flex items-center justify-center">
+        <InventoryPieChart />
         </div>
       </div>
     </div>

@@ -105,7 +105,7 @@ const AssetTrendsChart = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg">
+    <div className="bg-white h-[100%] w-[100%] p-6 rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-xl font-semibold mb-4">Total Assets</h3>
         <div className="buttons flex p-[4px] gap-[4px]">
