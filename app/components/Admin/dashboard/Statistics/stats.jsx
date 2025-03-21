@@ -17,7 +17,14 @@ const AssetTrendsChart = () => {
   const [chartData, setChartData] = useState(null);
   const [selectedTimeframe, setSelectedTimeframe] = useState("yearly");
   const [selectedProduct, setSelectedProduct] = useState("All");
-  const [fetchedData, setFetchedData] = useState({ weekly: [], monthly: [], yearly: [] });
+  const [fetchedData, setFetchedData] = useState({
+    weekly: [],
+    monthly: [],
+    yearly: [],
+    weeklyTotal: [],
+    monthlyTotal: [],
+    yearlyTotal: [],
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,8 +34,10 @@ const AssetTrendsChart = () => {
           weekly: response.data.weeklyData,
           monthly: response.data.monthlyData,
           yearly: response.data.yearlyData,
+          weeklyTotal: response.data.weeklyTotal,
+          monthlyTotal: response.data.monthlyTotal,
+          yearlyTotal: response.data.yearlyTotal,
         });
-        updateChart(response.data.yearlyData, "yearly", "All");
       } catch (error) {
         console.error("Error fetching asset trends:", error);
       }
@@ -37,12 +46,16 @@ const AssetTrendsChart = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    updateChart(fetchedData[selectedTimeframe], selectedTimeframe, selectedProduct);
+  }, [fetchedData, selectedTimeframe, selectedProduct]);
+
   const updateChart = (data, timeframe, productType) => {
     let labels = [];
     if (timeframe === "weekly") {
       labels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     } else if (timeframe === "monthly") {
-      labels = Array.from({ length: 31 }, (_, i) => `${String(i + 1).padStart(2, "0")}`); // Days as "01", "02", etc.
+      labels = Array.from({ length: 31 }, (_, i) => `${String(i + 1).padStart(2, "0")}`);
     } else if (timeframe === "yearly") {
       labels = [
         "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06",
@@ -50,16 +63,32 @@ const AssetTrendsChart = () => {
       ];
     }
 
-    // Filter data by selected product type
-    const filteredData = productType === "All"
-      ? data
-      : data.filter((item) => item._id.producttype === productType);
+    let filteredData;
+    if (productType === "All") {
+      if (timeframe === "weekly") filteredData = fetchedData.weeklyTotal;
+      else if (timeframe === "monthly") filteredData = fetchedData.monthlyTotal;
+      else if (timeframe === "yearly") filteredData = fetchedData.yearlyTotal;
+    } else {
+      filteredData = fetchedData[timeframe].filter((item) => item._id.producttype === productType);
+    }
 
-    // Map dataset values to corresponding labels
-    const dataValues = labels.map((label) => {
-      const found = filteredData.find((item) => item._id.period === label);
-      return found ? found.total : 0;
+    const dataValues = labels.map((_, index) => {
+      if (timeframe === "weekly") {
+        if (productType === "All") {
+          const found = filteredData.find((item) => item._id.period === String(index + 1));
+          return found ? found.total : 0;
+        } 
+        else {
+          const found = filteredData.find((item) => item._id.dayOfWeek === index + 1);
+          return found ? found.total : 0;
+        }
+      } else {
+        const found = filteredData.find((item) => item._id.period === labels[index]);
+        return found ? found.total : 0;
+      }
     });
+    
+  
 
     setChartData({
       labels: labels,

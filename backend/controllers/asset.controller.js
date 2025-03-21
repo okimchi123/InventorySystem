@@ -280,18 +280,19 @@ const getAssetTrends = async (req, res) => {
     const weekStart = new Date(now);
     weekStart.setDate(now.getDate() - now.getDay());
 
-    const monthStart = new Date(now);
-    monthStart.setDate(1);
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0);
 
     const yearStart = new Date(now);
     yearStart.setMonth(0, 1);
 
-    const aggregateAssets = async (startDate, groupFormat, groupByDayOfWeek = false) => {
+    const aggregateAssets = async (startDate, groupFormat, groupByDayOfWeek = false, sumAllProducts = false) => {
       return await Asset.aggregate([
         { $match: { createdAt: { $gte: startDate } } },
         {
           $group: {
-            _id: groupByDayOfWeek
+            _id: sumAllProducts
+              ? { period: { $dateToString: { format: groupFormat, date: "$createdAt" } } } 
+              : groupByDayOfWeek
               ? { dayOfWeek: { $dayOfWeek: "$createdAt" }, producttype: "$producttype" }
               : { period: { $dateToString: { format: groupFormat, date: "$createdAt" } }, producttype: "$producttype" },
             total: { $sum: 1 },
@@ -301,15 +302,21 @@ const getAssetTrends = async (req, res) => {
       ]);
     };
 
-    const weeklyData = await aggregateAssets(weekStart, "%Y-%m-%d", true); 
-    const monthlyData = await aggregateAssets(monthStart, "%m-%d"); 
-    const yearlyData = await aggregateAssets(yearStart, "%Y-%m"); 
+    const weeklyData = await aggregateAssets(weekStart, "%Y-%m-%d", true);
+    const monthlyData = await aggregateAssets(monthStart, "%d"); 
+    const yearlyData = await aggregateAssets(yearStart, "%Y-%m");
 
-    res.status(200).json({ weeklyData, monthlyData, yearlyData });
+    const weeklyTotal = await aggregateAssets(weekStart, "%u", true, true);
+    const monthlyTotal = await aggregateAssets(monthStart, "%d", false, true); 
+    const yearlyTotal = await aggregateAssets(yearStart, "%Y-%m", false, true); 
+
+    res.status(200).json({ weeklyData, monthlyData, yearlyData, weeklyTotal, monthlyTotal, yearlyTotal });
   } catch (error) {
     res.status(500).json({ message: "Error fetching asset trends", error: error.message });
   }
 };
+
+
 
 
 
