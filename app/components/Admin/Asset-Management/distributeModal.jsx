@@ -159,19 +159,19 @@ export default function DistributeModal({ isOpen, onClose, selectedAssets, onSub
                       <span className="text-[18px] font-medium">
                         Product Name:
                       </span>
-                      <p className="text-[18px]">{asset.productname}</p>
+                      <p className="text-[18px] text-gray-700">{asset.productname}</p>
                     </div>
                     <div className="flex gap-1">
                       <span className="text-[18px] font-medium">
                         Serial Number:
                       </span>
-                      <p className="text-[18px]">{asset.serialnumber}</p>
+                      <p className="text-[18px] text-gray-700">{asset.serialnumber}</p>
                     </div>
                     <div className="flex gap-1">
                       <span className="text-[18px] font-medium">
                         Description:
                       </span>
-                      <p className="text-[18px]">{asset.description}</p>
+                      <p className="text-[18px] text-gray-700">{asset.description}</p>
                     </div>
                   </div>
                 </div>
