@@ -53,6 +53,10 @@ const AssetSchema = new mongoose.Schema(
           type: String,
           required: false,
         },
+        distributedBy: {  
+          type: String,
+          required: false,
+        },
         distributionDate: {
           type: Date,
           required: false,

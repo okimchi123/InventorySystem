@@ -34,6 +34,7 @@ const distributeAsset = async (req, res) => {
         $set: {
           distributedTo: userId,
           distributedToName: `${user.firstname} ${user.lastname}`,
+          distributedBy: `${fromUser.firstname} ${fromUser.lastname}`,
           status: "Distributed",
           distributionDate: new Date(),
         },
