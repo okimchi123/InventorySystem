@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { dropdownVariants } from "../../utils/animation/animation"
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function TopBar(props) {
   const location = useLocation();
+  const navigate = useNavigate();
   const pathSegments = location.pathname.split("/");
   const pageTitle = pathSegments[pathSegments.length - 1].replace("-", " ");
 
@@ -22,6 +23,25 @@ export default function TopBar(props) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      await fetch("http://localhost:5000/api/auth/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      localStorage.removeItem("token");
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <div className="fixed w-4/5 bg-white z-10 px-6 py-3 flex justify-between items-center shadow-md">
@@ -58,7 +78,7 @@ export default function TopBar(props) {
                 Settings
               </a>
               <a
-                onClick={props.onLogout}
+                onClick={() => handleLogout()}
                 className="block px-4 py-2 text-white hover:bg-blue-900 cursor-pointer transition-all"
               >
                 Logout

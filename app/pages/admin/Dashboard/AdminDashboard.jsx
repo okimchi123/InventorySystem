@@ -44,33 +44,16 @@ const AdminDashboard = () => {
     fetchAdminData();
   }, [navigate]);
 
-  const handleLogout = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      await fetch("http://localhost:5000/api/auth/logout", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      localStorage.removeItem("token");
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
 
   return (
     <div className="flex">
-      <SideBar />
+      <SideBar 
+        role={adminData?.role}
+      />
       <div className="w-4/5 ml-auto">
         <TopBar
           name={adminData?.email}
           role={adminData?.role}
-          onLogout={handleLogout}
         />
         <Outlet />
       </div>
