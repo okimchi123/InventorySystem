@@ -2,7 +2,11 @@ const Asset = require("../models/Asset");
 const AssetLog = require("../models/assetAudit");
 const AssetConditionLog = require("../models/assetCondition");
 const Account = require("../models/User");
-const { emitAssetLogs, emitAssetSummary, emitAssetStatistics } = require("../utils/socketUtils");
+const {
+  emitAssetLogs,
+  emitAssetSummary,
+  emitAssetStatistics,
+} = require("../utils/socketUtils");
 
 const getAssets = async (req, res) => {
   try {
@@ -256,21 +260,29 @@ const getAssetSummary = async (req, res) => {
 
 const getAssetStatistics = async (req, res) => {
   try {
-      const totalAssets = await Asset.countDocuments();
-      const totalAvailable = await Asset.countDocuments({ status: "just_added", condition: "Good" });
-      const totalDistributed = await Asset.countDocuments({ status: "Distributed" });
-      const totalBroken = await Asset.countDocuments({ condition: "Broken" });
-      const totalScrap = await Asset.countDocuments({ condition: "Scrap" });
+    const totalAssets = await Asset.countDocuments();
+    const totalAvailable = await Asset.countDocuments({
+      status: "just_added",
+      condition: "Good",
+    });
+    const totalDistributed = await Asset.countDocuments({
+      status: "Distributed",
+    });
+    const totalBroken = await Asset.countDocuments({ condition: "Broken" });
+    const totalScrap = await Asset.countDocuments({ condition: "Scrap" });
 
-      res.status(200).json({
-          totalAssets,
-          totalAvailable,
-          totalDistributed,
-          totalBroken,
-          totalScrap
-      });
+    res.status(200).json({
+      totalAssets,
+      totalAvailable,
+      totalDistributed,
+      totalBroken,
+      totalScrap,
+    });
   } catch (error) {
-      res.status(500).json({ message: "Error fetching asset statistics", error: error.message });
+    res.status(500).json({
+      message: "Error fetching asset statistics",
+      error: error.message,
+    });
   }
 };
 
@@ -279,48 +291,78 @@ const getAssetTrends = async (req, res) => {
     const now = new Date();
 
     const weekStart = new Date(now);
-    weekStart.setDate(now.getDate() - now.getDay());
+    const day = now.getDay();
+    const diff = (day === 0 ? -6 : 1) - day;
+    weekStart.setDate(now.getDate() + diff);
+    weekStart.setUTCHours(0, 0, 0, 0);
 
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0);
 
     const yearStart = new Date(now);
     yearStart.setMonth(0, 1);
 
-    const aggregateAssets = async (startDate, groupFormat, groupByDayOfWeek = false, sumAllProducts = false) => {
+    const aggregateAssets = async (
+      startDate,
+      groupFormat,
+      groupByDayOfWeek = false,
+      sumAllProducts = false
+    ) => {
       return await Asset.aggregate([
         { $match: { createdAt: { $gte: startDate } } },
         {
           $group: {
             _id: sumAllProducts
-              ? { period: { $dateToString: { format: groupFormat, date: "$createdAt" } } } 
+              ? {
+                  period: {
+                    $dateToString: { format: groupFormat, date: "$createdAt" },
+                  },
+                }
               : groupByDayOfWeek
-              ? { dayOfWeek: { $dayOfWeek: "$createdAt" }, producttype: "$producttype" }
-              : { period: { $dateToString: { format: groupFormat, date: "$createdAt" } }, producttype: "$producttype" },
+              ? {
+                  dayOfWeek: {
+                    $cond: {
+                      if: { $eq: [{ $dayOfWeek: "$createdAt" }, 1] },
+                      then: 7,
+                      else: { $subtract: [{ $dayOfWeek: "$createdAt" }, 1] },
+                    },
+                  },
+                  producttype: "$producttype",
+                }
+              : {
+                  period: {
+                    $dateToString: { format: groupFormat, date: "$createdAt" },
+                  },
+                  producttype: "$producttype",
+                },
             total: { $sum: 1 },
           },
         },
-        { $sort: { "_id.period": 1 } },
+        { $sort: { "_id.dayOfWeek": 1 } },
       ]);
     };
 
-    const weeklyData = await aggregateAssets(weekStart, "%Y-%m-%d", true);
-    const monthlyData = await aggregateAssets(monthStart, "%d"); 
+    const weeklyData = await aggregateAssets(weekStart, "%u", true);
+    const monthlyData = await aggregateAssets(monthStart, "%d");
     const yearlyData = await aggregateAssets(yearStart, "%Y-%m");
 
     const weeklyTotal = await aggregateAssets(weekStart, "%u", true, true);
-    const monthlyTotal = await aggregateAssets(monthStart, "%d", false, true); 
-    const yearlyTotal = await aggregateAssets(yearStart, "%Y-%m", false, true); 
+    const monthlyTotal = await aggregateAssets(monthStart, "%d", false, true);
+    const yearlyTotal = await aggregateAssets(yearStart, "%Y-%m", false, true);
 
-    res.status(200).json({ weeklyData, monthlyData, yearlyData, weeklyTotal, monthlyTotal, yearlyTotal });
+    res.status(200).json({
+      weeklyData,
+      monthlyData,
+      yearlyData,
+      weeklyTotal,
+      monthlyTotal,
+      yearlyTotal,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching asset trends", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching asset trends", error: error.message });
   }
 };
-
-
-
-
-
 
 module.exports = {
   getAssets,
