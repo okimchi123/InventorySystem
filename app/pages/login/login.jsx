@@ -21,10 +21,9 @@ export default function Login() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
 
-      // store token and redirect based on role
       localStorage.setItem("token", data.token);
       if (data.role === "Admin") navigate("/admin/Dashboard");
-      else if (data.role === "Moderator") navigate("/moderator-dashboard");
+      else if (data.role === "Moderator") navigate("/moderator/Dashboard");
       else navigate("/User-dashboard");
     } catch (err) {
       setError(err.message);
