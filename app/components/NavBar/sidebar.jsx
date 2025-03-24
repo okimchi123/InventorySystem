@@ -42,9 +42,9 @@ export default function SideBar({ role }) {
 
                 <li className="mb-4">
                     <NavLink
-                        to="/admin/Asset-Log"
+                    to={`/${role?.toLowerCase()}/Asset-Log`}
                         className={`flex items-center select-none px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
-                            location.pathname === "/admin/Asset-Log"
+                            location.pathname === "/admin/Asset-Log" || location.pathname === "/moderator/Asset-Log"
                             ? "bg-blue-500 text-white"
                             : "hover:bg-blue-700"
                         }`}
@@ -56,9 +56,9 @@ export default function SideBar({ role }) {
 
                 <li className="mb-4">
                     <NavLink
-                        to="/admin/Distribute-History"
+                    to={`/${role?.toLowerCase()}/Distribute-History`}
                         className={`flex items-center select-none px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
-                            location.pathname === "/admin/Distribute-History"
+                            location.pathname === "/admin/Distribute-History" || location.pathname === "/moderator/Distribute-History"
                             ? "bg-blue-500 text-white"
                             : "hover:bg-blue-700"
                         }`}

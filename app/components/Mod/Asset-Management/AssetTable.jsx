@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SuccessModal, ConfirmModal, AreYouSureModal } from "../../Admin/modal/success";
 import EditAssetModal from "../../Admin/Asset-Management/editAssetModal";
 import DistributeModal from "../../Admin/Asset-Management/distributeModal";
-import { io } from "socket.io-client";
 import Description from "../../Admin/modal/description";
 import ReactPaginate from "react-paginate";
 
@@ -20,11 +19,6 @@ import table from "../../../assets/images/items/table.jpg";
 import cable from "../../../assets/images/items/cable.jpg";
 
 const ITEMS_PER_PAGE = 10;
-
-const socket = io("http://localhost:5000", {
-  transports: ["websocket"],
-  reconnectionAttempts: 5,
-});
 
 export default function AssetTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -209,9 +203,6 @@ export default function AssetTable() {
 
   useEffect(() => {
     fetchAsset();
-    socket.on("updateAssetLogs", (logs) => {
-      setAsset(logs);
-    });
   }, []);
 
   const handleUpdateAsset = async (updatedAsset) => {
