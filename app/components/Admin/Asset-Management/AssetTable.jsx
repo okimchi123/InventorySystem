@@ -462,13 +462,13 @@ export default function AssetTable() {
                       }
                     />
                   </th>
-                  <th class="py-3 px-2">Product</th>
-                  <th class="py-3 px-4">Serial Number</th>
-                  <th class="py-3 px-4">Product Type</th>
-                  <th class="py-3 px-4">Description</th>
-                  <th class="py-3 px-4">Condition</th>
-                  <th class="py-3 px-4">Status</th>
-                  <th class="py-3 px-4">Actions</th>
+                  <th class="py-3 px-2 whitespace-nowrap">Product</th>
+                  <th class="py-3 px-4 whitespace-nowrap">Serial Number</th>
+                  <th class="py-3 px-4 whitespace-nowrap ">Product Type</th>
+                  <th class="py-3 px-4 whitespace-nowrap">Description</th>
+                  <th class="py-3 px-4 whitespace-nowrap">Condition</th>
+                  <th class="py-3 px-4 whitespace-nowrap ">Status</th>
+                  <th class="py-3 px-4 whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -485,7 +485,7 @@ export default function AssetTable() {
                         onChange={() => handleCheckboxChange(item._id)}
                       />
                     </td>
-                    <td class="py-2 flex items-center gap-4">
+                    <td class="py-2 flex gap-4 items-center min-w-[150px]">
                       <img
                         alt="item image"
                         class="w-16 h-12"
@@ -515,7 +515,7 @@ export default function AssetTable() {
                       />
                       <span>{item.productname}</span>
                     </td>
-                    <td class="py-2 px-4 whitespace-nowrap">
+                    <td class="py-2 px-4 whitespace-nowrap break-words">
                       {item.serialnumber}
                     </td>
                     <td class="py-2 px-4 whitespace-nowrap">
