@@ -162,7 +162,7 @@ export default function UserTable({ openModal }) {
   };
 
   return (
-    <div className="rounded-lg flex flex-col items-end">
+    <div className="rounded-lg flex flex-col items-end" style={{paddingTop: '4rem'}}>
       <EditUserModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
@@ -178,7 +178,7 @@ export default function UserTable({ openModal }) {
       />
       <SuccessModal message={message} isVisible={showSuccessModal} />
 
-      <div className="flex laptop:flex-row items-center phone:flex-col gap-1 w-full mb-[8px]">
+      <div className="flex laptop:flex-row items-start phone:flex-col gap-1 w-full mb-[8px]">
         <h1 className="text-[22px] font-semibold mr-[8px]">Users</h1>
         <div className="flex justify-start">
           <form className="flex flex-row gap-[8px] items-center">

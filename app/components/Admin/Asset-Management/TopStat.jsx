@@ -48,7 +48,7 @@ const AssetGrid = () => {
   );
 
   return (
-    <div className="flex justify-between mb-4 items-center w-full">
+    <div className="flex justify-between mb-4 items-center w-full" style={{paddingTop: '5rem'}}>
       <div
         onClick={prevPage}
         className={`bg-blue-500 select-none hover:bg-blue-700 transition-all px-4 py-3 flex items-center justify-center rounded-full cursor-pointer ${
@@ -58,11 +58,11 @@ const AssetGrid = () => {
         {currentPage > 0 && <FontAwesomeIcon icon="angle-left" color="white" />}
       </div>
 
-      <div className="grid w-[90%] px-1 grid-cols-4 gap-4">
+      <div className="flex laptop:flex-row phone:flex-col w-full px-1 gap-4">
         {paginatedAssets.map((item, index) => (
           <div
             key={index}
-            className="bg-white py-2 px-4 rounded-lg text-start border border-gray-200 shadow-lg"
+            className="w-[30%] bg-white py-2 px-4 rounded-lg text-start border border-gray-200 shadow-lg"
           >
             <h1 className="text-[22px] select-none font-lg font-russo text-blue-500">
               {item._id}

@@ -8,7 +8,20 @@
     <title>Express Inventory</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+    </div>
     <script type="module" src="/app/main.jsx"></script>
+    <script>
+      function enforceMaxWidth() {
+          const mainContainer = document.getElementById('root');
+          if (window.innerWidth >= 2800) {
+              mainContainer.classList.add('max-w-7xl', 'mx-auto');
+          } else {
+              mainContainer.classList.remove('max-w-7xl', 'mx-auto');
+          }
+      }
+      enforceMaxWidth();
+      window.addEventListener('resize', enforceMaxWidth);
+  </script>
   </body>
 </html>

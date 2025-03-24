@@ -24,15 +24,15 @@ export default function Description({ item, isOpen, onClose }) {
           animate="visible"
           exit="exit"
           variants={modalVariants}
-          className="bg-white py-20 px-18 rounded-lg shadow-lg relative"
+          className="bg-white rounded-lg shadow-lg relative w-[45%]"
         >
-          <div className="flex flex-col gap-[22px] mb-[12px]">
-            <h1 className="text-[30px] absolute left-[24px] top-[12px]">{item.productname}</h1>
+          <div className="flex flex-col gap-[22px] mb-[12px]" style={{padding: '4rem'}}>
+            <h1 className="text-[30px] absolute left-[24px] top-[12px] bottom-[12px]">{item.productname}</h1>
             <div className="flex gap-5">
               <img
                 alt="item image"
                 
-                class="w-40 h-40"
+                class="w-[180px] h-[180px]"
                 src={
                   item.producttype === "Laptop"
                     ? laptop
@@ -57,7 +57,7 @@ export default function Description({ item, isOpen, onClose }) {
                     : ""
                 }
               />
-              <div className="item-info flex flex-col gap-2">
+              <div className="item-info flex flex-col gap-2 w-1/2">
                 <div className="flex gap-[8px]">
                   <span className="text-[20px] font-semibold">Product Type:</span><p className="text-[20px] text-gray-700">{item.producttype}</p>
                 </div>

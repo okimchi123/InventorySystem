@@ -37,7 +37,7 @@ export default function EmployeeTable() {
   }, []);
 
   return (
-    <div className="flex flex-col items-end justify-center w-full mx-auto">
+    <div className="flex flex-col items-end justify-center w-full mx-auto" style={{paddingTop: '4rem'}}>
       <ViewAsset
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}

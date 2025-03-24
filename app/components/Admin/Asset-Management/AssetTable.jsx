@@ -348,9 +348,10 @@ export default function AssetTable() {
       />
       <div class="flex flex-col gap-3 mx-auto py-4 w-full">
         {/* <!-- Filter --> */}
-        <div class="flex items-center laptop:flex-row phone:flex-col gap-2 w-full">
+        <div class="flex items-start laptop:flex-row phone:flex-col gap-2 w-full">
           <h1 className="text-[22px] font-semibold mb-[6px]"> Assets </h1>
-          <div class="flex justify-start w-[23%]">
+          <div className="flex flex-row gap-2">
+          <div class="flex justify-start laptop:w-[23%] phone:w-full">
             <input
               type="text"
               placeholder="Search Name | Serial | Product Type"
@@ -359,27 +360,28 @@ export default function AssetTable() {
               className="w-full h-10 py-4 px-3 border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
             />
           </div>
-          <select
-            className="px-1 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700"
-            onChange={handleConditionChange}
-            value={conditionFilter}
-          >
-            <option value="all">Condition</option>
-            <option value="all">All</option>
-            <option value="good">Good</option>
-            <option value="broken">Broken</option>
-            <option value="scrap">Scrap</option>
-          </select>
-          <select
-            className="px-1 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700"
-            onChange={handleStatusChange}
-            value={statusFilter}
-          >
-            <option value="all">Status</option>
-            <option value="all">All</option>
-            <option value="undistributed">Undistributed</option>
-            <option value="distributed">Distributed</option>
-          </select>
+            <select
+              className="px-1 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700"
+              onChange={handleConditionChange}
+              value={conditionFilter}
+            >
+              <option value="all">Condition</option>
+              <option value="all">All</option>
+              <option value="good">Good</option>
+              <option value="broken">Broken</option>
+              <option value="scrap">Scrap</option>
+            </select>
+            <select
+              className="px-1 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700"
+              onChange={handleStatusChange}
+              value={statusFilter}
+            >
+              <option value="all">Status</option>
+              <option value="all">All</option>
+              <option value="undistributed">Undistributed</option>
+              <option value="distributed">Distributed</option>
+            </select>
+          </div>
           <div class="flex ml-auto gap-2">
             <div class="flex flex-row gap-2">
               {selectedAssets.length ? (
@@ -485,7 +487,7 @@ export default function AssetTable() {
                         onChange={() => handleCheckboxChange(item._id)}
                       />
                     </td>
-                    <td class="py-2 flex items-center gap-4">
+                    <td className="flex flex-row gap-2 items-center whitespace-normal min-w-[20%] border">
                       <img
                         alt="item image"
                         class="w-16 h-12"

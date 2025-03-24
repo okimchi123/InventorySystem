@@ -17,7 +17,7 @@ export default function AddAssetModal({
         animate="visible"
         exit="exit"
         variants={modalVariants}
-        className="bg-white border border-gray-600 rounded-lg px-15 py-6 shadow-lg relative w-[60%]"
+        className="bg-white border border-gray-600 rounded-lg shadow-lg relative w-[60%]" style={{padding: '2rem'}}
       >
         <div className="flex items-center gap-[4px]">
           <FontAwesomeIcon icon="box-archive" size="2xl" color="green" />
