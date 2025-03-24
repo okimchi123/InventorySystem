@@ -5,7 +5,7 @@ import TopBar from "../../../components/NavBar/topbar"
 
 const ModeratorDashboard = () => {
 
-    const [adminData, setAdminData] = useState(null);
+  const [adminData, setAdminData] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {

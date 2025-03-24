@@ -392,7 +392,6 @@ export default function AssetTable() {
                   selectedAssets.some((id) => {
                     const item = asset.find((item) => item._id === id);
                     return (
-                      item?.status === "Distributed" ||
                       item?.condition === "Broken" ||
                       item?.condition === "Scrap"
                     );
@@ -404,7 +403,6 @@ export default function AssetTable() {
                   selectedAssets.some((id) => {
                     const item = asset.find((item) => item._id === id);
                     return (
-                      item?.status === "Distributed" ||
                       item?.condition === "Broken" ||
                       item?.condition === "Scrap"
                     );
@@ -419,7 +417,6 @@ export default function AssetTable() {
                   selectedAssets.some((id) => {
                     const item = asset.find((item) => item._id === id);
                     return (
-                      item?.status === "Distributed" ||
                       item?.condition === "Broken" ||
                       item?.condition === "Scrap"
                     );

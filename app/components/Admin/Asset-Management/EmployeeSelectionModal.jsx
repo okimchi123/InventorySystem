@@ -5,7 +5,7 @@ import { modalVariants } from "../../../utils/animation/animation";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function EmployeeSelectionModal({ isOpen, onClose, onSelect }) {
+export default function EmployeeSelectionModal({ isOpen, onClose, onSelect, role }) {
   const [moderators, setModerators] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -13,10 +13,10 @@ export default function EmployeeSelectionModal({ isOpen, onClose, onSelect }) {
   const fetchModerators = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token"); // Retrieve token
+      const token = localStorage.getItem("token");
 
-      const res = await axios.get("http://localhost:5000/api/auth?role=Moderator", {
-        headers: { Authorization: `Bearer ${token}` }, // Pass token in headers
+      const res = await axios.get(`http://localhost:5000/api/auth?role=${role}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       setModerators(res.data);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -31,6 +31,26 @@ export default function DistributeModal({ isOpen, onClose, selectedAssets, onSub
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const [loading, setLoading] = useState(false);
+  const [adminData, setAdminData] = useState(null);
+
+  useEffect(() => {
+    const fetchAdminData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:5000/api/admin", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        
+        setAdminData(response.data);
+      } catch (error) {
+        console.error("Error fetching admin data:", error);
+      }
+    };
+  
+    fetchAdminData();
+  }, []);
+  
+  
 
   const handleRemoveUser = () => {
     setSelectedUser(null);
@@ -208,6 +228,7 @@ export default function DistributeModal({ isOpen, onClose, selectedAssets, onSub
         isOpen={isEmployeeModalOpen}
         onClose={() => setEmployeeModalOpen(false)}
         onSelect={setSelectedUser}
+        role = {adminData.role === "Admin" ? "Moderator" : adminData.role === "Moderator" ? "User" : ""}
       />
     </div>
   );
