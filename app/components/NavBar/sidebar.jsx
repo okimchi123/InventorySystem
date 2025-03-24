@@ -6,6 +6,7 @@ export default function SideBar({ role }) {
 
     const isAdmin = role === "Admin";
     const isModerator = role === "Moderator";
+    const isUser = role === "User";
 
     return (
         <div className="w-1/5 bg-blue-600 text-white h-screen px-[12px] py-[24px] fixed flex flex-col items-center">
@@ -13,9 +14,9 @@ export default function SideBar({ role }) {
             <ul className="font-monserat">
                 <li className="mb-4">
                     <NavLink
-                        to="/admin/Dashboard"
+                    to={`/${role?.toLowerCase()}/Dashboard`} 
                         className={`flex items-center select-none px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
-                            location.pathname === "/admin/Dashboard"
+                            location.pathname === "/admin/Dashboard" || location.pathname === "/moderator/Dashboard"
                             ? "bg-blue-500 text-white"
                             : "hover:bg-blue-700"
                         }`}
@@ -27,9 +28,9 @@ export default function SideBar({ role }) {
 
                 <li className="mb-4">
                     <NavLink
-                        to="/admin/Asset-Management"
+                        to={`/${role?.toLowerCase()}/Asset-Management`}
                         className={`flex items-center select-none px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
-                            location.pathname === "/admin/Asset-Management"
+                            location.pathname === "/admin/Asset-Management" || location.pathname === "/moderator/Asset-Management"
                             ? "bg-blue-500 text-white"
                             : "hover:bg-blue-700"
                         }`}

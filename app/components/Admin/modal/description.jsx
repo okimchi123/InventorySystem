@@ -85,6 +85,9 @@ export default function Description({ item, isOpen, onClose }) {
                 </div>
                 {item.status === "Distributed" ?
                 <>
+                <div className="flex gap-[8px]">
+                  <span className="text-[20px] font-semibold">Distributed By:</span><p className="text-[20px] text-gray-700">{item.distributedBy}</p>
+                </div>
                   <div className="flex gap-[8px]">
                   <span className="text-[20px] font-semibold">Distributed To:</span><p className="text-[20px] text-gray-700">{item.distributedToName}</p>
                 </div>
