@@ -70,9 +70,9 @@ export default function SideBar({ role }) {
 
                 <li className="mb-4">
                     <NavLink
-                        to="/admin/Asset-Condition"
+                        to={`/${role?.toLowerCase()}/Asset-Condition`}
                         className={`flex items-center select-none px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
-                            location.pathname === "/admin/Asset-Condition"
+                            location.pathname === "/admin/Asset-Condition" || location.pathname === "/moderator/Asset-Condition"
                             ? "bg-blue-500 text-white"
                             : "hover:bg-blue-700"
                         }`}

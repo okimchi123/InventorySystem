@@ -17,6 +17,7 @@ import ModeratorDashboard from "./pages/mod/Dashboard/ModDashboard";
 import ModAssetManagement from "./pages/mod/Asset-Management/AssetManagement";
 import ModAssetLog from "./pages/mod/Asset-Log/AssetLogPage";
 import ModDistributeLog from "./pages/mod/Distribute-History/DistributeHistoryPage";
+import ModConditionLog from "./pages/mod/Condition-Log/ConditionLog";
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChartSimple, faUpRightAndDownLeftFromCenter, faUserPlus, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
@@ -48,6 +49,8 @@ function App() {
             <Route path="/moderator/Asset-Management" element={<ModAssetManagement />} />
             <Route path="/moderator/Asset-Log" element={<ModAssetLog />} />
             <Route path="/moderator/Distribute-History" element={<ModDistributeLog />} />
+            <Route path="/moderator/Asset-Condition" element={<ModConditionLog />} />
+
           </Route>
 
       </Routes>

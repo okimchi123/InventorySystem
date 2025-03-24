@@ -43,4 +43,22 @@ const getAssetConditionLogs = async (req, res) => {
   }
 };
 
-module.exports = { getAssetAuditLogs, getAssetConditionLogs, getUserAssetLogs };
+const getUserConditionLogs = async (req, res) => {
+  try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "User ID missing" });
+    }
+    const userID = req.user.id;
+
+    const userLogs = await AssetConditionLog.find({ userID })
+      .populate("targetProduct", "productname serialnumber") 
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(userLogs);
+  } catch (error) {
+    console.error("Error fetching user asset logs:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+module.exports = { getAssetAuditLogs, getAssetConditionLogs, getUserAssetLogs, getUserConditionLogs };
