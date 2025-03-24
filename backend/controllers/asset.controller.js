@@ -364,6 +364,23 @@ const getAssetTrends = async (req, res) => {
   }
 };
 
+const getUserHandlingAssets = async (req, res) => {
+  try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "User ID missing" });
+    }
+    const userId = req.user.id;
+
+      const user = await Account.findById(userId).populate("handlingAssets");
+
+      res.status(200).json({
+          handlingAssets: user.handlingAssets,
+      });
+    }  catch (error) {
+        return res.status(500).json({ message: "Server error", error: error.message });
+      }
+};
+
 module.exports = {
   getAssets,
   addAsset,
@@ -373,4 +390,5 @@ module.exports = {
   getAssetSummary,
   getAssetStatistics,
   getAssetTrends,
+  getUserHandlingAssets,
 };

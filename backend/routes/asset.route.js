@@ -9,6 +9,7 @@ const {
     getAssetSummary,
     getAssetStatistics,
     getAssetTrends,
+    getUserHandlingAssets,
 } = require("../controllers/asset.controller")
 
 const router = express.Router();
@@ -28,5 +29,7 @@ router.get("/summary", getAssetSummary);
 router.get("/asset-stats", getAssetStatistics);
 
 router.get("/asset-trends", getAssetTrends);
+
+router.get("/handling-assets", authenticateToken, getUserHandlingAssets);
 
 module.exports = router;
