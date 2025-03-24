@@ -14,6 +14,7 @@ import AssetConditionLogs from "./pages/admin/Asset-Condition/AssetConditionPage
 import EmployeeList from "./pages/admin/Employee-list/EmployeeList";
 
 import ModeratorDashboard from "./pages/mod/Dashboard/ModDashboard";
+import ModAssetManagement from "./pages/mod/Asset-Management/AssetManagement";
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChartSimple, faUpRightAndDownLeftFromCenter, faUserPlus, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
@@ -42,6 +43,7 @@ function App() {
 
         <Route element={<ModeratorDashboard />}>
             <Route path="/moderator/Dashboard" element={<AdminMain />} />
+            <Route path="/moderator/Asset-Management" element={<ModAssetManagement />} />
           </Route>
 
       </Routes>
