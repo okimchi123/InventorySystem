@@ -464,7 +464,7 @@ export default function AssetTable() {
                   </th>
                   <th class="py-3 px-2 whitespace-nowrap">Product</th>
                   <th class="py-3 px-4 whitespace-nowrap">Serial Number</th>
-                  <th class="py-3 px-4 whitespace-nowrap ">Product Type</th>
+                  <th class="py-3 px-4 whitespace-nowrap">Product Type</th>
                   <th class="py-3 px-4 whitespace-nowrap">Description</th>
                   <th class="py-3 px-4 whitespace-nowrap">Condition</th>
                   <th class="py-3 px-4 whitespace-nowrap ">Status</th>
