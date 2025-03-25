@@ -28,7 +28,7 @@ export default function Description({ item, isOpen, onClose }) {
         >
           <div className="flex flex-col gap-[22px] mb-[12px]">
             <h1 className="text-[30px] absolute left-[24px] top-[12px]">{item.productname}</h1>
-            <div className="flex gap-5">
+            <div className="flex items-center gap-5">
               <img
                 alt="item image"
                 
@@ -58,6 +58,9 @@ export default function Description({ item, isOpen, onClose }) {
                 }
               />
               <div className="item-info flex flex-col gap-2">
+                <div className="flex gap-[8px]">
+                  <span className="text-[20px] font-semibold">Date Added:</span><p className="text-[20px] text-gray-700">{moment(item.createdAt).format("MMMM D, YYYY h:mm A")}</p>
+                </div>
                 <div className="flex gap-[8px]">
                   <span className="text-[20px] font-semibold">Product Type:</span><p className="text-[20px] text-gray-700">{item.producttype}</p>
                 </div>
@@ -105,7 +108,7 @@ export default function Description({ item, isOpen, onClose }) {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 absolute right-[24px] bottom-[12px] cursor-pointer transition-all hover:bg-gray-700 bg-gray-500 text-white rounded-lg"
+              className="px-4 py-2 select-none absolute right-[24px] bottom-[12px] cursor-pointer transition-all hover:bg-gray-700 bg-gray-500 text-white rounded-lg"
             >
               Cancel
             </button>

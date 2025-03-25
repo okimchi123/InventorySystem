@@ -74,9 +74,6 @@ export default function TopBar(props) {
               <a href="#" className="block px-4 py-2 text-white hover:bg-blue-900 transition-all">
                 Profile
               </a>
-              <a href="#" className="block px-4 py-2 text-white hover:bg-blue-900 transition-all">
-                Settings
-              </a>
               <a
                 onClick={() => handleLogout()}
                 className="block px-4 py-2 text-white hover:bg-blue-900 cursor-pointer transition-all"
