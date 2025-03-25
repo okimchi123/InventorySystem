@@ -105,8 +105,8 @@ const AssetTrendsChart = () => {
   };
 
   return (
-    <div className="bg-white h-[100%] w-[100%] p-6 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] hover:shadow-sm transition-all">
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-white h-[100%] w-[90%] p-6 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] hover:shadow-sm transition-all">
+      <div className="flex laptop:flex-row phone:flex-col justify-between items-start mb-6">
         <h3 className="text-xl font-semibold mb-4">Total Assets</h3>
         <div className="buttons flex p-[4px] gap-[4px]">
           {["yearly", "monthly", "weekly"].map((timeframe) => (
@@ -125,7 +125,7 @@ const AssetTrendsChart = () => {
           ))}
         </div>
         <select
-          className="border p-2 rounded-lg border-gray-500 text-gray-800"
+          className="border p-2 rounded-lg border-gray-500 text-gray-800 ml-auto"
           value={selectedProduct}
           onChange={(e) => {
             setSelectedProduct(e.target.value);

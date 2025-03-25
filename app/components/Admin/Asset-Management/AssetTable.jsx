@@ -487,7 +487,7 @@ export default function AssetTable() {
                         onChange={() => handleCheckboxChange(item._id)}
                       />
                     </td>
-                    <td className="flex flex-row gap-2 items-center whitespace-normal min-w-[20%] border">
+                    <td className="flex flex-row gap-2 items-center whitespace-normal min-w-[20%]">
                       <img
                         alt="item image"
                         class="w-16 h-12"

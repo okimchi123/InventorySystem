@@ -15,9 +15,13 @@
       function enforceMaxWidth() {
           const mainContainer = document.getElementById('root');
           if (window.innerWidth >= 2800) {
-              mainContainer.classList.add('max-w-7xl', 'mx-auto');
+              // mainContainer.classList.add('max-w-7xl', 'mx-auto');
+              mainContainer.style.maxWidth = "1280px"
+              mainContainer.style.margin = "0 auto"
           } else {
-              mainContainer.classList.remove('max-w-7xl', 'mx-auto');
+              // mainContainer.classList.remove('max-w-7xl', 'mx-auto');
+              mainContainer.style.maxWidth = ""
+              mainContainer.style.margin = ""
           }
       }
       enforceMaxWidth();
