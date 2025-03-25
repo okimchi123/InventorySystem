@@ -98,7 +98,7 @@ export default function AssetCondition() {
                   <div className="flex gap-[12px]">
                     <img
                       alt="item image"
-                      class="w-25 h-20"
+                      className="w-25 h-20"
                       src={
                         log.producttype === "Laptop"
                           ? laptop

@@ -310,7 +310,7 @@ export default function AssetTable() {
   };
 
   return (
-    <div class="flex flex-col gap-1 items-end justify-center w-full mx-auto">
+    <div className="flex flex-col gap-1 items-end justify-center w-full mx-auto">
       <AddAssetModal
         isModalOpen={isModalOpen}
         closeModal={closeModal}
@@ -353,11 +353,11 @@ export default function AssetTable() {
         onClose={() => setDescriptionModalOpen(false)}
         item={selectedAsset}
       />
-      <div class="flex flex-col gap-3 mx-auto py-4 w-full">
+      <div className="flex flex-col gap-3 mx-auto py-4 w-full">
         {/* <!-- Filter --> */}
-        <div class="flex items-center laptop:flex-row phone:flex-col gap-2 w-full">
+        <div className="flex items-center laptop:flex-row phone:flex-col gap-2 w-full">
           <h1 className="text-[22px] font-semibold mb-[6px]"> Assets </h1>
-          <div class="flex justify-start w-[23%]">
+          <div className="flex justify-start w-[23%]">
             <input
               type="text"
               placeholder="Search Name | Serial | Product Type"
@@ -387,12 +387,12 @@ export default function AssetTable() {
             <option value="undistributed">Undistributed</option>
             <option value="distributed">Distributed</option>
           </select>
-          <div class="flex ml-auto gap-2">
-            <div class="flex flex-row gap-2">
+          <div className="flex ml-auto gap-2">
+            <div className="flex flex-row gap-2">
               {selectedAssets.length ? (
                 <button
                   onClick={() => setIsAreYouSureModal(true)}
-                  class="border transition-all cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
+                  className="border transition-all cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
                 >
                   <FontAwesomeIcon icon="trash" className="mr-2" />
                   Delete
@@ -413,7 +413,7 @@ export default function AssetTable() {
                   })
                 }
                 onClick={() => setIsDistributeModalOpen(true)}
-                class={`border-3 transition-all cursor-pointer font-semibold px-4 py-2 rounded-lg hover:text-white ${
+                className={`border-3 transition-all cursor-pointer font-semibold px-4 py-2 rounded-lg hover:text-white ${
                   !selectedAssets.length ||
                   selectedAssets.some((id) => {
                     const item = asset.find((item) => item._id === id);
@@ -427,7 +427,7 @@ export default function AssetTable() {
                     : "text-blue-800 hover:bg-blue-800"
                 }`}
               >
-                <i class="fa-regular fa-folder-open"></i>
+                <i className="fa-regular fa-folder-open"></i>
                 {!(
                   !selectedAssets.length ||
                   selectedAssets.some((id) => {
@@ -443,7 +443,7 @@ export default function AssetTable() {
               </button>
               <button
                 onClick={openModal}
-                class="border transition-all cursor-pointer bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg"
+                className="border transition-all cursor-pointer bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg"
               >
                 <FontAwesomeIcon icon="circle-plus" className="mr-1" />
                 Add New Asset
@@ -453,11 +453,11 @@ export default function AssetTable() {
         </div>
 
         {/* <!-- Audit trail table --> */}
-        <div class="rounded-lg shadow-md relative">
-          <div class="w-full overflow-x-auto h-full rounded-lg">
-            <table class="w-full bg-white">
-              <thead class="bg-gray-200 ">
-                <tr class="bg-gray-200 border-gray-400 text-md text-left px-4">
+        <div className="rounded-lg shadow-md relative">
+          <div className="w-full overflow-x-auto h-full rounded-lg">
+            <table className="w-full bg-white">
+              <thead className="bg-gray-200 ">
+                <tr className="bg-gray-200 border-gray-400 text-md text-left px-4">
                   <th className="py-2 pl-2">
                     <input
                       type="checkbox"
@@ -469,20 +469,20 @@ export default function AssetTable() {
                       }
                     />
                   </th>
-                  <th class="py-3 px-2 whitespace-nowrap">Product</th>
-                  <th class="py-3 px-4 whitespace-nowrap">Serial Number</th>
-                  <th class="py-3 px-4 whitespace-nowrap">Product Type</th>
-                  <th class="py-3 px-4 whitespace-nowrap">Description</th>
-                  <th class="py-3 px-4 whitespace-nowrap">Condition</th>
-                  <th class="py-3 px-4 whitespace-nowrap ">Status</th>
-                  <th class="py-3 px-4 whitespace-nowrap">Actions</th>
+                  <th className="py-3 px-2 whitespace-nowrap">Product</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Serial Number</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Product Type</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Description</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Condition</th>
+                  <th className="py-3 px-4 whitespace-nowrap ">Status</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {paginatedAssets.map((item) => (
                   <tr
                     key={item._id}
-                    class="text-left border-gray-300 border-b-[1px]"
+                    className="text-left border-gray-300 border-b-[1px]"
                   >
                     <td className="py-2 pl-2">
                       <input
@@ -492,10 +492,10 @@ export default function AssetTable() {
                         onChange={() => handleCheckboxChange(item._id)}
                       />
                     </td>
-                    <td class="py-2 flex gap-4 items-center min-w-[150px]">
+                    <td className="py-2 flex gap-4 items-center min-w-[150px]">
                       <img
                         alt="item image"
-                        class="w-16 h-12"
+                        className="w-16 h-12"
                         src={
                           item.producttype === "Laptop"
                             ? laptop
@@ -522,13 +522,13 @@ export default function AssetTable() {
                       />
                       <span>{item.productname}</span>
                     </td>
-                    <td class="py-2 px-4 whitespace-nowrap break-words">
+                    <td className="py-2 px-4 whitespace-nowrap break-words">
                       {item.serialnumber}
                     </td>
-                    <td class="py-2 px-4 whitespace-nowrap">
+                    <td className="py-2 px-4 whitespace-nowrap">
                       {item.producttype}
                     </td>
-                    <td class="py-2 px-4 whitespace-nowrap">
+                    <td className="py-2 px-4 whitespace-nowrap">
                       <button
                         onClick={() => openDescriptionModal(item)}
                         className="text-[18px] ml-3 select-none bg-blue-900 text-white py-1 px-3 rounded-2xl cursor-pointer font-semibold hover:bg-blue-700 transition-all"
@@ -536,7 +536,7 @@ export default function AssetTable() {
                         view
                       </button>
                     </td>
-                    <td class="py-2 px-1 whitespace-nowrap">
+                    <td className="py-2 px-1 whitespace-nowrap">
                       <div
                         className={`w-[80px] py-1 rounded-lg text-center select-none
                       ${
@@ -552,7 +552,7 @@ export default function AssetTable() {
                         </span>
                       </div>
                     </td>
-                    <td class="py-2 px-4 whitespace-nowrap">
+                    <td className="py-2 px-4 whitespace-nowrap">
                       {item.status === "just_added" ? (
                         <p>Undistributed</p>
                       ) : (
@@ -560,13 +560,13 @@ export default function AssetTable() {
                       )}
                     </td>
 
-                    <td class="text-center space-x-2">
-                      <div class="flex flex-row py-2 px-4 gap-2">
+                    <td className="text-center space-x-2">
+                      <div className="flex flex-row py-2 px-4 gap-2">
                         <button
                           id="openModalBtn2"
                           disabled={selectedAssets.length}
                           onClick={() => openEditModal(item)}
-                          class={`flex flex-row gap-2 cursor-pointer transition-all items-center border border-white  text-white px-3 py-1.5 rounded-full ${
+                          className={`flex flex-row gap-2 cursor-pointer transition-all items-center border border-white  text-white px-3 py-1.5 rounded-full ${
                             !selectedAssets.length
                               ? "bg-amber-400 hover:bg-amber-600"
                               : "bg-gray-400 cursor-not-allowed"
@@ -578,7 +578,7 @@ export default function AssetTable() {
                         <button
                           disabled={selectedAssets.length}
                           onClick={() => openDeleteModal(item)}
-                          class={`flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md  text-white px-3 py-1.5 rounded-full  ${
+                          className={`flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md  text-white px-3 py-1.5 rounded-full  ${
                             !selectedAssets.length
                               ? "bg-red-600 hover:bg-red-500"
                               : "bg-gray-400 cursor-not-allowed"

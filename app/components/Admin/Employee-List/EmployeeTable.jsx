@@ -24,7 +24,6 @@ export default function EmployeeTable() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log(res.data);
       setUsers(res.data.users || []);
     } catch (error) {
       console.error("Failed to fetch Users:", error);
