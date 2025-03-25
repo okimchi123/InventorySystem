@@ -65,7 +65,7 @@ export default function Description({ item, isOpen, onClose }) {
                   <span className="text-[20px] font-semibold">Serial Number:</span><p className="text-[20px] text-gray-700">{item.serialnumber}</p>
                 </div>
                 <div className="flex gap-[8px]">
-                  <span className="text-[20px] font-semibold">Condition:</span><p className={`text-[18px] px-3 py-1
+                  <span className="text-[20px] font-semibold">Condition:</span><p className={`text-[18px] select-none px-3 py-1
                      ${
                         item.condition === "Good"
                           ? "text-green-900 bg-green-100"

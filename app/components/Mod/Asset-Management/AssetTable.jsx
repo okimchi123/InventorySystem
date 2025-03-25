@@ -497,14 +497,14 @@ export default function AssetTable() {
                     <td class="py-2 px-4 whitespace-nowrap">
                       <button
                         onClick={() => openDescriptionModal(item)}
-                        className="text-[18px] ml-3 bg-blue-900 text-white py-1 px-3 rounded-2xl cursor-pointer font-semibold hover:bg-blue-700 transition-all"
+                        className="text-[18px] select-none ml-3 bg-blue-900 text-white py-1 px-3 rounded-2xl cursor-pointer font-semibold hover:bg-blue-700 transition-all"
                       >
                         view
                       </button>
                     </td>
                     <td class="py-2 px-1 whitespace-nowrap">
                       <div
-                        className={`w-[80px] py-1 rounded-lg text-center
+                        className={`w-[80px] py-1 rounded-lg text-center select-none
                       ${
                         item.condition === "Good"
                           ? "text-green-900 bg-green-100"
