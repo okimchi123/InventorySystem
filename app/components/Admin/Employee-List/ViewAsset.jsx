@@ -84,7 +84,7 @@ export default function ViewAsset({ user, isOpen, onClose }) {
                   </div>
                   <div className="flex gap-1">
                     <span className="text-[18px] font-medium">Distributed By:</span>
-                    <p className="text-[18px] break-words text-gray-700">{asset.distributedBy}</p>
+                    <p className="text-[18px] break-words text-gray-700">{asset.distributedByName}</p>
                   </div>
                   <div className="flex gap-1">
                     <span className="text-[18px] font-medium">Distribution Date:</span>
