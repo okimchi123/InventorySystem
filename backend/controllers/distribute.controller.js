@@ -10,7 +10,7 @@ const distributeAsset = async (req, res) => {
       return res.status(401).json({ message: "User ID missing" });
     }
     const fromUserID = req.user.id;
-
+    
     const fromUser = await Account.findById(fromUserID);
 
     const { assetIds, userId } = req.body;
@@ -34,7 +34,8 @@ const distributeAsset = async (req, res) => {
         $set: {
           distributedTo: userId,
           distributedToName: `${user.firstname} ${user.lastname}`,
-          distributedBy: `${fromUser.firstname} ${fromUser.lastname}`,
+          distributedByName: `${fromUser.firstname} ${fromUser.lastname}`,
+          distributedByID: fromUserID,
           status: "Distributed",
           distributionDate: new Date(),
         },
@@ -119,9 +120,40 @@ const getUsersWithAssets = async (req, res) => {
   }
 };
 
+const getUsersWithAssetsDistributedByUser = async (req, res) => {
+  try {
+    const distributingUserID = req.user.id;
+    console.log(distributingUserID)
+
+    const assets = await Asset.find({ distributedByID: distributingUserID }).select("_id");
+
+    console.log(assets)
+
+    if (!assets.length) {
+      return res.status(404).json({ message: "No assets distributed by this user." });
+    }
+
+    const assetIds = assets.map(asset => asset._id);
+
+    const users = await Account.find({ handlingAssets: { $in: assetIds } })
+      .populate("handlingAssets")
+      .select("firstname lastname phone email role handlingAssets");
+
+    if (!users.length) {
+      return res.status(404).json({ message: "No users found handling assets from this user." });
+    }
+
+    res.status(200).json({ users });
+  } catch (error) {
+    console.error("Error fetching users with assets distributed by user:", error);
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
 module.exports = {
   distributeAsset,
   getDistributeLogs,
   getUsersWithAssets,
   getUserDistributeLogs,
+  getUsersWithAssetsDistributedByUser,
 };
