@@ -47,6 +47,8 @@ export default function AssetTable() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(0);
 
+  const [loading, setLoading] = useState(false);
+
   const handleCheckboxChange = (assetId) => {
     setSelectedAssets((prevSelected) =>
       prevSelected.includes(assetId)
@@ -117,6 +119,8 @@ export default function AssetTable() {
       return;
     }
 
+    setLoading(true);
+
     try {
       const token = localStorage.getItem("token");
 
@@ -148,6 +152,8 @@ export default function AssetTable() {
       setMessage(error.response?.data?.message || "Failed to add user.");
       setShowSuccessModal(true);
       setTimeout(() => setShowSuccessModal(false), 2000);
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -311,6 +317,7 @@ export default function AssetTable() {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         formData={formData}
+        loading = {loading}
       />
       <EditAssetModal
         isOpen={isEditModalOpen}
