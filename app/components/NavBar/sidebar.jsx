@@ -84,9 +84,9 @@ export default function SideBar({ role }) {
 
                 <li className="mb-4">
                             <NavLink
-                                to="/admin/Employee-List"
+                                to={`/${role?.toLowerCase()}/Employee-List`}
                                 className={`flex items-center select-none px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
-                                    location.pathname === "/admin/Employee-List"
+                                    location.pathname === "/admin/Employee-List" || location.pathname === "/moderator/Employee-List"
                                     ? "bg-blue-500 text-white"
                                     : "hover:bg-blue-700"
                                 }`}
