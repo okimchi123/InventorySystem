@@ -68,6 +68,8 @@ export default function UserManagement() {
       setMessage(error.response?.data?.message || "Failed to add user.");
       setShowSuccessModal(true);
       setTimeout(() => setShowSuccessModal(false), 2000);
+    }finally {
+      setLoading(false);
     }
   };
 

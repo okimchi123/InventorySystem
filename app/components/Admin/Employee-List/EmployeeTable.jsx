@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ViewAsset from "./ViewAsset";
-import AssetTable from "../Asset-Management/AssetTable";
 
 const ITEMS_PER_PAGE = 8;
 
