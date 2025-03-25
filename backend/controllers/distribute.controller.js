@@ -44,6 +44,13 @@ const distributeAsset = async (req, res) => {
     user.handlingAssets.push(...assetIds);
     await user.save();
 
+    if (fromUser.role === "Moderator") {
+      fromUser.handlingAssets = fromUser.handlingAssets.filter(
+        assetId => !assetIds.includes(assetId.toString())
+      );
+      await fromUser.save();
+    }
+
     const distributedAssets = await Asset.find({ _id: { $in: assetIds } });
 
     await DistributeLog.create({
