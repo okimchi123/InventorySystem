@@ -51,16 +51,18 @@ export default function AdminMain(){
   , []);
 
   return (
-      <div className="flex flex-col laptop:px-10 phone:px-4" style={{paddingTop: '6rem'}}>
+      <div className="flex flex-col laptop:px-4 phone:px-4" style={{paddingTop: '6rem'}}>
         <div className="flex laptop:flex-row phone:flex-col gap-2 mb-6 w-full">
           <div className="w-full bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
+            <div className="flex justity-between">
+            <FontAwesomeIcon icon="chart-simple" size="xl" color="blue" className="absolute select-none" />
             <h4 className="text-4xl font-lg font-russo select-none text-gray-700 ">{assets.totalAssets}</h4>
-            <p className="text-base font-medium select-none whitespace-nowrap">Total Assets</p>
-            <FontAwesomeIcon icon="chart-simple" size="xl" color="blue" className="absolute right-5 bottom-5 select-none" />
+            </div>
+            <p className="desktop:text-xl laptop:text-base font-medium select-none whitespace-nowrap">Total Assets</p>
           </div>
           <div className="w-full bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
             <h4 className="text-4xl font-lg font-russo select-none text-gray-700 ">{assets.totalAvailable}</h4>
-            <p className="text-base font-medium select-none">Available Stock</p>
+            <p className="desktop:text-xl laptop:text-base font-medium select-none">Available Stock</p>
             <FontAwesomeIcon icon="check-to-slot" size="xl" color="green" className="absolute right-5 bottom-5 select-none" />
           </div>
           <div className="w-full bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
