@@ -17,7 +17,7 @@ router.post("/", authenticateToken, distributeAsset);
 router.get("/getUserWithAssets", authenticateToken, getUsersWithAssets);
 router.get("/getUserDistribute", authenticateToken, getUserDistributeLogs);
 router.get("/users-with-assets-distributed", authenticateToken, getUsersWithAssetsDistributedByUser);
-router.get("/request-return", requestReturn);
+router.put("/request-return", requestReturn);
 
 
 module.exports = router;

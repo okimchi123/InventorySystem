@@ -53,20 +53,24 @@ export const ConfirmModal = ({ isOpen, onClose, onConfirm, message, user }) => {
   );
 };
 
-export const AreYouSureModal = ({ isOpen, onClose, onConfirm }) => {
+export const AreYouSureModal = ({ isOpen, onClose, onConfirm, message, title }) => {
   if (!isOpen) return null;
   return (
 
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900/75">
       <motion.div
-        className="bg-white flex flex-col px-6 py-4 rounded-lg shadow-md w-[25%]"
+        className="bg-white flex flex-col px-8 py-6 rounded-lg shadow-md"
         initial="hidden"
         animate="visible"
         exit="exit"
         variants={modalVariants}
       >
-        <h1 className="text-[32px]">Confirm Action</h1>
-        <p className="mb-4 text-[16px] self-center text-center">Are you sure to delete all these assets?</p>
+        <div className="flex items-center gap-2">
+          <FontAwesomeIcon icon="exclamation-triangle" size="2xl"/>
+          <h1 className="text-[32px]">Confirm {title} Action</h1>
+        </div>
+        
+        <p className="mb-4 text-[18px] self-center text-center">{message}</p>
         <div className="flex justify-end gap-2 self-end">
           <button onClick={onClose} className="px-4 py-2 cursor-pointer transition-all bg-gray-300 rounded-lg hover:bg-gray-400">Cancel</button>
           <button onClick={onConfirm} className="px-4 py-2 cursor-pointer transition-all bg-red-600 text-white rounded-lg hover:bg-red-700">Confirm</button>

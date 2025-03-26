@@ -27,6 +27,8 @@ const ITEMS_PER_PAGE = 10;
 export default function AssetTable() {
   const [isAreYouSureModal, setIsAreYouSureModal] = useState(false);
   const [onConfirmAction, setOnConfirmAction] = useState(() => () => {});
+  const [confirmMessage, setConfirmMessage] = useState("");
+  const [confirmTitle, setConfirmTitle] = useState("");
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDistributeOpen, setIsDistributeModalOpen] = useState(false);
@@ -52,9 +54,11 @@ export default function AssetTable() {
     );
   };
 
-  const openConfirmModal = (confirmAction) => {
+  const openConfirmModal = (confirmAction, message, title) => {
     setOnConfirmAction(() => confirmAction);
     setIsAreYouSureModal(true);
+    setConfirmMessage(message);
+    setConfirmTitle(title)
   };
 
   const handleConditionChange = (event) => {
@@ -244,6 +248,29 @@ export default function AssetTable() {
     }
   };
 
+  const handleRequestReturn = async (assetId) => {
+    try {
+      if (!assetId) {
+        alert("Asset ID is required");
+        return;
+      }
+  
+      const response = await axios.put("http://localhost:5000/api/distribute/request-return", {
+        assetId, 
+      });
+
+      setMessage(`Request Submitted successfully!`);
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+
+      setIsAreYouSureModal(false);
+    } catch (error) {
+      console.error("Error requesting return:", error);
+      alert(error.response?.data?.message || "Something went wrong");
+    }
+  };
+  
+
   return (
     <div class="flex flex-col gap-1 items-end justify-center w-full mx-auto">
       <EditAssetModal
@@ -264,6 +291,8 @@ export default function AssetTable() {
         isOpen={isAreYouSureModal}
         onClose={() => setIsAreYouSureModal(false)}
         onConfirm={onConfirmAction}
+        message={confirmMessage}
+        title={confirmTitle}
       />
 
       <DistributeModal
@@ -319,7 +348,7 @@ export default function AssetTable() {
             <div class="flex flex-row gap-2">
               {selectedAssets.length ? (
                 <button
-                  onClick={() => openConfirmModal(handleDeleteMultiple)}
+                  onClick={() => openConfirmModal(handleDeleteMultiple, "Are you sure to delete all these assets?", "Delete")}
                   class="border transition-all cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
                 >
                   <FontAwesomeIcon icon="trash" className="mr-2" />
@@ -478,7 +507,7 @@ export default function AssetTable() {
                           id="openModalBtn2"
                           disabled={selectedAssets.length}
                           onClick={() => openEditModal(item)}
-                          class={`flex flex-row gap-2 cursor-pointer transition-all items-center border border-white  text-white px-3 py-1.5 rounded-full ${
+                          className={`flex flex-row gap-2 cursor-pointer transition-all items-center border border-white  text-white px-3 py-1.5 rounded-full ${
                             !selectedAssets.length
                               ? "bg-amber-400 hover:bg-amber-600"
                               : "bg-gray-400 cursor-not-allowed"
@@ -490,7 +519,7 @@ export default function AssetTable() {
                         <button
                           disabled={selectedAssets.length}
                           onClick={() => openDeleteModal(item)}
-                          class={`flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md  text-white px-3 py-1.5 rounded-full  ${
+                          className={`flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md  text-white px-3 py-1.5 rounded-full  ${
                             !selectedAssets.length
                               ? "bg-red-600 hover:bg-red-500"
                               : "bg-gray-400 cursor-not-allowed"
@@ -500,9 +529,10 @@ export default function AssetTable() {
                           Delete
                         </button>
                         <button
-                          disabled={selectedAssets.length}
-                          class={`flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md  text-white px-3 py-1.5 rounded-full  ${
-                            !selectedAssets.length
+                          disabled={selectedAssets.length || item.status === "request_return"}
+                          onClick={() => openConfirmModal(() => handleRequestReturn(item._id), "Do you want to submit return request?", "Return")}
+                          className={`flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md  text-white px-3 py-1.5 rounded-full  ${
+                            !selectedAssets.length && item.status !== "request_return"
                               ? "bg-gray-950 hover:bg-gray-700"
                               : "bg-gray-400 cursor-not-allowed"
                           } `}
