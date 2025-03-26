@@ -381,6 +381,7 @@ const getUserHandlingAssets = async (req, res) => {
       }
 };
 
+
 module.exports = {
   getAssets,
   addAsset,

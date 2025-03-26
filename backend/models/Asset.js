@@ -37,7 +37,7 @@ const AssetSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["just_added", "Distributed", "Cancelled"],
+      enum: ["just_added", "Distributed", "request_return", "Returned", "Cancelled"],
       default: "just_added",
     },
     condition: {
@@ -54,7 +54,12 @@ const AssetSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    distributedByID: {
+    distributedByAdminID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Account",
+      required: false,
+    },
+    distributedByModID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Account",
       required: false,
@@ -64,6 +69,14 @@ const AssetSchema = new mongoose.Schema(
       required: false,
     },
     distributionDate: {
+      type: Date,
+      required: false,
+    },
+    ReturnedByName: {
+      type: String,
+      required: false,
+    },
+    ReturnedDate: {
       type: Date,
       required: false,
     },

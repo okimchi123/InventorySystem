@@ -28,18 +28,23 @@ const distributeAsset = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    const updateFields = {
+      distributedTo: userId,
+      distributedToName: `${user.firstname} ${user.lastname}`,
+      distributedByName: `${fromUser.firstname} ${fromUser.lastname}`,
+      status: "Distributed",
+      distributionDate: new Date(),
+    };
+
+    if (fromUser.role === "Moderator") {
+      updateFields["distributedByModID"] = fromUserID;
+    } else if (fromUser.role === "Admin") {
+      updateFields["distributedByAdminID"] = fromUserID;
+    }
+
     await Asset.updateMany(
       { _id: { $in: assetIds } },
-      {
-        $set: {
-          distributedTo: userId,
-          distributedToName: `${user.firstname} ${user.lastname}`,
-          distributedByName: `${fromUser.firstname} ${fromUser.lastname}`,
-          distributedByID: fromUserID,
-          status: "Distributed",
-          distributionDate: new Date(),
-        },
-      }
+      { $set: updateFields }
     );
 
     user.handlingAssets.push(...assetIds);
@@ -72,6 +77,7 @@ const distributeAsset = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 const getDistributeLogs = async (req, res) => {
   try {
@@ -123,11 +129,16 @@ const getUsersWithAssets = async (req, res) => {
 const getUsersWithAssetsDistributedByUser = async (req, res) => {
   try {
     const distributingUserID = req.user.id;
-    console.log(distributingUserID)
 
-    const assets = await Asset.find({ distributedByID: distributingUserID }).select("_id");
+    const fromUser = await Account.findById(distributingUserID);
+    
+    let assets;
 
-    console.log(assets)
+    if (fromUser.role === "Moderator") {
+      assets = await Asset.find({ distributedByModID: distributingUserID }).select("_id");
+    } else if (fromUser.role === "Admin") {
+      assets = await Asset.find({ distributedByAdminID: distributingUserID }).select("_id");
+    }
 
     if (!assets.length) {
       return res.status(404).json({ message: "No assets distributed by this user." });
@@ -150,10 +161,35 @@ const getUsersWithAssetsDistributedByUser = async (req, res) => {
   }
 };
 
+const requestReturn = async (req, res) => {
+  try {
+    const { assetId } = req.body;
+
+    if (!assetId) {
+      return res.status(400).json({ message: "Asset ID is required" });
+    }
+
+    const asset = await Asset.findById(assetId);
+    
+    if (!asset) {
+      return res.status(404).json({ message: "Asset not found" });
+    }
+
+    asset.status = "request_return";
+    await asset.save();
+
+    res.status(200).json({ message: "Return request submitted successfully", asset });
+  } catch (error) {
+    console.error("Error requesting return:", error);
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
 module.exports = {
   distributeAsset,
   getDistributeLogs,
   getUsersWithAssets,
   getUserDistributeLogs,
   getUsersWithAssetsDistributedByUser,
+  requestReturn,
 };
