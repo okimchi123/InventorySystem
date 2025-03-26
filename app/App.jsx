@@ -12,6 +12,7 @@ import AssetManagement from "./pages/admin/Asset-Management/AssetManagement";
 import DistributePage from "./pages/admin/Distribute-History/DistributePage";
 import AssetConditionLogs from "./pages/admin/Asset-Condition/AssetConditionPage";
 import EmployeeList from "./pages/admin/Employee-list/EmployeeList";
+import ReturnRequest from "./pages/admin/Return-Request/ReturnRequest";
 
 import ModeratorDashboard from "./pages/mod/Dashboard/ModDashboard";
 import ModAssetManagement from "./pages/mod/Asset-Management/AssetManagement";
@@ -19,11 +20,12 @@ import ModAssetLog from "./pages/mod/Asset-Log/AssetLogPage";
 import ModDistributeLog from "./pages/mod/Distribute-History/DistributeHistoryPage";
 import ModConditionLog from "./pages/mod/Condition-Log/ConditionLog";
 import ModEmployeeList from "./pages/mod/Employee-List/EmployeeList";
+import ModReturnRequest from "./pages/mod/Return-Request/ReturnRequest";
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faRotateLeft, faLock, faChartSimple, faUpRightAndDownLeftFromCenter, faUserPlus, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+import { faClockRotateLeft, faRotateLeft, faLock, faChartSimple, faUpRightAndDownLeftFromCenter, faUserPlus, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 
-library.add( faRotateLeft, faLock, faChartSimple, faUpRightAndDownLeftFromCenter, faUserPlus, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation)
+library.add( faClockRotateLeft, faRotateLeft, faLock, faChartSimple, faUpRightAndDownLeftFromCenter, faUserPlus, faCheckToSlot, faHandshake, faScrewdriverWrench, faTrashCan, faAngleLeft, faAngleRight, faShare, faBoxesPacking, faBoxArchive,faUpDown,faTrash,faPen,faCirclePlus,faCircleUser, faTachometerAlt, faListAlt, faWarehouse, faTools, faExclamationTriangle, faRecycle, faUsers, faUserTie, faUser, faBars, faAngleDown, faCircleCheck, faCircleXmark, faTriangleExclamation)
 
 function App() {
   return (
@@ -42,6 +44,7 @@ function App() {
             <Route path="/admin/Distribute-History" element={<DistributePage />} /> 
             <Route path="/admin/Asset-Condition" element={<AssetConditionLogs />} /> 
             <Route path="/admin/Employee-List" element={<EmployeeList />} /> 
+            <Route path="/admin/Return-Request" element={<ReturnRequest />} /> 
           </Route>
         </Route>
 
@@ -52,9 +55,8 @@ function App() {
             <Route path="/moderator/Distribute-History" element={<ModDistributeLog />} />
             <Route path="/moderator/Asset-Condition" element={<ModConditionLog />} />
             <Route path="/moderator/Employee-List" element={<ModEmployeeList />} />
-
+            <Route path="/moderator/Return-Request" element={<ModReturnRequest />} />
           </Route>
-
       </Routes>
     </Router>
   );
