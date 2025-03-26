@@ -86,7 +86,7 @@ export default function Description({ item, isOpen, onClose }) {
                 <div className="flex gap-[8px]">
                   <span className="text-[20px] font-semibold">Description:</span><p className="text-[20px] text-gray-700">{item.description}</p>
                 </div>
-                {item.status === "Distributed" ?
+                {item.status === "Distributed" || item.status === "request_return" ?
                 <>
                 <div className="flex gap-[8px]">
                   <span className="text-[20px] font-semibold">Distributed By:</span><p className="text-[20px] text-gray-700">{item.distributedByName}</p>
