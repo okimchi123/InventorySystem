@@ -336,6 +336,8 @@ export default function AssetTable() {
         isOpen={isAreYouSureModal}
         onClose={() => setIsAreYouSureModal(false)}
         onConfirm={handleDeleteMultiple}
+        message="Are you sure to delete all these assets?"
+        title="Delete"
       />
 
       <DistributeModal
@@ -555,7 +557,9 @@ export default function AssetTable() {
                     <td className="py-2 px-4 whitespace-nowrap">
                       {item.status === "just_added" ? (
                         <p>Undistributed</p>
-                      ) : (
+                      ) : item.status === "request_return" ? (
+                        <p>Request Return</p>
+                      ) :(
                         <p> {item.status} </p>
                       )}
                     </td>

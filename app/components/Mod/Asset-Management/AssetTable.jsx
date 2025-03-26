@@ -501,7 +501,7 @@ export default function AssetTable() {
                       </div>
                     </td>
 
-                    <td class="text-center max-w-[220px]">
+                    <td class="text-center max-w-[280px]">
                       <div class="flex flex-row flex-wrap py-2 gap-2">
                         <button
                           id="openModalBtn2"
@@ -538,7 +538,7 @@ export default function AssetTable() {
                           } `}
                         >
                           <FontAwesomeIcon icon="rotate-left" />
-                          Return
+                          {item.status === "request_return" ? <>Requested</> : <>Return</>}
                         </button>
                       </div>
                     </td>
