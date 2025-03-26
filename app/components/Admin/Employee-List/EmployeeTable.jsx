@@ -57,6 +57,7 @@ export default function EmployeeTable() {
               <th className="py-3 px-4 whitespace-nowrap">Name</th>
               <th className="py-3 px-4 whitespace-nowrap">Role</th>
               <th className="py-3 px-4 whitespace-nowrap">Phone</th>
+              <th className="py-3 px-4 whitespace-nowrap">Number of Assets</th>
               <th className="py-3 px-4 whitespace-nowrap">Assets</th>
             </tr>
           </thead>
@@ -76,6 +77,7 @@ export default function EmployeeTable() {
                   <td className="py-4 px-4">
                     {user.phone?.toString().padStart(11, "0")}
                   </td>
+                  <td className="py-4 px-4">{user.handlingAssets.length}</td>
                   <td className="py-4 px-0 whitespace-nowrap">
                     <button
                       onClick={() => handleViewAssets(user)}

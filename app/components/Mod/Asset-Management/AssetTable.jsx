@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SuccessModal, ConfirmModal, AreYouSureModal } from "../../Admin/modal/success";
+import {
+  SuccessModal,
+  ConfirmModal,
+  AreYouSureModal,
+} from "../../Admin/modal/success";
 import EditAssetModal from "../../Admin/Asset-Management/editAssetModal";
 import DistributeModal from "../../Admin/Asset-Management/distributeModal";
 import Description from "../../Admin/modal/description";
@@ -21,13 +25,13 @@ import cable from "../../../assets/images/items/cable.jpg";
 const ITEMS_PER_PAGE = 10;
 
 export default function AssetTable() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAreYouSureModal, setIsAreYouSureModal] = useState(false);
+  const [onConfirmAction, setOnConfirmAction] = useState(() => () => {});
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDistributeOpen, setIsDistributeModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+
   const [asset, setAsset] = useState([]);
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [selectedAssets, setSelectedAssets] = useState([]);
@@ -46,6 +50,11 @@ export default function AssetTable() {
         ? prevSelected.filter((id) => id !== assetId)
         : [...prevSelected, assetId]
     );
+  };
+
+  const openConfirmModal = (confirmAction) => {
+    setOnConfirmAction(() => confirmAction);
+    setIsAreYouSureModal(true);
   };
 
   const handleConditionChange = (event) => {
@@ -83,83 +92,24 @@ export default function AssetTable() {
     setIsConfirmModalOpen(true);
   };
 
-  const [formData, setFormData] = useState({
-    productname: "",
-    producttype: "",
-    description: "",
-    serialnumber: "",
-    condition: "",
-    reason: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async () => {
-    if (
-      !formData.description ||
-      !formData.productname ||
-      !formData.producttype ||
-      !formData.serialnumber ||
-      !formData.condition
-    ) {
-      setMessage("Please input all the fields");
-      setShowSuccessModal(true);
-      setTimeout(() => setShowSuccessModal(false), 2000);
-      return;
-    }
-
-    try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        setMessage("Authentication error. Please log in again.");
-        setShowSuccessModal(true);
-        return;
-      }
-
-      await axios.post("http://localhost:5000/api/asset", formData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setMessage("Asset added successfully!");
-
-      setFormData({
-        productname: "",
-        producttype: "",
-        description: "",
-        serialnumber: "",
-        condition: "",
-        reason: "",
-      });
-
-      closeModal();
-      setShowSuccessModal(true);
-      setTimeout(() => setShowSuccessModal(false), 2000);
-    } catch (error) {
-      setMessage(error.response?.data?.message || "Failed to add user.");
-      setShowSuccessModal(true);
-      setTimeout(() => setShowSuccessModal(false), 2000);
-    }
-  };
-
   const fetchAsset = async () => {
     try {
-        const token = localStorage.getItem("token");
-        const res = await axios.get(`http://localhost:5000/api/asset/handling-assets`, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        setAsset(res.data.handlingAssets);
-        setFilteredAssets(res.data.handlingAssets);
+      const token = localStorage.getItem("token");
+      const res = await axios.get(
+        `http://localhost:5000/api/asset/handling-assets`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setAsset(res.data.handlingAssets);
+      setFilteredAssets(res.data.handlingAssets);
     } catch (error) {
-        console.error("Failed to fetch handling assets:", error);
-        setMessage("Failed to fetch handling assets.");
-        setShowSuccessModal(true);
-        setTimeout(() => setShowSuccessModal(false), 2000);
+      console.error("Failed to fetch handling assets:", error);
+      setMessage("Failed to fetch handling assets.");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
     }
-};
-
+  };
 
   useEffect(() => {
     let updatedAssets = asset;
@@ -309,10 +259,11 @@ export default function AssetTable() {
         message="Are you sure you want to delete this item?"
         user={selectedAsset ? selectedAsset.productname : ""}
       />
+
       <AreYouSureModal
         isOpen={isAreYouSureModal}
         onClose={() => setIsAreYouSureModal(false)}
-        onConfirm={handleDeleteMultiple}
+        onConfirm={onConfirmAction}
       />
 
       <DistributeModal
@@ -368,7 +319,7 @@ export default function AssetTable() {
             <div class="flex flex-row gap-2">
               {selectedAssets.length ? (
                 <button
-                  onClick={() => setIsAreYouSureModal(true)}
+                  onClick={() => openConfirmModal(handleDeleteMultiple)}
                   class="border transition-all cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
                 >
                   <FontAwesomeIcon icon="trash" className="mr-2" />
@@ -431,7 +382,7 @@ export default function AssetTable() {
                       className="w-5 h-5"
                       onChange={handleSelectAll}
                       checked={
-                        selectedAssets.length === asset.length &&
+                        selectedAssets.length === filteredAssets.length &&
                         asset.length > 0
                       }
                     />
@@ -441,7 +392,7 @@ export default function AssetTable() {
                   <th class="py-3 px-4">Product Type</th>
                   <th class="py-3 px-4">Description</th>
                   <th class="py-3 px-4">Condition</th>
-                  <th class="py-3 px-4">Actions</th>
+                  <th class="py-3 px-0">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -458,35 +409,37 @@ export default function AssetTable() {
                         onChange={() => handleCheckboxChange(item._id)}
                       />
                     </td>
-                    <td class="py-2 flex items-center gap-4">
-                      <img
-                        alt="item image"
-                        class="w-16 h-12"
-                        src={
-                          item.producttype === "Laptop"
-                            ? laptop
-                            : item.producttype === "Mouse"
-                            ? mouse
-                            : item.producttype === "Phone"
-                            ? phone
-                            : item.producttype === "Charger"
-                            ? charger
-                            : item.producttype === "Chair"
-                            ? chair
-                            : item.producttype === "Box"
-                            ? box
-                            : item.producttype === "Table"
-                            ? table
-                            : item.producttype === "Monitor"
-                            ? monitor
-                            : item.producttype === "Printer"
-                            ? printer
-                            : item.producttype === "Cable"
-                            ? cable
-                            : ""
-                        }
-                      />
-                      <span>{item.productname}</span>
+                    <td className="py-2">
+                      <div className="flex items-center gap-3">
+                        <img
+                          alt="item image"
+                          class="w-16 h-12"
+                          src={
+                            item.producttype === "Laptop"
+                              ? laptop
+                              : item.producttype === "Mouse"
+                              ? mouse
+                              : item.producttype === "Phone"
+                              ? phone
+                              : item.producttype === "Charger"
+                              ? charger
+                              : item.producttype === "Chair"
+                              ? chair
+                              : item.producttype === "Box"
+                              ? box
+                              : item.producttype === "Table"
+                              ? table
+                              : item.producttype === "Monitor"
+                              ? monitor
+                              : item.producttype === "Printer"
+                              ? printer
+                              : item.producttype === "Cable"
+                              ? cable
+                              : ""
+                          }
+                        />
+                        <span>{item.productname}</span>
+                      </div>
                     </td>
                     <td class="py-2 px-4 whitespace-nowrap">
                       {item.serialnumber}
@@ -519,8 +472,8 @@ export default function AssetTable() {
                       </div>
                     </td>
 
-                    <td class="text-center space-x-2">
-                      <div class="flex flex-row py-2 px-4 gap-2">
+                    <td class="text-center max-w-[220px]">
+                      <div class="flex flex-row flex-wrap py-2 gap-2">
                         <button
                           id="openModalBtn2"
                           disabled={selectedAssets.length}
@@ -546,6 +499,17 @@ export default function AssetTable() {
                           <FontAwesomeIcon icon="trash" />
                           Delete
                         </button>
+                        <button
+                          disabled={selectedAssets.length}
+                          class={`flex flex-row gap-2 cursor-pointer transition-all items-center border border-white shadow-md  text-white px-3 py-1.5 rounded-full  ${
+                            !selectedAssets.length
+                              ? "bg-gray-950 hover:bg-gray-700"
+                              : "bg-gray-400 cursor-not-allowed"
+                          } `}
+                        >
+                          <FontAwesomeIcon icon="rotate-left" />
+                          Return
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -556,25 +520,25 @@ export default function AssetTable() {
         </div>
       </div>
       <ReactPaginate
-              previousLabel={"< Previous"}
-              nextLabel={"Next >"}
-              breakLabel={"..."}
-              pageCount={pageCount}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={3}
-              onPageChange={handlePageClick}
-              containerClassName="flex items-center justify-center space-x-2 mt-1"
-              pageClassName="rounded-md border text-blue-600 transition"
-              pageLinkClassName="inline-block select-none px-3 py-2 w-full h-full cursor-pointer hover:bg-blue-500 hover:text-white rounded-md transition-all"
-              activeClassName="bg-blue-500 text-white font-bold"
-              previousClassName="rounded-md border-gray-400 font-semibold border select-none text-gray-600 transition"
-              previousLinkClassName="inline-block select-none px-3 py-2 transition-all cursor-pointer hover:bg-gray-400 hover:text-white rounded-md"
-              nextClassName="rounded-md border-gray-400 font-semibold border select-none text-gray-600 transition"
-              nextLinkClassName="inline-block select-none px-3 py-2 transition-all cursor-pointer hover:bg-gray-400 hover:text-white rounded-md"
-              breakClassName="text-gray-500"
-              breakLinkClassName="inline-block px-3 py-2"
-              disabledClassName="opacity-50 cursor-not-allowed"
-            />
+        previousLabel={"< Previous"}
+        nextLabel={"Next >"}
+        breakLabel={"..."}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={3}
+        onPageChange={handlePageClick}
+        containerClassName="flex items-center justify-center space-x-2 mt-1"
+        pageClassName="rounded-md border text-blue-600 transition"
+        pageLinkClassName="inline-block select-none px-3 py-2 w-full h-full cursor-pointer hover:bg-blue-500 hover:text-white rounded-md transition-all"
+        activeClassName="bg-blue-500 text-white font-bold"
+        previousClassName="rounded-md border-gray-400 font-semibold border select-none text-gray-600 transition"
+        previousLinkClassName="inline-block select-none px-3 py-2 transition-all cursor-pointer hover:bg-gray-400 hover:text-white rounded-md"
+        nextClassName="rounded-md border-gray-400 font-semibold border select-none text-gray-600 transition"
+        nextLinkClassName="inline-block select-none px-3 py-2 transition-all cursor-pointer hover:bg-gray-400 hover:text-white rounded-md"
+        breakClassName="text-gray-500"
+        breakLinkClassName="inline-block px-3 py-2"
+        disabledClassName="opacity-50 cursor-not-allowed"
+      />
     </div>
   );
 }

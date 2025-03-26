@@ -464,7 +464,7 @@ export default function AssetTable() {
                       className="w-5 h-5"
                       onChange={handleSelectAll}
                       checked={
-                        selectedAssets.length === asset.length &&
+                        selectedAssets.length === filteredAssets.length &&
                         asset.length > 0
                       }
                     />
