@@ -185,6 +185,26 @@ const requestReturn = async (req, res) => {
   }
 };
 
+const returningAssets = async (req, res) => {
+  try {
+    const adminId = req.user.id; 
+
+    if (!adminId) {
+      return res.status(401).json({ message: "Unauthorized: Admin ID is required" });
+    }
+
+    const assets = await Asset.find({
+      status: "request_return",
+      distributedByAdminID: adminId,
+    });
+
+    res.status(200).json( assets );
+  } catch (error) {
+    console.error("Error fetching returning assets:", error);
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
 module.exports = {
   distributeAsset,
   getDistributeLogs,
@@ -192,4 +212,5 @@ module.exports = {
   getUserDistributeLogs,
   getUsersWithAssetsDistributedByUser,
   requestReturn,
+  returningAssets,
 };
