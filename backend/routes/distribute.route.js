@@ -10,6 +10,7 @@ const {
     requestReturn,
     returningAssets,
     cancelRequest,
+    AcceptReturn,
 } = require("../controllers/distribute.controller")
 
 const router = express.Router();

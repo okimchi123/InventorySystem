@@ -37,7 +37,7 @@ const AssetSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["just_added", "Distributed", "request_return", "Returned", "Cancelled"],
+      enum: ["just_added", "Distributed", "request_return"],
       default: "just_added",
     },
     condition: {
@@ -69,14 +69,6 @@ const AssetSchema = new mongoose.Schema(
       required: false,
     },
     distributionDate: {
-      type: Date,
-      required: false,
-    },
-    ReturnedByName: {
-      type: String,
-      required: false,
-    },
-    ReturnedDate: {
       type: Date,
       required: false,
     },
