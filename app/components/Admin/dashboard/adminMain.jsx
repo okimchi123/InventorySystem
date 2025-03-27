@@ -56,27 +56,27 @@ export default function AdminMain(){
         <div className="bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
           <h4 className="text-4xl font-lg font-russo select-none text-gray-700 ">{assets.totalAssets}</h4>
           <p className="text-lg font-medium select-none">Total Assets</p>
-          <FontAwesomeIcon icon="chart-simple" size="xl" color="blue" className="absolute right-5 bottom-5 select-none" />
+          <FontAwesomeIcon icon="chart-simple" size="xl" color="blue" className="absolute right-5 top-5 bg-blue-100 p-2 rounded-full select-none" />
         </div>
         <div className="bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
           <h4 className="text-4xl font-lg font-russo select-none text-gray-700 ">{assets.totalAvailable}</h4>
           <p className="text-lg font-medium select-none">Available Stock</p>
-          <FontAwesomeIcon icon="check-to-slot" size="xl" color="green" className="absolute right-5 bottom-5 select-none" />
+          <FontAwesomeIcon icon="check-to-slot" size="xl" color="green" className="absolute right-5 top-5 bg-green-100 p-2 rounded-full select-none" />
         </div>
         <div className="bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
           <h4 className="text-4xl font-lg font-russo select-none text-gray-700 ">{assets.totalDistributed}</h4>
           <p className="text-lg font-medium select-none">Distributed Stock</p>
-          <FontAwesomeIcon icon="handshake" size="xl" color="#E49F00" className="absolute right-5 bottom-5 select-none" />
+          <FontAwesomeIcon icon="handshake" size="xl" color="#E49F00" className="absolute right-5 top-5 bg-yellow-100 p-2 rounded-full select-none" />
         </div>
         <div className="bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
           <h4 className="text-4xl font-lg font-russo select-none text-gray-700 ">{assets.totalBroken}</h4>
           <p className="text-lg font-medium select-none">Broken Assets</p>
-          <FontAwesomeIcon icon="screwdriver-wrench" size="xl" color="gray" className="absolute right-5 bottom-5 select-none" />
+          <FontAwesomeIcon icon="screwdriver-wrench" size="xl" color="gray" className="absolute right-5 top-5 bg-gray-100 p-2 rounded-full select-none" />
         </div>
         <div className="bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
           <h4 className="text-4xl font-lg font-russo select-none text-gray-700 ">{assets.totalScrap}</h4>
           <p className="text-lg font-medium select-none">Scrap Assets</p>
-          <FontAwesomeIcon icon="trash-can" size="xl" color="red" className="absolute right-5 bottom-5 select-none" />
+          <FontAwesomeIcon icon="trash-can" size="xl" color="red" className="absolute right-5 top-5 bg-red-100 p-2 rounded-full select-none" />
         </div>
       </div>
       <div className="flex gap-4 justify-between -mx-2">

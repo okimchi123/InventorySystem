@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import moment from "moment";
 import ReactPaginate from "react-paginate";
+import { SuccessModal, AreYouSureModal } from "../modal/success";
 
 import laptop from "../../../assets/images/items/laptop.jpg";
 import mouse from "../../../assets/images/items/mouse.jpg";
@@ -17,84 +18,137 @@ import cable from "../../../assets/images/items/cable.jpg";
 const ITEMS_PER_PAGE = 8;
 
 export default function ReturnTable() {
-   const [asset, setAsset] = useState([]);
-   const [filteredAssets, setFilteredAssets] = useState(asset);
-   const [searchQuery, setSearchQuery] = useState("");
-   const [currentPage, setCurrentPage] = useState(0);
+  const [asset, setAsset] = useState([]);
+  const [filteredAssets, setFilteredAssets] = useState(asset);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
 
-   const fetchAsset = useCallback(async () => {
-     try {
-       const token = localStorage.getItem("token");
-       const res = await axios.get(
-         "http://localhost:5000/api/distribute/returningAssets",
-         {
-           headers: { Authorization: `Bearer ${token}` },
-         }
-       );
-       setAsset(res.data);
-     } catch (error) {
-       console.error("Failed to fetch logs:", error);
-     }
-   }, []);
+  const [isAreYouSureModal, setIsAreYouSureModal] = useState(false);
+  const [onConfirmAction, setOnConfirmAction] = useState(() => () => {});
+  const [confirmMessage, setConfirmMessage] = useState("");
+  const [confirmTitle, setConfirmTitle] = useState("");
 
-   const pageCount = Math.ceil(filteredAssets.length / ITEMS_PER_PAGE);
-   const paginatedLogs = filteredAssets.slice(
-     currentPage * ITEMS_PER_PAGE,
-     (currentPage + 1) * ITEMS_PER_PAGE
-   );
+  const [message, setMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-   const handlePageClick = ({ selected }) => {
-     setCurrentPage(selected);
-   };
-  
-   useEffect(() => {
-     fetchAsset();
-   }, [fetchAsset]); 
+  const openConfirmModal = (confirmAction, message, title) => {
+    setOnConfirmAction(() => confirmAction);
+    setIsAreYouSureModal(true);
+    setConfirmMessage(message);
+    setConfirmTitle(title);
+  };
 
-   useEffect(() => {
+  const fetchAsset = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(
+        "http://localhost:5000/api/distribute/returningAssets",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setAsset(res.data);
+    } catch (error) {
+      console.error("Failed to fetch logs:", error);
+    }
+  }, []);
+
+  const pageCount = Math.ceil(filteredAssets.length / ITEMS_PER_PAGE);
+  const paginatedLogs = filteredAssets.slice(
+    currentPage * ITEMS_PER_PAGE,
+    (currentPage + 1) * ITEMS_PER_PAGE
+  );
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  useEffect(() => {
+    fetchAsset();
+  }, [fetchAsset]);
+
+  useEffect(() => {
     console.log("Updated asset:", asset);
   }, [asset]);
 
-   useEffect(() => {
-     const filtered = asset.filter((item) =>
-       item.productname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-       item.distributedToName.toLowerCase().includes(searchQuery.toLowerCase())
-     );
-     setFilteredAssets(filtered);
-   }, [searchQuery, asset]);
+  useEffect(() => {
+    const filtered = asset.filter(
+      (item) =>
+        item.productname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.distributedToName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredAssets(filtered);
+  }, [searchQuery, asset]);
+
+  const handleCancelRequest = async (assetId) => {
+    try {
+      if (!assetId) {
+        alert("Asset ID is required");
+        return;
+      }
+      const response = await axios.put(
+        "http://localhost:5000/api/distribute/cancel-request",
+        {
+          assetId,
+        }
+      );
+
+      setMessage(`Request Cancelled successfully!`);
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+
+      setIsAreYouSureModal(false);
+    } catch (error) {
+      console.error("Error cancelling request return:", error);
+    }
+  };
 
   return (
-      <div className="flex flex-col items-end justify-center w-full mx-auto">
-        <div className="flex gap-3 mx-auto py-4 w-full">
-          <input
-            type="text"
-            placeholder="Search product name or SN"
-            className="py-2 px-3 w-[240px] border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-        <div className="w-full overflow-x-auto h-full border border-gray-300 rounded-lg shadow-md">
-          <table className="w-full bg-white">
-            <thead>
-              <tr className="bg-gray-200 border-gray-400 text-md text-left px-4">
-                <th className="py-3 px-4 whitespace-nowrap">Asset From</th>
-                <th className="py-3 px-4 whitespace-nowrap text-center">Product</th>
-                <th className="py-3 px-4 whitespace-nowrap">Condition</th>
-                <th className="py-3 px-4 whitespace-nowrap">
-                  Product Serial Number
-                </th>
-                <th className="py-3 px-4 whitespace-nowrap text-center">Action</th>
-                <th className="py-3 px-4 whitespace-nowrap">Request Date</th>                
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedLogs.map((item) => (
-                <tr
-                 key={item._id}
-                  className="text-left border-gray-300 border-b-[1px]"
-                >
-                  <td className="py-4 px-4 whitespace-nowrap">{item.distributedToName}</td>
-                  <td className="py-4 px-4 whitespace-nowrap">
+    <div className="flex flex-col items-end justify-center w-full mx-auto">
+      <AreYouSureModal
+        isOpen={isAreYouSureModal}
+        onClose={() => setIsAreYouSureModal(false)}
+        onConfirm={onConfirmAction}
+        message={confirmMessage}
+        title={confirmTitle}
+      />
+      <SuccessModal message={message} isVisible={showSuccessModal} />
+      <div className="flex gap-3 mx-auto py-4 w-full">
+        <input
+          type="text"
+          placeholder="Search product name or SN"
+          className="py-2 px-3 w-[240px] border border-gray-700 shadow-sm sm:text-md outline-none rounded-2xl"
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+      <div className="w-full overflow-x-auto h-full border border-gray-300 rounded-lg shadow-md">
+        <table className="w-full bg-white">
+          <thead>
+            <tr className="bg-gray-200 border-gray-400 text-md text-left px-4">
+              <th className="py-3 px-4 whitespace-nowrap">Asset From</th>
+              <th className="py-3 px-4 whitespace-nowrap text-center">
+                Product
+              </th>
+              <th className="py-3 px-4 whitespace-nowrap">Condition</th>
+              <th className="py-3 px-4 whitespace-nowrap">
+                Product Serial Number
+              </th>
+              <th className="py-3 px-4 whitespace-nowrap text-center">
+                Action
+              </th>
+              <th className="py-3 px-4 whitespace-nowrap">Request Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedLogs.map((item) => (
+              <tr
+                key={item._id}
+                className="text-left border-gray-300 border-b-[1px]"
+              >
+                <td className="py-4 px-4 whitespace-nowrap">
+                  {item.distributedToName}
+                </td>
+                <td className="py-4 px-4 whitespace-nowrap">
                   <div className="flex gap-[12px]">
                     <img
                       alt="item image"
@@ -124,14 +178,19 @@ export default function ReturnTable() {
                       }
                     />
                     <div className="flex flex-col mt-3">
-                      <span className="text-[20px] font-medium">{item.productname} </span>
-                      <span className="text-[16px] text-gray-500"> {item.producttype}</span>
+                      <span className="text-[20px] font-medium">
+                        {item.productname}{" "}
+                      </span>
+                      <span className="text-[16px] text-gray-500">
+                        {" "}
+                        {item.producttype}
+                      </span>
                     </div>
                   </div>
-                  </td>
-                  <td className="py-4 px-4 whitespace-nowrap">
+                </td>
+                <td className="py-4 px-4 whitespace-nowrap">
                   <div
-                        className={`w-[80px] py-1 rounded-lg text-center select-none
+                    className={`w-[80px] py-1 rounded-lg text-center select-none
                       ${
                         item.condition === "Good"
                           ? "text-green-900 bg-green-100"
@@ -139,36 +198,41 @@ export default function ReturnTable() {
                           ? "text-red-900 bg-red-100"
                           : "text-gray-900 bg-gray-200"
                       }`}
-                      >
-                        <span className="font-medium rounded-lg">
-                          {item.condition}
-                        </span>
-                      </div>
-                  </td>
-                  <td className="py-4 px-4">{item.serialnumber}</td>
-                  <td className="py-4 px-4 whitespace-nowrap">
+                  >
+                    <span className="font-medium rounded-lg">
+                      {item.condition}
+                    </span>
+                  </div>
+                </td>
+                <td className="py-4 px-4">{item.serialnumber}</td>
+                <td className="py-4 px-4 whitespace-nowrap">
                   <div className="flex flex-row justify-center py-2 gap-2">
-                    <button
-                        className="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white  text-white px-4 py-2 rounded-full bg-green-400 hover:bg-green-600"      
-                    >
-                        Accept Request
+                    <button className="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white  text-white px-4 py-2 rounded-full bg-green-400 hover:bg-green-600">
+                      Accept Request
                     </button>
-                        <button
-                        className="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white  text-white px-4 py-2 rounded-full bg-red-400 hover:bg-red-600"      
+                    <button
+                      onClick={() =>
+                        openConfirmModal(
+                          () => handleCancelRequest(item._id),
+                          `Cancel ${item.distributedToName} Return Request?`,
+                          "Return"
+                        )
+                      }
+                      className="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white  text-white px-4 py-2 rounded-full bg-red-400 hover:bg-red-600"
                     >
-                        Cancel
+                      Cancel
                     </button>
                   </div>
-                  </td>
-                  <td className="py-4 px-4 whitespace-nowrap">
-                     {moment(item.createdAt).format("MMMM D, YYYY h:mm A")} 
-                  </td>
-                </tr>
-               ))} 
-            </tbody>
-          </table>
-        </div>
-         {pageCount > 1 && (
+                </td>
+                <td className="py-4 px-4 whitespace-nowrap">
+                  {moment(item.createdAt).format("MMMM D, YYYY h:mm A")}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {pageCount > 1 && (
         <ReactPaginate
           previousLabel={"< Previous"}
           nextLabel={"Next >"}
@@ -189,7 +253,7 @@ export default function ReturnTable() {
           breakLinkClassName="inline-block px-3 py-2"
           disabledClassName="opacity-50 cursor-not-allowed"
         />
-      )} 
-      </div>
+      )}
+    </div>
   );
 }

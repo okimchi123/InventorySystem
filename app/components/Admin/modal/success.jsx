@@ -55,6 +55,7 @@ export const ConfirmModal = ({ isOpen, onClose, onConfirm, message, user }) => {
 
 export const AreYouSureModal = ({ isOpen, onClose, onConfirm, message, title }) => {
   if (!isOpen) return null;
+  
   return (
 
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900/75">
