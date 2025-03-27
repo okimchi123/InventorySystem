@@ -103,6 +103,32 @@ export default function ReturnTable() {
     }
   };
 
+  const handleAcceptRequest = async (assetId) => {
+    try {
+      if (!assetId) {
+        alert("Asset ID is required");
+        return;
+      }
+      const token = localStorage.getItem("token");
+      const response = await axios.put(
+        "http://localhost:5000/api/distribute/accept-return",
+        {
+          assetId,
+        },{
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      setMessage(`Request Cancelled successfully!`);
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+
+      setIsAreYouSureModal(false);
+    } catch (error) {
+      console.error("Error cancelling request return:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col items-end justify-center w-full mx-auto">
       <AreYouSureModal
@@ -207,7 +233,15 @@ export default function ReturnTable() {
                 <td className="py-4 px-4">{item.serialnumber}</td>
                 <td className="py-4 px-4 whitespace-nowrap">
                   <div className="flex flex-row justify-center py-2 gap-2">
-                    <button className="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white  text-white px-4 py-2 rounded-full bg-green-400 hover:bg-green-600">
+                    <button 
+                     onClick={() =>
+                      openConfirmModal(
+                        () => handleAcceptRequest(item._id),
+                        `Accept ${item.distributedToName} Return Asset Request?`,
+                        "Accept"
+                      )
+                    }
+                    className="flex flex-row gap-2 cursor-pointer transition-all items-center border border-white  text-white px-4 py-2 rounded-full bg-green-400 hover:bg-green-600">
                       Accept Request
                     </button>
                     <button

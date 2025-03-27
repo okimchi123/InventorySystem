@@ -55,7 +55,7 @@ export const ConfirmModal = ({ isOpen, onClose, onConfirm, message, user }) => {
 
 export const AreYouSureModal = ({ isOpen, onClose, onConfirm, message, title }) => {
   if (!isOpen) return null;
-  
+  const isAccept = message.includes("Accept");
   return (
 
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900/75">
@@ -67,14 +67,14 @@ export const AreYouSureModal = ({ isOpen, onClose, onConfirm, message, title }) 
         variants={modalVariants}
       >
         <div className="flex items-center gap-2">
-          <FontAwesomeIcon icon="exclamation-triangle" size="2xl"/>
+          <FontAwesomeIcon icon="exclamation-triangle" color={`${isAccept?"green":"red"}`} size="2xl"/>
           <h1 className="text-[32px]">Confirm {title} Action</h1>
         </div>
         
         <p className="mb-4 text-[18px] self-center text-center">{message}</p>
         <div className="flex justify-end gap-2 self-end">
           <button onClick={onClose} className="px-4 py-2 cursor-pointer transition-all bg-gray-300 rounded-lg hover:bg-gray-400">Cancel</button>
-          <button onClick={onConfirm} className="px-4 py-2 cursor-pointer transition-all bg-red-600 text-white rounded-lg hover:bg-red-700">Confirm</button>
+          <button onClick={onConfirm} className={`px-4 py-2 cursor-pointer transition-all text-white rounded-lg ${isAccept ? "bg-green-600  hover:bg-green-700" : "bg-red-600  hover:bg-red-700"}`}>Confirm</button>
         </div>
       </motion.div>
     </div>

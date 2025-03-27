@@ -219,6 +219,8 @@ const AcceptReturn = async (req, res) => {
       return res.status(404).json({ message: "Asset not found" });
     }
 
+    const toUser = await Account.findById(asset.distributedTo);
+
     await returnLog.create({
       action: "RETURNED",
       returnedToID: fromUserID,
@@ -227,6 +229,11 @@ const AcceptReturn = async (req, res) => {
       fromUserName: asset.distributedToName,
       toUserName: `${fromUser.firstname} ${fromUser.lastname}`,
     });
+
+    toUser.handlingAssets = toUser.handlingAssets.filter(
+      (assetId) => !assetId.includes(assetId.toString())
+    );
+    await toUser.save();
 
     asset.status = "just_added";
     asset.distributedByAdminID = null;
