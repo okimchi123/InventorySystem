@@ -22,13 +22,13 @@ export default function AddUserModal({
         variants={modalVariants}
         className="bg-white border border-gray-600 rounded-lg px-15 py-6 shadow-lg relative h-[70%] w-[60%]"
       >
-        <div className="flex items-center gap-[4px]">
+        <div className="flex items-center gap-[4px] px-8">
           <FontAwesomeIcon icon="circle-user" size="2xl" color="green" />
           <h1 className="text-[32px]">Add New User</h1>
         </div>
 
         {/* Form Fields */}
-        <div className="flex flex-col gap-4 mt-4">
+        <div className="flex flex-col gap-4 mt-4 px-8">
           <div className="flex laptop:flex-row phone:flex-col gap-4">
             <div className="flex flex-col gap-1 w-full">
               <label className="text-[20px] font-medium">First Name</label>

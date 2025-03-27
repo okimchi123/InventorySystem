@@ -50,7 +50,7 @@ export default function DistributeTable() {
   };
 
   return (
-      <div className="flex flex-col items-end justify-center w-full mx-auto"  style={{paddingTop: '4rem'}}>
+      <div className="flex flex-col items-end justify-center w-full mx-auto">
         <div className="flex gap-3 mx-auto py-4 w-full">
           <input
             type="text"

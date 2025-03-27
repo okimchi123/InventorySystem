@@ -9,13 +9,13 @@ export default function SideBar({ role }) {
     const isUser = role === "User";
 
     return (
-        <div className="w-1/5 bg-blue-600 text-white h-screen px-[12px] py-[24px] fixed flex flex-col items-center">
+        <div className="bg-blue-600 text-white h-screen px-[25px] py-[34px] sticky top-0 flex flex-col items-center">
             <h1 className="text-4xl mb-6 mt-2 font-medium font-russo">E-Inventory</h1>
             <ul className="font-monserat">
                 <li className="mb-4">
                     <NavLink
                     to={`/${role?.toLowerCase()}/Dashboard`} 
-                        className={`flex items-center select-none px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
+                        className={`flex items-center select-none whitespace-nowrap px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
                             location.pathname === "/admin/Dashboard" || location.pathname === "/moderator/Dashboard"
                             ? "bg-blue-500 text-white"
                             : "hover:bg-blue-700"
@@ -29,7 +29,7 @@ export default function SideBar({ role }) {
                 <li className="mb-4">
                     <NavLink
                         to={`/${role?.toLowerCase()}/Asset-Management`}
-                        className={`flex items-center select-none px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
+                        className={`flex items-center select-none whitespace-nowrap px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
                             location.pathname === "/admin/Asset-Management" || location.pathname === "/moderator/Asset-Management"
                             ? "bg-blue-500 text-white"
                             : "hover:bg-blue-700"
@@ -43,7 +43,7 @@ export default function SideBar({ role }) {
                 <li className="mb-4">
                     <NavLink
                         to="/admin/Asset-Log"
-                        className={`flex items-center select-none px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
+                        className={`flex items-center select-none whitespace-nowrap px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
                             location.pathname === "/admin/Asset-Log"
                             ? "bg-blue-500 text-white"
                             : "hover:bg-blue-700"
@@ -57,7 +57,7 @@ export default function SideBar({ role }) {
                 <li className="mb-4">
                     <NavLink
                         to="/admin/Distribute-History"
-                        className={`flex items-center select-none px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
+                        className={`flex items-center select-none whitespace-nowrap px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
                             location.pathname === "/admin/Distribute-History"
                             ? "bg-blue-500 text-white"
                             : "hover:bg-blue-700"
@@ -71,7 +71,7 @@ export default function SideBar({ role }) {
                 <li className="mb-4">
                     <NavLink
                         to="/admin/Asset-Condition"
-                        className={`flex items-center select-none px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
+                        className={`flex items-center select-none whitespace-nowrap px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
                             location.pathname === "/admin/Asset-Condition"
                             ? "bg-blue-500 text-white"
                             : "hover:bg-blue-700"
@@ -85,7 +85,7 @@ export default function SideBar({ role }) {
                 <li className="mb-4">
                             <NavLink
                                 to="/admin/Employee-List"
-                                className={`flex items-center select-none px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
+                                className={`flex items-center select-none whitespace-nowrap px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
                                     location.pathname === "/admin/Employee-List"
                                     ? "bg-blue-500 text-white"
                                     : "hover:bg-blue-700"
@@ -100,7 +100,7 @@ export default function SideBar({ role }) {
                         <li className="mb-4">
                             <NavLink
                                 to="/admin/User-Management"
-                                className={`flex items-center select-none px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
+                                className={`flex items-center select-none whitespace-nowrap px-5 py-3 text-[18px] font-medium rounded-lg transition-all ${
                                     location.pathname === "/admin/User-Management"
                                     ? "bg-blue-500 text-white"
                                     : "hover:bg-blue-700"

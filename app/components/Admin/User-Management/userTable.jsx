@@ -162,7 +162,7 @@ export default function UserTable({ openModal }) {
   };
 
   return (
-    <div className="rounded-lg flex flex-col items-end" style={{paddingTop: '4rem'}}>
+    <div className="rounded-lg flex flex-col items-end">
       <EditUserModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}

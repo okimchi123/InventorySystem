@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "../../assets/images/logo/hf.png";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -34,7 +35,6 @@ export default function Login() {
     <div id="main-container" class="flex flex-wrap min-h-screen">
       <div class="hidden py-2 md:flex flex-col justify-center bg-blue-500 w-1/2">
         <div class="flex flex-col items-center justify-center gap-4 h-full">
-          <img src="" alt="" class="w-3/4" />
           <h4 class="text-white text-6xl font-medium font-russo text-center">
             Express Inventory
           </h4>
@@ -45,9 +45,9 @@ export default function Login() {
       </div>
 
       <div class="flex flex-col justify-center w-full min-h-screen md:w-1/2 mx-auto">
-        <div class="md:hidden phone:block h-8 py-4 px-3 bg-blue-500">
+        <div class="md:hidden phone:block h-24 py-4 px-3">
           <a href="home" class="h-8">
-            <img class="w-16" src="" alt="logo" />
+            <img class="w-16" src={logo} alt="logo" />
           </a>
         </div>
         <form

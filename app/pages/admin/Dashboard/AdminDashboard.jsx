@@ -46,18 +46,18 @@ const AdminDashboard = () => {
 
 
   return (
-    <div className="flex">
+    <div className="flex flex-row justify-start relative overflow-y-hidden">
       <SideBar 
         role={adminData?.role}
       />
-      <div className="w-4/5 ml-auto">
+      <div className="w-[100%] ml-auto">
         <TopBar
           name={adminData?.email}
           role={adminData?.role}
-        />
+        /> 
         <Outlet />
       </div>
-    </div>
+    </div> 
   );
 };
 

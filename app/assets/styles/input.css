@@ -1,13 +1,11 @@
-@font-face {
-    font-family: 'Russo One';
-    src: url("../fonts/RussoOne-Regular.ttf");
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@theme{
-    --font-russo: 'Russo One', sans-serif;
-    --font-monserrat: 'Montserrat', sans-serif;
-}
+@font-face {
+    font-family: 'Russo One';
+    src: url('./assets/fonts/RussoOne-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* Important for performance */
+  } 

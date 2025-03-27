@@ -351,7 +351,7 @@ export default function AssetTable() {
         <div class="flex items-start laptop:flex-row phone:flex-col gap-2 w-full">
           <h1 className="text-[22px] font-semibold mb-[6px]"> Assets </h1>
           <div className="flex flex-row gap-2">
-          <div class="flex justify-start laptop:w-[23%] phone:w-full">
+          <div class="flex justify-start laptop:w-[50%] phone:w-full">
             <input
               type="text"
               placeholder="Search Name | Serial | Product Type"
@@ -487,10 +487,10 @@ export default function AssetTable() {
                         onChange={() => handleCheckboxChange(item._id)}
                       />
                     </td>
-                    <td className="flex flex-row gap-2 items-center whitespace-normal min-w-[20%]">
+                    <td className="flex flex-row gap-2 items-center whitespace-normal min-w-[140px]">
                       <img
                         alt="item image"
-                        class="w-16 h-12"
+                        class="w-16 h-12 px-3"
                         src={
                           item.producttype === "Laptop"
                             ? laptop
