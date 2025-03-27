@@ -226,13 +226,13 @@ const AcceptReturn = async (req, res) => {
       returnedToID: fromUserID,
       returnedByID: asset.distributedTo,
       targetProduct: asset._id,
-      fromUserName: asset.distributedToName,
+      fromUserName: asset.distributedToName || "Unknown",
       toUserName: `${fromUser.firstname} ${fromUser.lastname}`,
     });
 
     toUser.handlingAssets = toUser.handlingAssets.filter(
-      (assetId) => !assetId.includes(assetId.toString())
-    );
+      (id) => id.toString() !== assetId.toString()
+    );    
     await toUser.save();
 
     asset.status = "just_added";
