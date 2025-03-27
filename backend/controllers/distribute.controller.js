@@ -185,6 +185,30 @@ const requestReturn = async (req, res) => {
   }
 };
 
+const cancelRequest = async (req, res) => {
+  try {
+    const { assetId } = req.body;
+
+    if (!assetId) {
+      return res.status(400).json({ message: "Asset ID is required" });
+    }
+
+    const asset = await Asset.findById(assetId);
+    
+    if (!asset) {
+      return res.status(404).json({ message: "Asset not found" });
+    }
+
+    asset.status = "Distributed";
+    await asset.save();
+
+    res.status(200).json({ message: "Return request submitted successfully", asset });
+  } catch (error) {
+    console.error("Error requesting return:", error);
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
 const returningAssets = async (req, res) => {
   try {
     const adminId = req.user.id; 
@@ -213,4 +237,5 @@ module.exports = {
   getUsersWithAssetsDistributedByUser,
   requestReturn,
   returningAssets,
+  cancelRequest,
 };

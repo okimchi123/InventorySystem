@@ -9,6 +9,7 @@ const {
     getUsersWithAssetsDistributedByUser,
     requestReturn,
     returningAssets,
+    cancelRequest,
 } = require("../controllers/distribute.controller")
 
 const router = express.Router();
@@ -19,6 +20,7 @@ router.get("/getUserWithAssets", authenticateToken, getUsersWithAssets);
 router.get("/getUserDistribute", authenticateToken, getUserDistributeLogs);
 router.get("/users-with-assets-distributed", authenticateToken, getUsersWithAssetsDistributedByUser);
 router.put("/request-return", requestReturn);
+router.put("/cancel-request", cancelRequest);
 router.get("/returningAssets", authenticateToken, returningAssets);
 
 
