@@ -51,52 +51,44 @@ export default function AdminMain(){
   , []);
 
   return (
-      <div className="flex flex-col laptop:px-4 phone:px-4" style={{paddingTop: '6rem'}}>
-        <div className="flex laptop:flex-row phone:flex-col gap-2 mb-6 w-full">
-          <div className="w-full bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
-            <div className="flex items-center">
-              <FontAwesomeIcon icon="chart-simple" size="xl" color="blue" className="absolute select-none bg-blue-100 p-3 rounded-full" />
-              <h4 className="text-4xl font-lg font-russo select-none text-gray-700  ml-auto">{assets.totalAssets}</h4>
-            </div>
-            <p className="desktop:text-xl laptop:text-base font-medium select-none whitespace-nowrap">Total Assets</p>
-          </div>
-          <div className="w-full bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
-            <div className="flex items-center">
-              <h4 className="text-4xl font-lg font-russo select-none text-gray-700  ml-auto">{assets.totalAvailable}</h4>
-              <FontAwesomeIcon icon="check-to-slot" size="xl" color="green" className="absolute select-none bg-green-100 p-3 rounded-full" />
-            </div>
-            <p className="desktop:text-xl laptop:text-base font-medium select-none">Available Stock</p>
-          </div>
-          <div className="w-full bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
-            <div className="flex items-center">
-              <h4 className="text-4xl font-lg font-russo select-none text-gray-700  ml-auto">{assets.totalDistributed}</h4>
-              <FontAwesomeIcon icon="handshake" size="xl" color="#E49F00" className="absolute select-none bg-yellow-100 p-3 rounded-full" />
-            </div>
-            <p className="text-base font-medium select-none">Distributed Stock</p>
-          </div>
-          <div className="w-full bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
-            <div className="flex items-center">
-              <h4 className="text-4xl font-lg font-russo select-none text-gray-700  ml-auto">{assets.totalBroken}</h4>
-              <FontAwesomeIcon icon="screwdriver-wrench" size="xl" color="gray" className="absolute select-none bg-gray-200 p-3 rounded-full" />
-            </div>
-            <p className="text-base font-medium select-none">Broken Assets</p>
-          </div>
-          <div className="w-full bg-white relative flex flex-col gap-2 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
-            <div className="flex items-center">
-              <h4 className="text-4xl font-lg font-russo select-none text-gray-700  ml-auto">{assets.totalScrap}</h4>
-              <FontAwesomeIcon icon="trash-can" size="xl" color="red" className="absolute select-none bg-red-100 p-3 rounded-full" />
-            </div>
-            <p className="text-base font-medium select-none">Scrap Assets</p>
-          </div>
-        </div>
-        <div className="flex laptop:flex-row phone:flex-col">
-          <div className="w-[68%] p-2">
-            <TotalAssets />
-          </div>
-          <div className="w-[45%] p-2 flex items-center justify-center">
-          <InventoryPieChart />
-          </div>
-        </div>
+    <div className="flex flex-col laptop:px-10 phone:px-4" style={{paddingTop: '2rem'}}>
+    <div className="flex laptop:flex-row phone:flex-col gap-2 mb-6 w-full">
+      <div className="w-full bg-white relative flex flex-col gap-3 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">  
+        <h4 className="text-4xl font-lg font-russo select-none text-gray-700">{assets.totalAssets}</h4>
+          <p className="text-base font-medium select-none whitespace-nowrap">Total Assets</p>
+          <FontAwesomeIcon icon="chart-simple" size="xl" color="blue" className="absolute bg-blue-100 p-2.5 rounded-full right-5 top-5 select-none" />
       </div>
+      <div className="w-full bg-white relative flex flex-col gap-3 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
+        <div className="flex items-center">
+          <h4 className="text-4xl font-lg font-russo select-none text-gray-700 ">{assets.totalAvailable}</h4>
+          <FontAwesomeIcon icon="check-to-slot" size="xl" color="green" className="absolute bg-green-100 p-2.5 rounded-full right-5 top-5 select-none" />
+        </div>
+        <p className="text-base font-medium select-none">Available Stock</p>
+      </div>
+      <div className="w-full bg-white relative flex flex-col gap-3 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
+        <h4 className="text-4xl font-lg font-russo select-none text-gray-700 ">{assets.totalDistributed}</h4>
+        <FontAwesomeIcon icon="handshake" size="xl" color="#E49F00" className="absolute bg-yellow-100 p-2.5 rounded-full right-5 top-5 select-none" />
+        <p className="text-base font-medium select-none">Distributed Stock</p>
+      </div>
+      <div className="w-full bg-white relative flex flex-col gap-3 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
+        <h4 className="text-4xl font-lg font-russo select-none text-gray-700">{assets.totalBroken}</h4>
+        <FontAwesomeIcon icon="screwdriver-wrench" size="xl" color="gray" className="absolute bg-gray-100 p-2.5 rounded-full right-5 top-5 select-none" />
+        <p className="text-base font-medium select-none">Broken Assets</p>
+      </div>
+      <div className="w-full bg-white relative flex flex-col gap-3 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">
+        <h4 className="text-4xl font-lg font-russo select-none text-gray-700">{assets.totalScrap}</h4>
+        <FontAwesomeIcon icon="trash-can" size="xl" color="red" className="absolute bg-red-100 p-2.5 rounded-full right-5 top-5 select-none" />
+        <p className="text-base font-medium select-none">Scrap Assets</p>
+      </div>
+    </div>
+    <div className="flex laptop:items-start phone:items-center laptop:flex-row phone:flex-col">
+      <div className="w-[70%] p-2">
+        <TotalAssets />
+      </div>
+      <div className="w-[45%] p-2 flex items-center justify-center">
+      <InventoryPieChart />
+      </div>
+    </div>
+  </div>
   )
 }
