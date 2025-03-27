@@ -3,6 +3,17 @@ import axios from "axios";
 import moment from "moment";
 import ReactPaginate from "react-paginate";
 
+import laptop from "../../../assets/images/items/laptop.jpg";
+import mouse from "../../../assets/images/items/mouse.jpg";
+import phone from "../../../assets/images/items/phone.jpg";
+import box from "../../../assets/images/items/box.jpg";
+import charger from "../../../assets/images/items/charger.jpg";
+import monitor from "../../../assets/images/items/monitor.jpg";
+import printer from "../../../assets/images/items/printer.jpg";
+import chair from "../../../assets/images/items/chair.jpg";
+import table from "../../../assets/images/items/table.jpg";
+import cable from "../../../assets/images/items/cable.jpg";
+
 const ITEMS_PER_PAGE = 8;
 
 export default function ReturnTable() {
@@ -67,7 +78,8 @@ export default function ReturnTable() {
             <thead>
               <tr className="bg-gray-200 border-gray-400 text-md text-left px-4">
                 <th className="py-3 px-4 whitespace-nowrap">Asset From</th>
-                <th className="py-3 px-4 whitespace-nowrap">Product</th>
+                <th className="py-3 px-4 whitespace-nowrap text-center">Product</th>
+                <th className="py-3 px-4 whitespace-nowrap">Condition</th>
                 <th className="py-3 px-4 whitespace-nowrap">
                   Product Serial Number
                 </th>
@@ -82,7 +94,57 @@ export default function ReturnTable() {
                   className="text-left border-gray-300 border-b-[1px]"
                 >
                   <td className="py-4 px-4 whitespace-nowrap">{item.distributedToName}</td>
-                  <td className="py-4 px-4 whitespace-nowrap">{item.productname}</td>
+                  <td className="py-4 px-4 whitespace-nowrap">
+                  <div className="flex gap-[12px]">
+                    <img
+                      alt="item image"
+                      className="w-25 h-20"
+                      src={
+                        item.producttype === "Laptop"
+                          ? laptop
+                          : item.producttype === "Mouse"
+                          ? mouse
+                          : item.producttype === "Phone"
+                          ? phone
+                          : item.producttype === "Charger"
+                          ? charger
+                          : item.producttype === "Chair"
+                          ? chair
+                          : item.producttype === "Box"
+                          ? box
+                          : item.producttype === "Table"
+                          ? table
+                          : item.producttype === "Monitor"
+                          ? monitor
+                          : item.producttype === "Printer"
+                          ? printer
+                          : item.producttype === "Cable"
+                          ? cable
+                          : ""
+                      }
+                    />
+                    <div className="flex flex-col mt-3">
+                      <span className="text-[20px] font-medium">{item.productname} </span>
+                      <span className="text-[16px] text-gray-500"> {item.producttype}</span>
+                    </div>
+                  </div>
+                  </td>
+                  <td className="py-4 px-4 whitespace-nowrap">
+                  <div
+                        className={`w-[80px] py-1 rounded-lg text-center select-none
+                      ${
+                        item.condition === "Good"
+                          ? "text-green-900 bg-green-100"
+                          : item.condition === "Broken"
+                          ? "text-red-900 bg-red-100"
+                          : "text-gray-900 bg-gray-200"
+                      }`}
+                      >
+                        <span className="font-medium rounded-lg">
+                          {item.condition}
+                        </span>
+                      </div>
+                  </td>
                   <td className="py-4 px-4">{item.serialnumber}</td>
                   <td className="py-4 px-4 whitespace-nowrap">
                   <div className="flex flex-row justify-center py-2 gap-2">

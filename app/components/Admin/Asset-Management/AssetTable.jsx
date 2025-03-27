@@ -409,6 +409,7 @@ export default function AssetTable() {
                     const item = asset.find((item) => item._id === id);
                     return (
                       item?.status === "Distributed" ||
+                      item?.status === "request_return" ||
                       item?.condition === "Broken" ||
                       item?.condition === "Scrap"
                     );
@@ -421,6 +422,7 @@ export default function AssetTable() {
                     const item = asset.find((item) => item._id === id);
                     return (
                       item?.status === "Distributed" ||
+                      item?.status === "request_return" ||
                       item?.condition === "Broken" ||
                       item?.condition === "Scrap"
                     );
@@ -429,18 +431,30 @@ export default function AssetTable() {
                     : "text-blue-800 hover:bg-blue-800"
                 }`}
               >
-                <i className="fa-regular fa-folder-open"></i>
                 {!(
                   !selectedAssets.length ||
                   selectedAssets.some((id) => {
                     const item = asset.find((item) => item._id === id);
                     return (
                       item?.status === "Distributed" ||
+                      item?.status === "request_return" ||
                       item?.condition === "Broken" ||
                       item?.condition === "Scrap"
                     );
                   })
-                ) && <FontAwesomeIcon icon="share" className="mr-2" />}
+                ) && <><FontAwesomeIcon icon="share" className="mr-2" /></>}
+                {!(
+                  !selectedAssets.length ||
+                  !selectedAssets.some((id) => {
+                    const item = asset.find((item) => item._id === id);
+                    return (
+                      item?.status === "Distributed" ||
+                      item?.status === "request_return" ||
+                      item?.condition === "Broken" ||
+                      item?.condition === "Scrap"
+                    );
+                  })
+                ) && <>Cannot </>}
                 Distribute Asset
               </button>
               <button
