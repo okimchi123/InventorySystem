@@ -313,7 +313,7 @@ export default function AssetTable() {
       <div class="flex flex-col gap-3 mx-auto py-4 w-full">
         {/* <!-- Filter --> */}
         <div class="flex items-center laptop:flex-row phone:flex-col gap-2 w-full">
-          <h1 className="text-[22px] font-semibold mb-[6px]"> Assets </h1>
+          <h1 className="text-[22px] font-semibold mb-[6px]"> Your Assets </h1>
           <div class="flex justify-start w-[23%]">
             <input
               type="text"
