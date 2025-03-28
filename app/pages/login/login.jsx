@@ -26,7 +26,7 @@ export default function Login() {
       localStorage.setItem("token", data.token);
       if (data.role === "Admin") navigate("/admin/Dashboard");
       else if (data.role === "Moderator") navigate("/moderator/Dashboard");
-      else navigate("/User-dashboard");
+      else navigate("/user/Dashboard");
     } catch (err) {
       setError(err.message);
     }
