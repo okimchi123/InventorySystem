@@ -10,7 +10,6 @@ const distributeAsset = async (req, res) => {
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: "User ID missing" });
     }
-    const fromUserRole = req.user.role;
     const fromUserID = req.user.id;
 
     const fromUser = await Account.findById(fromUserID);
