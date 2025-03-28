@@ -48,6 +48,7 @@ const addAsset = async (req, res) => {
       description,
       condition,
       reason,
+      distributedByModID: null,
     });
 
     await AssetLog.create({
