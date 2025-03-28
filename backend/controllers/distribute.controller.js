@@ -10,6 +10,7 @@ const distributeAsset = async (req, res) => {
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: "User ID missing" });
     }
+    const fromUserRole = req.user.role;
     const fromUserID = req.user.id;
 
     const fromUser = await Account.findById(fromUserID);
@@ -41,6 +42,7 @@ const distributeAsset = async (req, res) => {
       updateFields["distributedByModID"] = fromUserID;
     } else if (fromUser.role === "Admin") {
       updateFields["distributedByAdminID"] = fromUserID;
+      updateFields["firstDistributionDate"] = new Date();
     }
 
     await Asset.updateMany({ _id: { $in: assetIds } }, { $set: updateFields });
@@ -187,6 +189,7 @@ const requestReturn = async (req, res) => {
     }
 
     asset.status = "request_return";
+    asset.requestDate = new Date();
     await asset.save();
 
     res
@@ -203,6 +206,7 @@ const AcceptReturn = async (req, res) => {
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: "User ID missing" });
     }
+    const userRole = req.user.role;
     const fromUserID = req.user.id;
 
     const fromUser = await Account.findById(fromUserID);
@@ -215,6 +219,13 @@ const AcceptReturn = async (req, res) => {
 
     const asset = await Asset.findById(assetId);
 
+    if (userRole === "Moderator") {
+      fromUser.handlingAssets.push(assetId);
+      await fromUser.save();
+    }
+
+    const firstDistributor = await Account.findById(asset.distributedByAdminID)
+    const secondDistributor = await Account.findById(asset.distributedByModID)
     if (!asset) {
       return res.status(404).json({ message: "Asset not found" });
     }
@@ -235,12 +246,25 @@ const AcceptReturn = async (req, res) => {
     );    
     await toUser.save();
 
-    asset.status = "just_added";
-    asset.distributedByAdminID = null;
-    asset.distributedByName = "";
-    asset.distributedTo = null;
-    asset.distributedToName = "";
-    asset.distributionDate = null;
+    
+
+    if (userRole === "Admin"){
+      asset.status = "just_added";
+      asset.distributedByAdminID = null;
+      asset.distributedByName = "";
+      asset.distributedTo = null;
+      asset.distributedToName = "";
+      asset.distributionDate = null;
+      asset.firstDistributionDate = null;
+      asset.requestDate = null;
+    } else if (userRole === "Moderator"){
+      asset.distributedToName = `${secondDistributor.firstname} ${secondDistributor.lastname}`;
+      asset.distributedByModID = null;
+      asset.distributedByName = `${firstDistributor.firstname} ${firstDistributor.lastname}`;
+      asset.distributionDate = asset.firstDistributionDate;
+      asset.requestDate = null;
+      asset.status = "Distributed"
+    }
 
     await asset.save();
 
@@ -298,6 +322,7 @@ const cancelRequest = async (req, res) => {
 const returningAssets = async (req, res) => {
   try {
     const adminId = req.user.id;
+    const userRole = req.user.role;
 
     if (!adminId) {
       return res
@@ -305,10 +330,16 @@ const returningAssets = async (req, res) => {
         .json({ message: "Unauthorized: Admin ID is required" });
     }
 
-    const assets = await Asset.find({
-      status: "request_return",
-      distributedByAdminID: adminId,
-    });
+    let query = { status: "request_return"};
+
+    if (userRole === "Admin") {
+      query.distributedByAdminID = adminId;
+      query.distributedByModID = null;
+    } else if (userRole === "Moderator") {
+      query.distributedByModID = adminId;
+    }
+
+    const assets = await Asset.find(query);
 
     res.status(200).json(assets);
   } catch (error) {
@@ -316,6 +347,7 @@ const returningAssets = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error });
   }
 };
+
 
 module.exports = {
   distributeAsset,

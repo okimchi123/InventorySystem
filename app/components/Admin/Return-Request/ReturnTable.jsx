@@ -262,7 +262,7 @@ export default function ReturnTable() {
                   </div>
                 </td>
                 <td className="py-4 px-4 whitespace-nowrap">
-                  {moment(item.createdAt).format("MMMM D, YYYY h:mm A")}
+                  {moment(item.requestDate).format("MMMM D, YYYY h:mm A")}
                 </td>
               </tr>
             ))}

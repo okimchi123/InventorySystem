@@ -72,6 +72,14 @@ const AssetSchema = new mongoose.Schema(
       type: Date,
       required: false,
     },
+    firstDistributionDate: {
+      type: Date,
+      required: false,
+    },
+    requestDate: {
+      type: Date,
+      required: false,
+    },
   },
   {
     timestamps: true,
