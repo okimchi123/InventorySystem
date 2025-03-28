@@ -46,17 +46,12 @@ const UserDashboard = () => {
   }, [navigate]);
 
   return (
-    <div className="flex">
-      <SideBar 
-        role={adminData?.role}
-      />
-      <div className="w-4/5 ml-auto">
+    <div className="flex flex-col">
         <TopBar
           name={adminData?.email}
           role={adminData?.role}
         />
         <Outlet />
-      </div>
     </div>
   );
 };
