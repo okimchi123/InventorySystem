@@ -255,6 +255,13 @@ const AcceptReturn = async (req, res) => {
 
 const cancelRequest = async (req, res) => {
   try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "User ID missing" });
+    }
+    const fromUserID = req.user.id;
+
+    const fromUser = await Account.findById(fromUserID);
+
     const { assetId } = req.body;
 
     if (!assetId) {
@@ -269,6 +276,15 @@ const cancelRequest = async (req, res) => {
 
     asset.status = "Distributed";
     await asset.save();
+
+    await returnLog.create({
+      action: "CANCELLED",
+      returnedToID: fromUserID,
+      returnedByID: asset.distributedTo,
+      targetProduct: asset._id,
+      fromUserName: asset.distributedToName || "Unknown",
+      toUserName: `${fromUser.firstname} ${fromUser.lastname}`,
+    });
 
     res
       .status(200)

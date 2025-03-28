@@ -86,10 +86,13 @@ export default function ReturnTable() {
         alert("Asset ID is required");
         return;
       }
+      const token = localStorage.getItem("token");
       const response = await axios.put(
         "http://localhost:5000/api/distribute/cancel-request",
         {
           assetId,
+        },{
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 

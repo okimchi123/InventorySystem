@@ -21,7 +21,7 @@ router.get("/getUserWithAssets", authenticateToken, getUsersWithAssets);
 router.get("/getUserDistribute", authenticateToken, getUserDistributeLogs);
 router.get("/users-with-assets-distributed", authenticateToken, getUsersWithAssetsDistributedByUser);
 router.put("/request-return", requestReturn);
-router.put("/cancel-request", cancelRequest);
+router.put("/cancel-request", authenticateToken, cancelRequest);
 router.get("/returningAssets", authenticateToken, returningAssets);
 router.put("/accept-return", authenticateToken, AcceptReturn);
 
