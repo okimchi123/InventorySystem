@@ -44,7 +44,7 @@ export default function TopBar(props) {
   };
 
   return (
-    <div className="sticky top-0 w-[100%] bg-white z-10 px-6 py-3 flex justify-between items-center shadow-md">
+    <div className="fixed w-4/5 bg-white z-10 px-6 py-3 flex justify-between items-center shadow-md">
 
       <div className="flex flex-row items-center gap-4">
         <button className="text-black focus:outline-none">

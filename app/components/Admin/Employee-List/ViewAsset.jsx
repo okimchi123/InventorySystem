@@ -23,9 +23,9 @@ export default function ViewAsset({ user, isOpen, onClose }) {
           animate="visible"
           exit="exit"
           variants={modalVariants}
-          className="bg-white py-20 rounded-lg shadow-lg relative"
+          className="bg-white py-20 px-18 rounded-lg shadow-lg relative"
         >
-          <div className="flex flex-col gap-[22px] mb-[12px] px-6">
+          <div className="flex flex-col gap-[22px] mb-[12px]">
             <h1 className="text-[30px] absolute left-[24px] top-[12px]">
               {user.firstname} {user.lastname} Asset
             </h1>

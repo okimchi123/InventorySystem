@@ -25,19 +25,6 @@ const InventoryPieChart = () => {
     ],
   });
 
-  const options = {
-    plugins: {
-      legend: {
-        position: "top", // Correct position for chart.js v3+
-        labels: {
-          boxWidth: 20,
-          usePointStyle: true,
-          pointStyle: 'circle'
-        }
-      },
-    },
-  };
-
   useEffect(() => {
     const fetchTotalAssets = async () => {
       try {
@@ -67,10 +54,10 @@ const InventoryPieChart = () => {
   }, [assets]);
 
   return (
-    <div className="p-6 rounded-lg h-[100%] w-[100%] shadow-[0_3px_10px_rgb(0,0,0,0.2)] hover:shadow-sm transition-all">
+    <div className="p-6 rounded-lg h-[100%] w-[90%] shadow-[0_3px_10px_rgb(0,0,0,0.2)] hover:shadow-sm transition-all">
       <h2 className="text-xl font-semibold mb-4">Assets Overview</h2>
       <div className="w-[100%] h-[100%]">
-      <Pie data={chartData} options={options} />
+        <Pie data={chartData} />
       </div>
     </div>
   );
