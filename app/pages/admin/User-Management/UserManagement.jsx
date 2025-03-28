@@ -72,7 +72,7 @@ export default function UserManagement() {
   };
 
   return (
-    <div className="pt-22 py-6 px-10 laptop:px-12 phone:px-4">
+    <div className="pt-22 py-6 px-10 laptop:px-8 phone:px-4">
       <div className="flex flex-col gap-1 items-end justify-center w-full mx-auto">
         <div className="flex flex-col gap-[16px] mx-auto py-4 w-full">
           <UserTable openModal = {openModal} />

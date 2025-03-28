@@ -109,7 +109,7 @@ export default function DistributeTable() {
                   <td className="py-4 px-4 whitespace-nowrap">{log.toUser}</td>
                   <td className="py-4 px-4 whitespace-nowrap">
                     <div
-                      className={`py-[6px] rounded-lg text-center text-[18px] 
+                      className={`py-[6px] px-4 rounded-lg text-center text-[18px] 
                       ${
                         log.action === "DEPLOYED"
                           ? "text-blue-900 bg-blue-100"

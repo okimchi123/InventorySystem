@@ -576,12 +576,12 @@ video {
   position: relative;
 }
 
-.inset-0 {
-  inset: 0px;
+.sticky {
+  position: sticky;
 }
 
-.bottom-5 {
-  bottom: 1.25rem;
+.inset-0 {
+  inset: 0px;
 }
 
 .bottom-\[12px\] {
@@ -622,6 +622,10 @@ video {
 
 .top-1 {
   top: 0.25rem;
+}
+
+.top-5 {
+  top: 1.25rem;
 }
 
 .top-\[10\%\] {
@@ -919,8 +923,8 @@ video {
   width: 60%;
 }
 
-.w-\[68\%\] {
-  width: 68%;
+.w-\[70\%\] {
+  width: 70%;
 }
 
 .w-\[75px\] {
@@ -944,8 +948,24 @@ video {
   width: 100%;
 }
 
+.w-\[\] {
+  width: ;
+}
+
 .min-w-\[20\%\] {
   min-width: 20%;
+}
+
+.min-w-\[350px\] {
+  min-width: 350px;
+}
+
+.min-w-\[150px\] {
+  min-width: 150px;
+}
+
+.min-w-\[190px\] {
+  min-width: 190px;
 }
 
 .max-w-\[350px\] {
@@ -1227,6 +1247,11 @@ video {
   background-color: rgb(23 37 84 / var(--tw-bg-opacity, 1));
 }
 
+.bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+}
+
 .bg-gray-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
@@ -1293,6 +1318,10 @@ video {
 
 .p-2 {
   padding: 0.5rem;
+}
+
+.p-2\.5 {
+  padding: 0.625rem;
 }
 
 .p-3 {
@@ -1868,6 +1897,10 @@ video {
     flex-direction: column;
   }
 
+  .phone\:items-center {
+    align-items: center;
+  }
+
   .phone\:px-3 {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
@@ -1902,8 +1935,28 @@ video {
     width: 23%;
   }
 
+  .laptop\:w-\[30\%\] {
+    width: 30%;
+  }
+
+  .laptop\:w-\[40\%\] {
+    width: 40%;
+  }
+
+  .laptop\:w-\[35\%\] {
+    width: 35%;
+  }
+
+  .laptop\:w-\[33\%\] {
+    width: 33%;
+  }
+
   .laptop\:flex-row {
     flex-direction: row;
+  }
+
+  .laptop\:items-start {
+    align-items: flex-start;
   }
 
   .laptop\:px-10 {
@@ -1919,63 +1972,6 @@ video {
   .laptop\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
-  }
-
-  .laptop\:px-4 {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .laptop\:px-2 {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-
-  .laptop\:text-base {
-    font-size: 1rem;
-    line-height: 1.5rem;
-  }
-
-  .laptop\:text-sm {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-
-  .laptop\:text-xl {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-  }
-
-  .laptop\:text-2xl {
-    font-size: 1.5rem;
-    line-height: 2rem;
-  }
-
-  .laptop\:text-5xl {
-    font-size: 3rem;
-    line-height: 1;
-  }
-}
-
-@media (min-width: 1280px) {
-  .desktop\:text-4xl {
-    font-size: 2.25rem;
-    line-height: 2.5rem;
-  }
-
-  .desktop\:text-xl {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-  }
-
-  .desktop\:text-2xl {
-    font-size: 1.5rem;
-    line-height: 2rem;
-  }
-
-  .desktop\:text-base {
-    font-size: 1rem;
-    line-height: 1.5rem;
   }
 }
 

@@ -8,7 +8,7 @@ const socket = io("http://localhost:5000");
 const AssetGrid = () => {
   const [assets, setAssets] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 4;
+  const itemsPerPage = 3;
 
   useEffect(() => {
     const fetchAssetSummary = async () => {
@@ -62,7 +62,7 @@ const AssetGrid = () => {
         {paginatedAssets.map((item, index) => (
           <div
             key={index}
-            className="w-[30%] bg-white py-2 px-4 rounded-lg text-start border border-gray-200 shadow-lg"
+            className="laptop:w-[33%] phone:w-full bg-white py-2 px-4 rounded-lg text-start border border-gray-200 shadow-lg"
           >
             <h1 className="text-[22px] select-none font-lg font-russo text-blue-500">
               {item._id}

@@ -51,7 +51,7 @@ export default function AdminMain(){
   , []);
 
   return (
-    <div className="flex flex-col laptop:px-10 phone:px-4" style={{paddingTop: '2rem'}}>
+    <div className="flex flex-col laptop:px-10 phone:px-4" style={{paddingTop: '6rem'}}>
     <div className="flex laptop:flex-row phone:flex-col gap-2 mb-6 w-full">
       <div className="w-full bg-white relative flex flex-col gap-3 p-5 rounded-lg text-start border border-gray-200 shadow-lg hover:shadow-sm transition-all">  
         <h4 className="text-4xl font-lg font-russo select-none text-gray-700">{assets.totalAssets}</h4>

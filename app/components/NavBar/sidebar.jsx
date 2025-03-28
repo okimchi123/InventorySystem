@@ -9,7 +9,7 @@ export default function SideBar({ role }) {
     const isUser = role === "User";
 
     return (
-        <div className="w-1/5 bg-blue-600 text-white h-screen px-[12px] py-[24px] fixed flex flex-col items-center">
+        <div className="w-1/5 bg-blue-600 text-white h-screen px-[12px] py-[24px] sticky top-5 flex flex-col items-center">
             <h1 className="text-4xl mb-6 mt-2 font-medium font-russo">E-Inventory</h1>
             <ul className="font-monserat">
                 <li className="mb-4">
