@@ -29,7 +29,12 @@ const socket = io("http://localhost:5000", {
 
 export default function AssetTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [isAreYouSureModal, setIsAreYouSureModal] = useState(false);
+  const [onConfirmAction, setOnConfirmAction] = useState(() => () => {});
+  const [confirmMessage, setConfirmMessage] = useState("");
+  const [confirmTitle, setConfirmTitle] = useState("");
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDistributeOpen, setIsDistributeModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -55,6 +60,13 @@ export default function AssetTable() {
         ? prevSelected.filter((id) => id !== assetId)
         : [...prevSelected, assetId]
     );
+  };
+
+  const openConfirmModal = (confirmAction, message, title) => {
+    setOnConfirmAction(() => confirmAction);
+    setIsAreYouSureModal(true);
+    setConfirmMessage(message);
+    setConfirmTitle(title)
   };
 
   const handleConditionChange = (event) => {
@@ -309,6 +321,25 @@ export default function AssetTable() {
     }
   };
 
+  const handleExport = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/asset/export-assets", {
+        responseType: "blob",
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "assets.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setIsAreYouSureModal(false);
+    } catch (error) {
+      console.error("Error exporting Excel file:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-1 items-end justify-center w-full mx-auto">
       <AddAssetModal
@@ -332,12 +363,13 @@ export default function AssetTable() {
         message="Are you sure you want to delete this item?"
         user={selectedAsset ? selectedAsset.productname : ""}
       />
+
       <AreYouSureModal
         isOpen={isAreYouSureModal}
         onClose={() => setIsAreYouSureModal(false)}
-        onConfirm={handleDeleteMultiple}
-        message="Are you sure to delete all these assets?"
-        title="Delete"
+        onConfirm={onConfirmAction}
+        message={confirmMessage}
+        title={confirmTitle}
       />
 
       <DistributeModal
@@ -393,7 +425,7 @@ export default function AssetTable() {
             <div className="flex flex-row gap-2">
               {selectedAssets.length ? (
                 <button
-                  onClick={() => setIsAreYouSureModal(true)}
+                onClick={() => openConfirmModal(handleDeleteMultiple, "Are you sure to delete all these assets?", "Delete")}
                   className="border transition-all cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
                 >
                   <FontAwesomeIcon icon="trash" className="mr-2" />
@@ -402,6 +434,13 @@ export default function AssetTable() {
               ) : (
                 <></>
               )}
+              <button 
+                onClick={() => openConfirmModal(handleExport, "Are you sure to export all the assets?", "Export")}
+                className="border transition-all cursor-pointer bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
+              >
+                <FontAwesomeIcon icon="file-export" className="mr-2" />
+                Export to Excel
+                </button>
               <button
                 disabled={
                   !selectedAssets.length ||
