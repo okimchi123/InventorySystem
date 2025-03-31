@@ -102,6 +102,7 @@ export default function AddUserModal({
             Cancel
           </button>
           <button
+            disabled={loading}
             onClick={handleSubmit}
             className="px-4 py-2 transition-all cursor-pointer w-24 shadow-sm shadow-gray-300 bg-[#35BC14] hover:text-white hover:bg-green-900 font-medium text-white  rounded-lg"
           >

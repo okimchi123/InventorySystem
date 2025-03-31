@@ -31,19 +31,19 @@ export const ConfirmModal = ({ isOpen, onClose, onConfirm, message, user }) => {
 
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900/75">
       <motion.div
-        className="bg-white flex flex-col px-6 py-4 rounded-lg shadow-md w-[25%]"
+        className="bg-white flex flex-col px-20 py-18 rounded-lg shadow-md relative"
         initial="hidden"
         animate="visible"
         exit="exit"
         variants={modalVariants}
       >
-        <h1 className="text-[32px]">Confirm Action</h1>
+        <h1 className="text-[32px] absolute top-3 left-4">Confirm Action</h1>
         <div className="bg-gray-300 py-[6px] my-[8px] self-center flex items-center gap-[6px] px-[12px] rounded-sm">
           <FontAwesomeIcon icon="trash" color="#e62626" size="lg" />
           <span className="text-black font-semibold text-[18px]"> {user} </span>
         </div>
-        <p className="mb-4 text-[16px] self-center text-center">{message}</p>
-        <div className="flex justify-end gap-2 self-end">
+        <p className="mb-4 text-[18px] self-center text-center">{message}</p>
+        <div className="flex justify-end absolute bottom-3 right-3 gap-2 self-end">
           <button onClick={onClose} className="px-4 py-2 cursor-pointer transition-all bg-gray-300 rounded-lg hover:bg-gray-400">Cancel</button>
           <button onClick={onConfirm} className="px-4 py-2 cursor-pointer transition-all bg-red-600 text-white rounded-lg hover:bg-red-700">Confirm</button>
         </div>
@@ -60,19 +60,19 @@ export const AreYouSureModal = ({ isOpen, onClose, onConfirm, message, title }) 
 
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900/75">
       <motion.div
-        className="bg-white flex flex-col px-8 py-6 rounded-lg shadow-md"
+        className="bg-white flex flex-col px-20 py-18 rounded-lg shadow-md relative"
         initial="hidden"
         animate="visible"
         exit="exit"
         variants={modalVariants}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 absolute left-3 top-3">
           <FontAwesomeIcon icon="exclamation-triangle" color={`${isAccept?"green":"red"}`} size="2xl"/>
           <h1 className="text-[32px]">Confirm {title} Action</h1>
         </div>
         
-        <p className="mb-4 text-[18px] self-center text-center">{message}</p>
-        <div className="flex justify-end gap-2 self-end">
+        <p className="mb-4 text-[20px] self-center text-center">{message}</p>
+        <div className="flex justify-end gap-2 self-end absolute bottom-3 right-3">
           <button onClick={onClose} className="px-4 py-2 cursor-pointer transition-all bg-gray-300 rounded-lg hover:bg-gray-400">Cancel</button>
           <button onClick={onConfirm} className={`px-4 py-2 cursor-pointer transition-all text-white rounded-lg ${isAccept ? "bg-green-600  hover:bg-green-700" : "bg-red-600  hover:bg-red-700"}`}>Confirm</button>
         </div>
