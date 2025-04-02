@@ -1,5 +1,6 @@
 const ExcelJS = require("exceljs");
 const Asset = require("../models/Asset");
+const XLSX = require("xlsx");
 
 const exportAssets = async (req, res) => {
     try {
@@ -46,4 +47,30 @@ const exportAssets = async (req, res) => {
     }
   };
 
-  module.exports = { exportAssets }
+  const importAssets = async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+  
+      const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
+      const sheetName = workbook.SheetNames[0];
+      const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+  
+      const assets = jsonData.map((row) => ({
+        productname: row["Product Name"],
+        producttype: row["Product Type"],
+        serialnumber: row["Serial Number"],
+        description: row["Description"],
+        condition: row["Condition"] || "Pending",
+      }));
+  
+      await Asset.insertMany(assets);
+      res.json({ message: "Assets imported successfully", imported: assets.length });
+    } catch (error) {
+      console.error("Import Error:", error.message, error.stack);
+      res.status(500).json({ message: "Error importing assets", error: error.message });
+    }
+  };
+
+  module.exports = { exportAssets, importAssets }

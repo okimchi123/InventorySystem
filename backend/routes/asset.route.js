@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const authenticateToken = require("../middleware/authMiddleware");
 const {
     getAssets,
@@ -11,8 +12,11 @@ const {
     getAssetTrends,
     getUserHandlingAssets,
 } = require("../controllers/asset.controller")
-const { exportAssets } = require("../controllers/asssetExcel.controller")
+const { exportAssets, importAssets } = require("../controllers/asssetExcel.controller")
 const router = express.Router();
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 router.get("/", getAssets);
 
@@ -33,5 +37,7 @@ router.get("/asset-trends", getAssetTrends);
 router.get("/handling-assets", authenticateToken, getUserHandlingAssets);
 
 router.get("/export-assets", exportAssets);
+router.post("/import-assets", upload.single("file"), importAssets);
+
 
 module.exports = router;
