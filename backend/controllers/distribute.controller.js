@@ -245,8 +245,6 @@ const AcceptReturn = async (req, res) => {
     );    
     await toUser.save();
 
-    
-
     if (userRole === "Admin"){
       asset.status = "just_added";
       asset.distributedByAdminID = null;
@@ -258,6 +256,7 @@ const AcceptReturn = async (req, res) => {
       asset.requestDate = null;
     } else if (userRole === "Moderator"){
       asset.distributedToName = `${secondDistributor.firstname} ${secondDistributor.lastname}`;
+      asset.distributedTo = asset.distributedByModID;
       asset.distributedByModID = null;
       asset.distributedByName = `${firstDistributor.firstname} ${firstDistributor.lastname}`;
       asset.distributionDate = asset.firstDistributionDate;

@@ -122,7 +122,7 @@ export default function ReturnTable() {
         }
       );
 
-      setMessage(`Request Cancelled successfully!`);
+      setMessage(`Request Accepted successfully!`);
       setShowSuccessModal(true);
       setTimeout(() => setShowSuccessModal(false), 2000);
 

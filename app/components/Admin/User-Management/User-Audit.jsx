@@ -86,9 +86,9 @@ export default function UserAudit() {
           />
           <thead className="bg-gray-200">
             <tr className="bg-gray-200 border-gray-400 text-md text-left px-4">
-              <th className="py-3 px-4 whitespace-nowrap">Target User</th>
               <th className="py-3 px-4 whitespace-nowrap">Performed By</th>
-              <th className="py-3 px-4 whitespace-nowrap">Role</th>
+              <th className="py-3 px-4 whitespace-nowrap">Target User</th>           
+              <th className="py-3 px-4 whitespace-nowrap">Target Role</th>
               <th className="py-3 px-4 whitespace-nowrap">Action</th>
               <th className="py-3 px-4 whitespace-nowrap">Date</th>
             </tr>
@@ -99,10 +99,10 @@ export default function UserAudit() {
                 key={log._id}
                 className="text-left border-gray-300 border-b-[1px]"
               >
-                <td className="py-4 px-4 whitespace-nowrap">{log.userEmail}</td>
                 <td className="py-4 px-4 whitespace-nowrap">
                   {log.performedBy ? log.performedBy.email : "Unknown"}
                 </td>
+                <td className="py-4 px-4 whitespace-nowrap">{log.userEmail}</td>
                 <td className="py-4 px-4 whitespace-nowrap">{log.userRole}</td>
                 <td className="py-4 px-4 whitespace-nowrap">
                   <span
