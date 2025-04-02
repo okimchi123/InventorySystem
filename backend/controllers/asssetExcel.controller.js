@@ -57,20 +57,49 @@ const exportAssets = async (req, res) => {
       const sheetName = workbook.SheetNames[0];
       const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
   
-      const assets = jsonData.map((row) => ({
-        productname: row["Product Name"],
-        producttype: row["Product Type"],
-        serialnumber: row["Serial Number"],
-        description: row["Description"],
-        condition: row["Condition"] || "Pending",
-      }));
+      const assetsToInsert = [];
+      const duplicateSerials = [];
   
-      await Asset.insertMany(assets);
-      res.json({ message: "Assets imported successfully", imported: assets.length });
+      for (const row of jsonData) {
+        const serialnumber = row["Serial Number"];
+        
+        // Check if asset already exists
+        const existingAsset = await Asset.findOne({ serialnumber });
+  
+        if (existingAsset) {
+          duplicateSerials.push(serialnumber);
+        } else {
+          assetsToInsert.push({
+            productname: row["Product Name"],
+            producttype: row["Product Type"],
+            serialnumber,
+            description: row["Description"],
+            condition: row["Condition"] || "Pending",
+          });
+        }
+      }
+  
+      // Insert only new assets
+      if (assetsToInsert.length > 0) {
+        await Asset.insertMany(assetsToInsert);
+      }
+  
+      if (duplicateSerials.length > 0) {
+        return res.status(400).json({ 
+          message: "Some serial numbers are already used",
+          duplicates: duplicateSerials
+        });
+      }
+  
+      res.json({ 
+        message: "Assets imported successfully", 
+        imported: assetsToInsert.length 
+      });
+  
     } catch (error) {
       console.error("Import Error:", error.message, error.stack);
       res.status(500).json({ message: "Error importing assets", error: error.message });
     }
   };
-
+  
   module.exports = { exportAssets, importAssets }

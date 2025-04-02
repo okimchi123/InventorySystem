@@ -364,7 +364,7 @@ export default function AssetTable() {
       setTimeout(() => setShowSuccessModal(false), 2000);
     } catch (error) {
       console.error("Error importing assets:", error);
-      setMessage("Failed to import assets.");
+      setMessage(error.response.data.duplicates);
       setShowSuccessModal(true);
       setTimeout(() => setShowSuccessModal(false), 2000);
     }
