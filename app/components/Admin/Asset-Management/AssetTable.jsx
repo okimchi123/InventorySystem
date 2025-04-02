@@ -340,6 +340,38 @@ export default function AssetTable() {
     }
   };
 
+  const [file, setFile] = useState(null);
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+  const handleImport = async () => {
+    console.log(file)
+    if (!file){
+      setMessage("Please select a file");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+     } else{
+    const formDatas = new FormData();
+    formDatas.append("file", file);
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/asset/import-assets", formDatas, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      closeModal();
+      setMessage("imported assets successfully!");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+    } catch (error) {
+      console.error("Error importing assets:", error);
+      setMessage("Failed to import assets.");
+      setShowSuccessModal(true);
+      setTimeout(() => setShowSuccessModal(false), 2000);
+    }
+
+     }
+  };
+
   return (
     <div className="flex flex-col gap-1 items-end justify-center w-full mx-auto">
       <AddAssetModal
@@ -349,6 +381,8 @@ export default function AssetTable() {
         handleSubmit={handleSubmit}
         formData={formData}
         loading = {loading}
+        handleImport = {handleImport}
+        handleFile = {handleFileChange}
       />
       <EditAssetModal
         isOpen={isEditModalOpen}
