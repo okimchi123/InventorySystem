@@ -31,7 +31,7 @@ export default function TopBar(props) {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      await fetch("http://localhost:5000/api/auth/logout", {
+      await fetch("https://inventorysystem-lfak.onrender.com/api/auth/logout", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
