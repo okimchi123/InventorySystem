@@ -10,6 +10,8 @@ const adminRoutes = require("./routes/admin.route");
 const auditLogRoutes = require("./routes/auditlog.route");
 const distributeRoutes = require("./routes/distribute.route");
 const {setIO} = require("./utils/socketUtils")
+const cron = require("node-cron");
+const axios = require("axios");
 
 dotenv.config();
 const app = express();
@@ -52,6 +54,17 @@ app.use("/api/asset", assetRoutes);
 app.use("/api", adminRoutes);
 app.use("/api/audit-logs", auditLogRoutes);
 app.use("/api/distribute", distributeRoutes);
+
+ const SELF_PING_URL = "https://inventorysystem-lfak.onrender.com";
+
+ cron.schedule("*/14 * * * *", async () => {
+   try {
+     const res = await axios.get(SELF_PING_URL);
+     console.log("Self-ping successful at", new Date().toISOString());
+   } catch (error) {
+     console.error("Self-ping failed:", error.message);
+   }
+ });
 
 mongoose
   .connect(process.env.MONGO_URI)
