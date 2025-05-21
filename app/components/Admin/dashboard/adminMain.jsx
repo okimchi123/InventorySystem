@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000", {
+const socket = io("https://inventorysystem-lfak.onrender.com", {
   transports: ["websocket"],
   reconnectionAttempts: 5,
 });
@@ -22,7 +22,7 @@ export default function AdminMain(){
   useEffect(() => {
     const fetchTotalAssets = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/asset/asset-stats");
+        const response = await axios.get("https://inventorysystem-lfak.onrender.com/api/asset/asset-stats");
         setAssets(response.data);
       } catch (error) {
         console.error("Error fetching asset summary:", error);

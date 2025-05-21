@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import { setAuthToken } from "../../utils/axiosConfig";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -13,46 +12,29 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+    
     try {
-      const response = await fetch("https://inventorysystem-lfak.onrender.com/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await axios.post(
+        "https://inventorysystem-lfak.onrender.com/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message);
-
+      const data = response.data;
       localStorage.setItem("token", data.token);
+
+      axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+
       if (data.role === "Admin") navigate("/admin/Dashboard");
       else if (data.role === "Moderator") navigate("/moderator/Dashboard");
       else navigate("/user/Dashboard");
     } catch (err) {
-      setError(err.message);
+      const message = err.response?.data?.message || "Login failed.";
+      setError(message);
     }
   };
-  //   try {
-  //     const response = await axios.post(
-  //       "https://inventorysystem-lfak.onrender.com/api/auth/login",
-  //       {
-  //         email,
-  //         password,
-  //       }
-  //     );
-
-  //     const data = response.data;
-  //     localStorage.setItem("token", data.token);
-
-  //     axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
-
-  //     if (data.role === "Admin") navigate("/admin/Dashboard");
-  //     else if (data.role === "Moderator") navigate("/moderator/Dashboard");
-  //     else navigate("/user/Dashboard");
-  //   } catch (err) {
-  //     const message = err.response?.data?.message || "Login failed.";
-  //     setError(message);
-  //   }
-  // };
 
   return (
     <div id="main-container" className="flex flex-wrap min-h-screen">
