@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import axios from "axios";
+import { setAuthToken } from "../../utils/axiosConfig";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -14,21 +15,25 @@ export default function Login() {
     setError("");
 
     try {
-      const response = await fetch("https://inventorysystem-lfak.onrender.com/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await axios.post(
+        "https://inventorysystem-lfak.onrender.com/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message);
-
+      const data = response.data;
       localStorage.setItem("token", data.token);
+
+      axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+
       if (data.role === "Admin") navigate("/admin/Dashboard");
       else if (data.role === "Moderator") navigate("/moderator/Dashboard");
       else navigate("/user/Dashboard");
     } catch (err) {
-      setError(err.message);
+      const message = err.response?.data?.message || "Login failed.";
+      setError(message);
     }
   };
 
@@ -55,10 +60,11 @@ export default function Login() {
             {error && <p style={{ color: "red" }}>Account not found</p>}
           </div>
           <div className="justify-start items-center relative mb-3">
-            <label  className="block text-lg font-medium">
-              Email
-            </label>
-            <FontAwesomeIcon icon="user" className="left-[-12px] absolute py-4 px-3 w-10 text-gray-500"/>
+            <label className="block text-lg font-medium">Email</label>
+            <FontAwesomeIcon
+              icon="user"
+              className="left-[-12px] absolute py-4 px-3 w-10 text-gray-500"
+            />
             <i className="fa-solid fa-user absolute py-4 px-3 w-10 text-gray-500"></i>
             <input
               name="email"
@@ -70,10 +76,11 @@ export default function Login() {
             />
           </div>
           <div className="justify-start items-center relative mb-5">
-            <label className="block text-lg font-medium">
-              Password
-            </label>
-            <FontAwesomeIcon icon="lock" className="left-[-12px] absolute py-4 px-3 w-10 text-gray-500" />
+            <label className="block text-lg font-medium">Password</label>
+            <FontAwesomeIcon
+              icon="lock"
+              className="left-[-12px] absolute py-4 px-3 w-10 text-gray-500"
+            />
             <input
               type="password"
               name="password"
