@@ -100,7 +100,7 @@ export default function AssetTable() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        `http://localhost:5000/api/asset/handling-assets`,
+        `https://inventorysystem-lfak.onrender.com/api/asset/handling-assets`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -176,7 +176,7 @@ export default function AssetTable() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://localhost:5000/api/asset/${updatedAsset._id}`,
+        `https://inventorysystem-lfak.onrender.com/api/asset/${updatedAsset._id}`,
         updatedAsset,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -201,7 +201,7 @@ export default function AssetTable() {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
-        `http://localhost:5000/api/asset/${selectedAsset._id}`,
+        `https://inventorysystem-lfak.onrender.com/api/asset/${selectedAsset._id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -228,7 +228,7 @@ export default function AssetTable() {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete("http://localhost:5000/api/asset/delete-multiple", {
+      await axios.delete("https://inventorysystem-lfak.onrender.com/api/asset/delete-multiple", {
         headers: { Authorization: `Bearer ${token}` },
         data: { ids: selectedAssets },
       });
@@ -255,7 +255,7 @@ export default function AssetTable() {
         return;
       }
   
-      const response = await axios.put("http://localhost:5000/api/distribute/request-return", {
+      const response = await axios.put("https://inventorysystem-lfak.onrender.com/api/distribute/request-return", {
         assetId, 
       });
 

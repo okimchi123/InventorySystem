@@ -26,7 +26,7 @@ export default function AssetCondition() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "http://localhost:5000/api/audit-logs/userConditionLog",
+        "https://inventorysystem-lfak.onrender.com/api/audit-logs/userConditionLog",
         {
           headers: { Authorization: `Bearer ${token}` },
         }

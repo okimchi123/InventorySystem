@@ -66,7 +66,7 @@ export default function AssetTable() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        `http://localhost:5000/api/asset/handling-assets`,
+        `https://inventorysystem-lfak.onrender.com/api/asset/handling-assets`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
