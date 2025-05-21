@@ -37,7 +37,7 @@ export default function DistributeModal({ isOpen, onClose, selectedAssets, onSub
     const fetchAdminData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:5000/api/admin", {
+        const response = await axios.get("https://inventorysystem-lfak.onrender.com/api/admin", {
           headers: { Authorization: `Bearer ${token}` },
         });
         
@@ -72,7 +72,7 @@ export default function DistributeModal({ isOpen, onClose, selectedAssets, onSub
       const token = localStorage.getItem("token");
     
       const response = await axios.post(
-        "http://localhost:5000/api/distribute",
+        "https://inventorysystem-lfak.onrender.com/api/distribute",
         {
           assetIds: selectedAssets.map(asset => asset._id),
           userId: selectedUser._id,

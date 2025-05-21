@@ -19,7 +19,7 @@ export default function EmployeeTable() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "http://localhost:5000/api/distribute/getUserWithAssets",
+        "https://inventorysystem-lfak.onrender.com/api/distribute/getUserWithAssets",
         {
           headers: { Authorization: `Bearer ${token}` },
         }

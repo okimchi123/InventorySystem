@@ -8,7 +8,7 @@ import ReactPaginate from "react-paginate";
 
 const USER_PER_PAGE = 10;
 
-const socket = io("http://localhost:5000", {
+const socket = io("https://inventorysystem-lfak.onrender.com", {
   transports: ["websocket"],
   reconnectionAttempts: 5,
 });
@@ -39,7 +39,7 @@ export default function UserTable({ openModal }) {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/auth", {
+      const res = await axios.get("https://inventorysystem-lfak.onrender.com/api/auth", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data);
@@ -88,7 +88,7 @@ export default function UserTable({ openModal }) {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://localhost:5000/api/auth/${updatedUser._id}`,
+        `https://inventorysystem-lfak.onrender.com/api/auth/${updatedUser._id}`,
         updatedUser,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -113,7 +113,7 @@ export default function UserTable({ openModal }) {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/auth/${selectedUser._id}`, {
+      await axios.delete(`https://inventorysystem-lfak.onrender.com/api/auth/${selectedUser._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessage("User deleted successfully!");

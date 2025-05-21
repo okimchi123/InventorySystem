@@ -45,7 +45,7 @@ export default function UserManagement() {
       }
   
       await axios.post(
-        "http://localhost:5000/api/auth",
+        "https://inventorysystem-lfak.onrender.com/api/auth",
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );

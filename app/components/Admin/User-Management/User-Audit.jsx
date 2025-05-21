@@ -7,7 +7,7 @@ import ReactPaginate from "react-paginate";
 
 const USER_PER_PAGE = 10;
 
-const socket = io("http://localhost:5000", {
+const socket = io("https://inventorysystem-lfak.onrender.com", {
   transports: ["websocket"],
   reconnectionAttempts: 5,
 });
@@ -21,7 +21,7 @@ export default function UserAudit() {
   const fetchLogs = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/audit-logs", {
+      const res = await axios.get("https://inventorysystem-lfak.onrender.com/api/audit-logs", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAuditLogs(res.data);

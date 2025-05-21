@@ -15,7 +15,7 @@ export default function AssetHistory() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "http://localhost:5000/api/audit-logs/assetLog",
+        "https://inventorysystem-lfak.onrender.com/api/audit-logs/assetLog",
         {
           headers: { Authorization: `Bearer ${token}` },
         }

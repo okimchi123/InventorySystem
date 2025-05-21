@@ -42,7 +42,7 @@ export default function ReturnTable() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "http://localhost:5000/api/distribute/returningAssets",
+        "https://inventorysystem-lfak.onrender.com/api/distribute/returningAssets",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -88,7 +88,7 @@ export default function ReturnTable() {
       }
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "http://localhost:5000/api/distribute/cancel-request",
+        "https://inventorysystem-lfak.onrender.com/api/distribute/cancel-request",
         {
           assetId,
         },{
@@ -114,7 +114,7 @@ export default function ReturnTable() {
       }
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "http://localhost:5000/api/distribute/accept-return",
+        "https://inventorysystem-lfak.onrender.com/api/distribute/accept-return",
         {
           assetId,
         },{

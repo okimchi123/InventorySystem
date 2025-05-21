@@ -28,7 +28,7 @@ const InventoryPieChart = () => {
   useEffect(() => {
     const fetchTotalAssets = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/asset/asset-stats");
+        const response = await axios.get("https://inventorysystem-lfak.onrender.com/api/asset/asset-stats");
         setAssets(response.data);
       } catch (error) {
         console.error("Error fetching asset summary:", error);

@@ -18,7 +18,7 @@ const AdminDashboard = () => {
           return;
         }
 
-        const response = await fetch("http://localhost:5000/api/admin", {
+        const response = await fetch("https://inventorysystem-lfak.onrender.com/api/admin", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

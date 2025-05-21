@@ -15,7 +15,7 @@ export default function DistributeTable() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "http://localhost:5000/api/distribute/distributeLogs",
+        "https://inventorysystem-lfak.onrender.com/api/distribute/distributeLogs",
         {
           headers: { Authorization: `Bearer ${token}` },
         }

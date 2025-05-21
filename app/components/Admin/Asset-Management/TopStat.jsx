@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://inventorysystem-lfak.onrender.com");
 
 const AssetGrid = () => {
   const [assets, setAssets] = useState([]);
@@ -13,7 +13,7 @@ const AssetGrid = () => {
   useEffect(() => {
     const fetchAssetSummary = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/asset/summary");
+        const response = await axios.get("https://inventorysystem-lfak.onrender.com/api/asset/summary");
         setAssets(response.data);
       } catch (error) {
         console.error("Error fetching asset summary:", error);

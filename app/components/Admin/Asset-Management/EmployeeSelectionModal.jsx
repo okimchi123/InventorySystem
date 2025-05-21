@@ -15,7 +15,7 @@ export default function EmployeeSelectionModal({ isOpen, onClose, onSelect, role
       setLoading(true);
       const token = localStorage.getItem("token");
 
-      const res = await axios.get(`http://localhost:5000/api/auth?role=${role}`, {
+      const res = await axios.get(`https://inventorysystem-lfak.onrender.com/api/auth?role=${role}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

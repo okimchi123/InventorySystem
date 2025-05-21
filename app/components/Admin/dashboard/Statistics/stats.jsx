@@ -29,7 +29,7 @@ const AssetTrendsChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/asset/asset-trends");
+        const response = await axios.get("https://inventorysystem-lfak.onrender.com/api/asset/asset-trends");
         setFetchedData({
           weekly: response.data.weeklyData,
           monthly: response.data.monthlyData,
