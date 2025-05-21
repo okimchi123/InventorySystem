@@ -13,7 +13,7 @@ const SetPassword = () => {
   useEffect(() => {
     const verifyToken = async () => {
       const response = await fetch(
-        "http://localhost:5000/api/auth/verify-token",
+        "https://inventorysystem-lfak.onrender.com/api/auth/verify-token",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -43,7 +43,7 @@ const SetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch(
-      "http://localhost:5000/api/auth/set-password",
+      "https://inventorysystem-lfak.onrender.com/api/auth/set-password",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
